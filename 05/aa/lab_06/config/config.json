@@ -1,0 +1,96 @@
+{
+  "Elements": [
+    {
+      "Name": "Балтика № 0 «Безалкогольное»",
+      "Strength": 0.5
+    },
+    {
+      "Name": "Балтика № 1 «Лёгкое»",
+      "Strength": 3.0
+    },
+    {
+      "Name": "Балтика № 2 «Светлое»",
+      "Strength": 3.5
+    },
+    {
+      "Name": "Балтика № 3 «Классическое»",
+      "Strength": 3.8
+    },
+    {
+      "Name": "Балтика № 4 «Оригинальное»",
+      "Strength": 4.5
+    },
+    {
+      "Name": "Балтика № 5 «Золотое»",
+      "Strength": 5.6
+    },
+    {
+      "Name": "Балтика № 6 «Портер»",
+      "Strength": 7.0
+    },
+    {
+      "Name": "Балтика № 7 «Экспортное»",
+      "Strength": 5.4
+    },
+    {
+      "Name": "Балтика № 7 «Безалкогольное»",
+      "Strength": 0.5
+    },
+    {
+      "Name": "Балтика № 8 «Пшеничное»",
+      "Strength": 5.0
+    },
+    {
+      "Name": "Балтика № 9 «Крепкое»",
+      "Strength": 8.5
+    },
+    {
+      "Name": "Балтика № 9 «Крепкое Вишневое»",
+      "Strength": 7.0
+    },
+    {
+      "Name": "Балтика № 10 «Юбилейное»",
+      "Strength": 5.2
+    },
+    {
+      "Name": "Балтика № 11 «Миндальное»",
+      "Strength": 5.5
+    },
+    {
+      "Name": "Балтика № 12 «Новогоднее»",
+      "Strength": 5.5
+    },
+    {
+      "Name": "Балтика № 20 «Юбилейное»",
+      "Strength": 4.6
+    },
+    {
+      "Name": "Жигулевское",
+      "Strength": 3.5
+    },
+    {
+      "Name": "Охота крепкое",
+      "Strength": 8.5
+    },
+    {
+      "Name": "Van Honsebrouck, Kasteel Donker",
+      "Strength": 11.0
+    },
+    {
+      "Name": "Amager Bryghus, Cristopher The Crimson Crooner",
+      "Strength": 11.0
+    },
+    {
+      "Name": "Пиво Primator Chipper",
+      "Strength": 2.0
+    },
+    {
+      "Name": "Hoegaarden, Radler Lemon & Lime",
+      "Strength": 2.0
+    },
+    {
+      "Name": "AleSmith Decadence",
+      "Strength": 10.0
+    }
+  ]
+}

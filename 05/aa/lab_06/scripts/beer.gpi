@@ -1,0 +1,13 @@
+reset
+set terminal pdf
+set output "./data/beer.pdf"
+set size ratio 0.5625
+set xlabel "Крепость пива, в градусах"
+set ylabel "Функция принадлежности"
+set grid
+plot "./data/1.txt" with lp title 'Безалкогольное' lw 2, \
+     "./data/2.txt" with lp title 'Некрепкое' lw 2, \
+     "./data/3.txt" with lp title 'Слабое' lw 2, \
+     "./data/4.txt" with lp title 'Нормальное' lw 2, \
+     "./data/5.txt" with lp title 'Крепкое' lw 2, \
+     "./data/6.txt" with lp title 'Очень крепкое' lw 2, \

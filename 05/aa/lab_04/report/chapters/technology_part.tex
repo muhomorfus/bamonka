@@ -1,0 +1,186 @@
+\chapter{Технологическая часть}
+
+В данном разделе представлены реализации алгоритмов обратной трассировки лучей. Кроме того, указаны требования к ПО и средства реализации.
+
+\section{Требования к ПО}
+\begin{itemize}
+	\item программа позволяет вводить имя файла, содержащего информацию о сцене, с помощью аргументов командной строки;
+	\item программа аварийно завершается в случае ошибок, выводя сообщение о соответствующей ошибке;
+	\item программа выполняет замеры времени работы реализаций алгоритмов;
+	\item программа строит зависимости времени работы реализаций алгоритмов от размеров входных данных;
+	\item программа предоставляет графический интерфейс.
+\end{itemize}
+
+\section{Средства реализации}
+Для реализации данной работы выбран язык программирования C++, так как он содержит необходимые для тестирования библиотеки, а также обладает достаточными инструментами для реализации ПО, удовлетворяющего требованиям данной работы \cite{bib:3}.
+
+В качестве набора библиотек был выбран \texttt{Qt}, так как он обладает достаточным инструменталом для работы с компьютерной графикой, а также имеет набор средств для создания кроссплатформенных графических приложений \cite{bib:qt}.
+
+\section{Реализации алгоритмов}
+В листингах \ref{code:start}~--~\ref{code:end} представлены реализации алгоритмов обратной трассировки лучей.
+
+\newpage
+
+\begin{code}
+\caption{Реализация алгоритма обратной трассировки лучей}
+\label{code:start}
+\begin{minted}{C}
+QColor Scene::traceRay(const Ray &ray) {
+    TraceRayData data;
+    size_t index = 0;
+
+    bool first = true;
+
+    for (size_t i = 0; i < polygons.size(); i++) {
+        auto res = polygons[i].traceRay(ray);
+
+        if (!res.ok) {
+            continue;
+        }
+
+        if (first || res.t < data.t) {
+            index = i;
+            data = res;
+            first = false;
+        }
+    }
+
+    if (first) {
+        return background;
+    }
+
+    auto col = getColor(data.point, ray, lights, polygons[index]);
+    if (!col.haveColor) {
+        return Qt::black;
+    }
+
+    return col.color;
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Реализация функции, выполняющей трассировку лучей в одном потоке}
+\begin{minted}{C}
+void Scene::paintThread(std::vector<std::vector<QColor>> &cbuf, int start,
+int size)
+{
+    int maxSize = width * height;
+    int end = start + size;
+    if (end > maxSize) {
+        end = maxSize;
+    }
+
+    for (int n = start; n < end; n++) {
+        int y = n / width;
+        int x = n % width;
+
+        Ray ray = Ray(camera, (QVector3D(x, y, 0) - camera).normalized());
+
+        cbuf[y][x] = traceRay(ray);
+    }
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+\caption{Основная функция трассировки лучей}
+\label{code:prev}
+\begin{minted}{C}
+std::shared_ptr<QImage> Scene::paint(int nthreads) {
+    polygons = forest.toPolygons();
+    auto image = std::make_shared<QImage>(width, height,
+     QImage::Format_RGB32);
+    image->fill(Qt::black);
+    QPainter painter(image.get());
+    std::vector<std::vector<QColor>> colorBuffer(height,
+     std::vector<QColor>(width, Qt::black));
+    if (nthreads == 0) {
+        Ray ray = Ray(camera, QVector3D());
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Основная функция трассировки лучей (продолжение листинга \ref{code:prev})}
+\label{code:end}
+\begin{minted}{C}
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                ray.direction = (QVector3D(x, y, 0) - camera).normalized();
+                colorBuffer[y][x] = traceRay(ray);
+            }
+        }
+    } else {
+        int hw = height * width;
+        int n =  hw / nthreads;
+        if (hw % nthreads != 0) {
+            n++;
+        }
+        int start = 0;
+        std::vector<std::thread> threads(nthreads);
+        for (int i = 0; i < nthreads; i++) {
+            threads[i] = std::thread(&Scene::paintThread, this, 
+            std::ref(colorBuffer), start, n);
+            start += n;
+        }
+        for (int i = 0; i < nthreads; i++)
+            threads[i].join();
+    }
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            painter.setPen(colorBuffer[y][x]);
+            painter.drawPoint(x, y);
+        }
+    }
+    return image;
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\section{Тестирование}
+Тестирование проводилось по методологии белого ящика, с помощью проверки корректности получаемых изображений. \textbf{Тесты пройдены успешно.}
+
+Ни рисунках \ref{img:example1}~--~\ref{img:example4} представлены тесты для алгоритма обратной трассировки лучей.
+
+\noindent
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.7\linewidth]{example1.png}
+    \caption{Обычное дерево}
+    \label{img:example1}
+\end{figure}
+
+\noindent
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.7\linewidth]{example2.png}
+    \caption{Дерево в японском стиле}
+    \label{img:example2}
+\end{figure}
+
+\newpage 
+
+\noindent
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.7\linewidth]{example3.png}
+    \caption{Дерево в северном стиле}
+    \label{img:example3}
+\end{figure}
+
+\noindent
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.7\linewidth]{example4.png}
+    \caption{Небольшой лес}
+    \label{img:example4}
+\end{figure}
+
+
+\newpage

@@ -1,0 +1,11 @@
+reset
+set terminal pdf
+set output "data/memory.pdf"
+set size ratio 0.5625
+set xlabel "Длина строки, символы"
+set ylabel "Объем памяти, Б"
+set grid
+plot "data/memory_00.txt" with lp title 'Левенштейн' lw 2 lc rgb "green", \
+     "data/memory_01.txt" with lp title 'Дамерау-Левенштейн' lw 2 lc rgb "red", \
+     "data/memory_02.txt" with lp title 'Рекурсивный Дамерау-Левенштейн' lw 2 lc rgb "blue", \
+     "data/memory_03.txt" with lp title 'Рекурсивный Дамерау-Левенштейн c кешем' lw 2 lc rgb "magenta",

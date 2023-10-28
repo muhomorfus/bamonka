@@ -1,0 +1,12 @@
+reset
+set terminal pdf
+set output "data/time.pdf"
+set size ratio 0.5625
+set xlabel "Длина строки, символы"
+set ylabel "Время, нс"
+set logscale y 10
+set grid
+plot "data/time_00.txt" with lp title 'Левенштейн' lw 2 lc rgb "green", \
+     "data/time_01.txt" with lp title 'Дамерау-Левенштейн' lw 2 lc rgb "red", \
+     "data/time_02.txt" with lp title 'Рекурсивный Дамерау-Левенштейн' lw 2 lc rgb "blue", \
+     "data/time_03.txt" with lp title 'Рекурсивный Дамерау-Левенштейн c кешем' lw 2 lc rgb "magenta",

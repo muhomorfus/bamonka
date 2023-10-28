@@ -1,0 +1,304 @@
+\chapter{Технологическая часть}
+
+В данном разделе представлены реализации алгоритмов умножения матриц. Кроме того, указаны требования к ПО и средства реализации.
+
+\section{Требования к ПО}
+\begin{itemize}
+	\item программа позволяет вводить имена файлов, содержащих информацию о матрицах, с помощью аргументов командной строки;
+	\item программа аварийно завершается в случае ошибок, выводя сообщение о соответствующей ошибке;
+	\item программа выполняет замеры времени работы реализаций алгоритмов;
+	\item программа строит зависимости времени работы реализаций алгоритмов от размеров входных данных;
+	\item программа принимает на вход непустые матрицы, состоящие из целых чисел.
+\end{itemize}
+
+\section{Средства реализации}
+Для реализации данной работы выбран язык программирования Go, так как он содержит необходимые для тестирования библиотеки, а также обладает достаточными инструментами для реализации ПО, удовлетворяющего требованиям данной работы \cite{bib:3}.
+
+\section{Реализации алгоритмов}
+В листингах \ref{code:usual}~--~\ref{code:winograd-improved-cols} представлены реализации алгоритмов нахождения расстояний Левенштейна и Дамерау-Левенштейна.
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации стандартного алгоритма умножения матриц}
+\label{code:usual}
+\begin{minted}{go}
+func (m *Usual) Multiply(a, b [][]int) ([][]int, error) {
+	if len(a[0]) != len(b) {
+		return nil, algs.ErrInvalidArgsSize
+	}
+
+	res := make([][]int, len(a))
+	for i := range res {
+		res[i] = make([]int, len(b[0]))
+	}
+
+	for i := range res {
+		for j := range res[0] {
+			for k := range b {
+				res[i][j] = res[i][j] + a[i][k]*b[k][j]
+			}
+		}
+	}
+
+	return res, nil
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации алгоритма Винограда}
+\begin{minted}{go}
+func (m *Winograd) Multiply(a, b [][]int) ([][]int, error) {
+	if len(a[0]) != len(b) {
+		return nil, algs.ErrInvalidArgsSize
+	}
+	res := make([][]int, len(a))
+	for i := range res {
+		res[i] = make([]int, len(b[0]))
+	}
+	r := m.rowCoefficients(a)
+	c := m.colCoefficients(b)
+	for i := 0; i < len(res); i++ {
+		for j := 0; j < len(res[0]); j++ {
+			res[i][j] = res[i][j] - r[i] - c[j]
+			for k := 0; k < len(a[0])/2; k++ {
+				res[i][j] = res[i][j] + 
+				(a[i][2*k]+b[2*k+1][j])*
+				(a[i][2*k+1]+b[2*k][j])
+			}
+		}
+	}
+	if len(a[0])%2 != 0 {
+		for i := 0; i < len(res); i++ {
+			for j := 0; j < len(res[0]); j++ {
+				res[i][j] = res[i][j] + 
+				a[i][len(a[0])-1]*b[len(a[0])-1][j]
+			}
+		}
+	}
+	return res, nil
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код функции нахождения сумм произведений соседних элементов в строках}
+\begin{minted}{go}
+func (m *Winograd) rowCoefficients(a [][]int) []int {
+	c := make([]int, len(a))
+	for i := 0; i < len(a); i++ {
+		for j := 0; j < len(a[0])/2; j++ {
+			c[i] = c[i] + a[i][2*j]*a[i][2*j+1]
+		}
+	}
+	return c
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+\caption{Исходный код функции нахождения сумм произведений соседних элементов в столбцах}
+\begin{minted}{go}
+func (m *Winograd) colCoefficients(a [][]int) []int {
+	c := make([]int, len(a[0]))
+	for i := 0; i < len(a[0]); i++ {
+		for j := 0; j < len(a)/2; j++ {
+			c[i] = c[i] + a[2*j][i]*a[2*j+1][i]
+		}
+	}
+	return c
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации оптимизированного алгоритма Винограда}
+\begin{minted}{go}
+func (m *WinogradImproved) Multiply(a, b [][]int) ([][]int, error) {
+	if len(a[0]) != len(b) {
+		return nil, algs.ErrInvalidArgsSize
+	}
+	res := make([][]int, len(a))
+	for i := range res {
+		res[i] = make([]int, len(b[0]))
+	}
+	r := m.rowCoefficients(a)
+	c := m.colCoefficients(b)
+	odd := len(a[0])%2 != 0
+	len2 := len(res[0])
+	for i := 0; i < len(res); i++ {
+		for j := 0; j < len2; j++ {
+			res[i][j] -= r[i] + c[j]
+			for k := 0; k < len(a[0])-1; k += 2 {
+				res[i][j] += (a[i][k]+b[k+1][j])*
+				(a[i][k+1]+b[k][j])
+			}
+			if odd {
+				res[i][j] += a[i][len(a[0])-1] *
+				 b[len(a[0])-1][j]
+			}
+		}
+	}
+	return res, nil
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код оптимизированной функции нахождения сумм произведений соседних элементов в строках}
+\begin{minted}{go}
+unc (m *WinogradImproved) rowCoefficients(a [][]int) []int {
+	c := make([]int, len(a))
+	len2 := len(a[0]) >> 1
+	for i := 0; i < len(a); i++ {
+		for j := 0; j < len2; j++ {
+			j2 := j << 1
+			c[i] += a[i][j2] * a[i][j2+1]
+		}
+	}
+	return c
+}
+\end{minted}
+\end{code}
+
+
+\begin{code}
+\caption{сходный код оптимизированной функции нахождения сумм произведений соседних элементов в столбцах}
+\label{code:winograd-improved-cols}
+\begin{minted}{go}
+func (m *WinogradImproved) colCoefficients(a [][]int) []int {
+	c := make([]int, len(a[0]))
+	len1 := len(a[0])
+	len2 := len(a) >> 1
+	for i := 0; i < len1; i++ {
+		for j := 0; j < len2; j++ {
+			j2 := j << 1
+			c[i] += a[j2][i] * a[j2+1][i]
+		}
+	}
+	return c
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\section{Тестирование}
+Тестирование проводилось по методологии чёрного ящика. \textbf{Тесты пройдены успешно.}
+
+В таблице  представлены тестовые данные для реализаций алгоритмов умножения матриц. 
+
+\begin{table}[H]
+  \caption{\label{table:tests} Тестовые данные для алгоритмов умножения матриц}
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline
+      № & $A$ & $B$ & $C$ \\ \hline
+      1 & 
+      $\begin{pmatrix}
+	  1
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  1
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  1
+	  \end{pmatrix}$
+      \\ \hline
+      
+      
+      2 &
+      $\begin{pmatrix}
+	  1 & 2 \\ 3 & 4
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  1 & 2 \\ 3 & 4
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  7 & 10 \\ 15 & 22
+	  \end{pmatrix}$
+      \\ \hline
+      
+      3 &
+      $\begin{pmatrix}
+	  1 & 2 \\ 3 & 4
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  1 & 0 \\ 0 & 1
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  1 & 2 \\ 3 & 4
+	  \end{pmatrix}$
+      \\ \hline
+      
+      4 &
+      $\begin{pmatrix}
+	  1 & 2 & 3 \\ 4 & 5 & 6
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  1 & 2 \\ 3 & 4 \\ 5 & 6
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  38 & 32 \\ 101 & 86
+	  \end{pmatrix}$
+      \\ \hline
+      
+      5 &
+      $\begin{pmatrix}
+	  1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  10 \\ 10 \\ 10
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  60 \\ 150 \\ 240
+	  \end{pmatrix}$
+      \\ \hline
+      
+      6 &
+      $\begin{pmatrix}
+	  1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  10
+	  \end{pmatrix}$
+      &
+      ошибка
+      \\ \hline
+      
+      7 &
+      $\begin{pmatrix}
+	  1 & \text{ап} & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9
+	  \end{pmatrix}$
+      &
+      $\begin{pmatrix}
+	  10
+	  \end{pmatrix}$
+      &
+      ошибка
+      \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage

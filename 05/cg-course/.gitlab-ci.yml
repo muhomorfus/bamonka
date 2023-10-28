@@ -1,0 +1,170 @@
+image: rabits/qt:5.15-desktop
+
+stages:
+  - debug
+  - test
+  - release
+  - benchmark
+  - build_images
+  - build_film
+
+Build (debug):
+  stage: debug
+  script:
+    - qmake CONFIG+=debug cg-course.pro
+    - make
+  artifacts:
+    paths:
+      - cg-course
+    expire_in: 6h
+
+Unit tests:
+  stage: test
+  before_script:
+    - pwd
+  script:
+    - ./cg-course -u
+  needs:
+    - job: Build (debug)
+      artifacts: true
+
+Build (release):
+  stage: release
+  script:
+    - qmake CONFIG+=release cg-course.pro
+    - make
+  artifacts:
+    paths:
+      - cg-course
+    expire_in: 6h
+  needs:
+    - Unit tests
+    
+Run benchmark:
+  stage: benchmark
+  script:
+    - bash scripts/benchmark.sh
+  artifacts:
+    paths:
+      - result.txt
+    expire_in: 6h
+  needs:
+    - job: Build (release)
+      artifacts: true
+      
+Build plot:
+  stage: benchmark
+  image: python
+  before_script: 
+    - pip install matplotlib
+  script:
+    - python scripts/plot.py
+  artifacts:
+    paths:
+      - result.svg
+  needs:
+    - job: Run benchmark
+      artifacts: true
+
+Part 0:
+  stage: build_images
+  script:
+    - bash scripts/generate.sh 0
+  artifacts:
+    paths:
+      - ./*.png
+    expire_in: 1d
+  needs:
+    - job: Build (release)
+      artifacts: true
+  timeout: 2h
+  
+Part 1:
+  stage: build_images
+  script:
+    - bash scripts/generate.sh 1
+  artifacts:
+    paths:
+      - ./*.png
+    expire_in: 1d
+  needs:
+    - job: Build (release)
+      artifacts: true
+  timeout: 2h
+
+Part 2:
+  stage: build_images
+  script:
+    - bash scripts/generate.sh 2
+  artifacts:
+    paths:
+      - ./*.png
+    expire_in: 1d
+  needs:
+    - job: Build (release)
+      artifacts: true
+  timeout: 2h
+
+Part 3:
+  stage: build_images
+  script:
+    - bash scripts/generate.sh 3
+  artifacts:
+    paths:
+      - ./*.png
+    expire_in: 1d
+  needs:
+    - job: Build (release)
+      artifacts: true
+  timeout: 2h
+
+Part 4:
+  stage: build_images
+  script:
+    - bash scripts/generate.sh 4
+  artifacts:
+    paths:
+      - ./*.png
+    expire_in: 1d
+  needs:
+    - job: Build (release)
+      artifacts: true
+  timeout: 2h
+
+Part 5:
+  stage: build_images
+  script:
+    - bash scripts/generate.sh 5
+  artifacts:
+    paths:
+      - ./*.png
+    expire_in: 1d
+  needs:
+    - job: Build (release)
+      artifacts: true
+  timeout: 2h
+  
+Build film:
+  stage: build_film
+  image: 
+    name: jrottenberg/ffmpeg
+    entrypoint: [""]
+  script: 
+    - ffmpeg -r 5 -f image2 -s 1200x800 -i %d.png -codec:v h264 -crf 25 -pix_fmt yuv420p film.mp4
+  artifacts:
+    paths:
+      - film.mp4
+  needs:
+    - job: Part 0
+      artifacts: true
+    - job: Part 1
+      artifacts: true
+    - job: Part 2
+      artifacts: true
+    - job: Part 3
+      artifacts: true
+    - job: Part 4
+      artifacts: true
+    - job: Part 5
+      artifacts: true
+  timeout: 30m

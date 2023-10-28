@@ -1,0 +1,11 @@
+reset
+set terminal pdf
+set output "data/memory_detail.pdf"
+set size ratio 0.5625
+set xlabel "Размерность матрицы, элементов"
+set ylabel "Объем памяти, Б"
+set xrange [1:10]
+set grid
+plot "data/memory_00.txt" with lp title 'Обычный' lw 2 lc rgb "green", \
+     "data/memory_01.txt" with lp title 'Виноград' lw 2 lc rgb "red", \
+     "data/memory_02.txt" with lp title 'Улучшенный Виноград' lw 2 lc rgb "blue"

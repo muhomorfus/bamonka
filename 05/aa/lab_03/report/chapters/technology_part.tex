@@ -1,0 +1,234 @@
+\chapter{Технологическая часть}
+
+В данном разделе представлены реализации алгоритмов сортировки. Кроме того, указаны требования к ПО и средства реализации.
+
+\section{Требования к ПО}
+\begin{itemize}
+	\item программа позволяет вводить имя файла, содержащего информацию о массиве, с помощью аргументов командной строки;
+	\item программа аварийно завершается в случае ошибок, выводя сообщение о соответствующей ошибке;
+	\item программа выполняет замеры времени работы реализаций алгоритмов;
+	\item программа строит зависимости времени работы реализаций алгоритмов от размеров входных данных;
+	\item программа принимает на вход непустые массивы, состоящие из целых чисел.
+\end{itemize}
+
+\section{Средства реализации}
+Для реализации данной работы выбран язык программирования Go, так как он содержит необходимые для тестирования библиотеки, а также обладает достаточными инструментами для реализации ПО, удовлетворяющего требованиям данной работы \cite{bib:3}.
+
+\section{Реализации алгоритмов}
+В листингах \ref{code:block1}~--~\ref{code:count} представлены реализации алгоритмов сортировки.
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации алгоритма блочной сортировки}
+\label{code:block1}
+\begin{minted}{go}
+func (m *Bucket) getBucketFunc(max, min int) (func(int) int, int) {
+	d := max - min + 1
+	n := m.buckets
+	if n > d {
+		n = d
+	}
+	
+	size := d / n
+	if d%n != 0 {
+		size++
+	}
+	
+	return func(k int) int {
+		k -= min
+		bucket := k / size
+		if bucket > n-1 {
+			bucket = n - 1
+		}
+		return bucket
+	}, n
+}
+
+func (m *Bucket) isSorted(a []int) bool {
+	for i := 1; i < len(a); i++ {
+		if a[i] < a[i-1] {
+			return false
+		}
+	}
+
+	return true
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации алгоритма блочной сортировки (продолжение листинга \ref{code:block1})}
+\label{code:block2}
+\begin{minted}{go}
+func (m *Bucket) sort(a []int) []int {
+	if len(a) <= 1 {
+		return a
+	}
+
+	f, n := m.getBucketFunc(utils.Max(a...), 
+	utils.Min(a...))
+
+	buckets := make([][]int, n)
+
+	for _, e := range a {
+		buckets[f(e)] = append(buckets[f(e)], e)
+	}
+
+	for i := range buckets {
+		if !m.isSorted(buckets[i]) {
+			buckets[i] = m.sort(buckets[i])
+		}
+	}
+
+	res := make([]int, 0, len(a))
+	for _, b := range buckets {
+		for _, e := range b {
+			res = append(res, e)
+		}
+	}
+
+	return res
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации алгоритма пирамидальной сортировки}
+\label{code:heap1}
+\begin{minted}{go}
+func (m *Heap) heapify(a []int, i, heapSize int) []int {
+	left := i<<1 + 1
+	right := i<<1 + 2
+
+	largest := i
+	if left < heapSize && a[left] > a[i] {
+		largest = left
+	}
+
+	if right < heapSize && a[right] > a[largest] {
+		largest = right
+	}
+
+	if i != largest {
+		tmp := a[i]
+		a[i] = a[largest]
+		a[largest] = tmp
+		a = m.heapify(a, largest, heapSize)
+	}
+
+	return a
+}
+
+func (m *Heap) sort(a []int) []int {
+	heapSize := len(a)
+
+	for i := len(a)/2 - 1; i >= 0; i-- {
+		a = m.heapify(a, i, heapSize)
+	}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации алгоритма пирамидальной сортировки (продолжение листинга \ref{code:heap1})}
+\label{code:heap2}
+\begin{minted}{go}
+    for i := len(a) - 1; i >= 1; i-- {
+		tmp := a[0]
+		a[0] = a[i]
+		a[i] = tmp
+
+		heapSize--a
+		a = m.heapify(a, 0, heapSize)
+	}
+
+	return a
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+\caption{Исходный код реализации алгоритма сортировки подсчетом}
+\label{code:count}
+\begin{minted}{go}
+func (m *Count) sort(a []int) []int {
+	counts := make([]int, utils.Max(&m.stat, a...)+1)
+	for _, e := range a {
+		counts[e]++
+	}
+
+	res := make([]int, 0, len(a))
+	for i, c := range counts {
+		for j := 0; j < c; j++ {
+			res = append(res, i)
+		}
+	}
+
+	return res
+}
+\end{minted}
+\end{code}
+
+\section{Тестирование}
+Тестирование проводилось по методологии чёрного ящика. \textbf{Тесты пройдены успешно.}
+
+В таблице  представлены тестовые данные для реализаций алгоритмов сортировки. 
+
+\begin{table}[H]
+  \caption{\label{table:tests} Тестовые данные для алгоритмов сортировки}
+  \begin{center}
+    \begin{tabular}{|c|l|l|}
+      \hline
+      № & Массив & Результат \\ \hline
+      1 
+      & 
+      [5, 6, 2, 6, 1, 7]
+      &
+      [1, 2, 5, 6, 6, 7]
+      \\ \hline
+      
+      2
+      & 
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      &
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      \\ \hline
+      
+      3 
+      & 
+      [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+      &
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      \\ \hline
+      
+      4 
+      & 
+      [1, 1, 1, 1, 1, 1]
+      &
+      [1, 1, 1, 1, 1, 1]
+      \\ \hline
+      
+      5 
+      & 
+      [1]
+      &
+      [1]
+      \\ \hline
+      
+      6 
+      & 
+      []
+      &
+      []
+      \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage

@@ -1,0 +1,10 @@
+reset
+set terminal pdf
+set output "./data/time.pdf"
+set size ratio 0.5625
+set xlabel "Количество вершин графа, шт"
+set ylabel "Время, нс"
+set xrange [2:10]
+set grid
+plot "./data/time_00.txt" with lp title 'Полный перебор' lw 2, \
+     "./data/time_01.txt" with lp title 'Муравьи' lw 2, \

@@ -1,0 +1,11 @@
+reset
+set terminal pdf
+set output "data/time_worst.pdf"
+set size ratio 0.5625
+set xlabel "Длина массива, элементов"
+set ylabel "Время, нс"
+#set logscale y 10
+set grid
+plot "data/time_worst_00.txt" with lp title 'Блочная сортировка' lw 2 lc rgb "green", \
+     "data/time_worst_01.txt" with lp title 'Пирамидальная сортировка' lw 2 lc rgb "red", \
+     "data/time_worst_02.txt" with lp title 'Сортировка подсчетом' lw 2 lc rgb "blue"

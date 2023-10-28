@@ -1,0 +1,198 @@
+\chapter{Технологическая часть}
+
+В данном разделе представлены реализации алгоритмов поиска редакционного расстояния. Кроме того, указаны требования к ПО и средства реализации.
+
+\section{Требования к ПО}
+\begin{itemize}
+	\item программа позволяет вводить строки с использованием аргументов командной строки;
+	\item программа аварийно завершается в случае ошибок, выводя сообщение о соответствующей ошибке;
+	\item программа выполняет замеры времени работы реализаций алгоритмов;
+	\item программа строит зависимости времени работы реализаций алгоритмов от размеров входных данных;
+	\item программа принимает на вход строки из символов различных языков.
+\end{itemize}
+
+\section{Средства реализации}
+Для реализации данной работы выбран язык программирования Go, так как он содержит необходимые для тестирования библиотеки, а также обладает достаточными инструментами для реализации ПО, удовлетворяющего требованиям данной работы \cite{bib:3}.
+
+\section{Реализации алгоритмов}
+В листингах \ref{code:levenshtein}~--~\ref{code:damerau_levenshtein_recursive_cache} представлены реализации алгоритмов нахождения расстояний Левенштейна и Дамерау-Левенштейна.
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации матричного алгоритма нахождения расстояния Левенштейна}
+\label{code:levenshtein}
+\begin{minted}{go}
+func (l *Levenshtein) diff(s1, s2 []rune) int {
+	m := make([][]int, len(s1)+1)
+	for i := range m {
+		m[i] = make([]int, len(s2)+1)
+	}
+
+	for i := range m[0] {
+		m[0][i] = i
+	}
+
+	for i := range m {
+		m[i][0] = i
+	}
+
+	for i := 1; i < len(m); i++ {
+		for j := 1; j < len(m[i]); j++ {
+			r := 0
+			if s1[i-1] != s2[j-1] {
+				r++
+			}
+
+			m[i][j] = utils.Min(
+				m[i][j-1]+1,
+				m[i-1][j]+1,
+				m[i-1][j-1]+r,
+			)
+		}
+	}
+
+	return m[len(m)-1][len(m[0])-1]
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации матричного алгоритма нахождения расстояния Дамерау-Левенштейна}
+\begin{minted}{go}
+func (l *DamerauLevenshtein) diff(s1, s2 []rune) int {
+	m := make([][]int, len(s1)+1)
+	for i := range m {
+		m[i] = make([]int, len(s2)+1)
+	}
+	for i := range m[0] {
+		m[0][i] = i
+	}
+	for i := range m {
+		m[i][0] = i
+	}
+	for i := 1; i < len(m); i++ {
+		for j := 1; j < len(m[i]); j++ {
+			r := 0
+			if s1[i-1] != s2[j-1] {
+				r++
+			}
+			m[i][j] = utils.Min(m[i][j-1]+1,m[i-1][j]+1,
+				m[i-1][j-1]+r,
+			)
+			if i > 1 && j > 1 {
+				if s1[i-1] == s2[j-2] && s1[i-2] == 
+				s2[j-1] {
+					m[i][j] = utils.Min(m[i][j],
+						m[i-2][j-2]+1,
+					)
+				}
+			}
+		}
+	}
+	return m[len(m)-1][len(m[0])-1]
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации рекурсивного алгоритма нахождения расстояния Дамерау-Левенштейна}
+\begin{minted}{go}
+func (l *DamerauLevenshteinRecursive) diff(s1, s2 []rune) int {
+	if len(s1) == 0 || len(s2) == 0 {
+		return len(s1) + len(s2)
+	}
+
+	r := 0
+	if s1[len(s1)-1] != s2[len(s2)-1] {
+		r++
+	}
+
+	result := utils.Min(
+		&l.stat,
+		l.diff(s1, s2[:len(s2)-1])+1,
+		l.diff(s1[:len(s1)-1], s2)+1,
+		l.diff(s1[:len(s1)-1], s2[:len(s2)-1])+r,
+	)
+
+	if len(s1) > 1 && len(s2) > 1 {
+		if s1[len(s1)-1] == s2[len(s2)-2] && 
+		s1[len(s1)-2] == s2[len(s2)-1] {
+			result = utils.Min(
+				result,
+				l.diff(s1[:len(s1)-2], s2[:len(s2)-2])+1,
+			)
+		}
+	}
+
+	return result
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации рекурсивного алгоритма нахождения расстояния Дамерау-Левенштейна с кешем}
+\label{code:damerau_levenshtein_recursive_cache}
+\begin{minted}{go}
+func (l *DamerauLevenshteinRecursiveCached) diff1(s1, s2 []rune,
+ cache [][]int) int {
+	if cache[len(s1)][len(s2)] != math.MaxInt {
+		return cache[len(s1)][len(s2)]
+	}
+	if len(s1) == 0 || len(s2) == 0 {
+		cache[len(s1)][len(s2)] = len(s1) + len(s2)
+	}
+	r := 0
+	if s1[len(s1)-1] != s2[len(s2)-1] {
+		r++
+	}
+	cache[len(s1)][len(s2)] = utils.Min(
+		l.diff1(s1, s2[:len(s2)-1], cache)+1,
+		l.diff1(s1[:len(s1)-1], s2, cache)+1,
+		l.diff1(s1[:len(s1)-1], s2[:len(s2)-1], cache)+r,
+	)
+	if len(s1) > 1 && len(s2) > 1 {
+		if s1[len(s1)-1] == s2[len(s2)-2] &&
+		 s1[len(s1)-2] == s2[len(s2)-1] {
+			cache[len(s1)][len(s2)] = utils.Min(
+				cache[len(s1)][len(s2)],
+				l.diff1(s1[:len(s1)-2], 
+				s2[:len(s2)-2], cache)+1,
+			)
+		}
+	}
+
+	return cache[len(s1)][len(s2)]
+}
+\end{minted}
+\end{code}
+
+\section{Тестирование}
+Тестирование проводилось по методологии чёрного ящика. Тесты пройдены успешно.
+
+В таблице  представлены тестовые данные для реализаций алгоритмов нахождения расстояний Левенштейна и Дамерау-Левенштейна. 
+
+\begin{table}[H]
+  \caption{\label{table:tests} Тестовые данные для алгоритмов нахождения расстояний Левенштейна и Дамерау-Левенштейна}
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      № & $s_1$ & $s_2$ & Левентшейн & Дамерау-Левенштейн \\ \hline
+      1 & "{}" & "{}" & 0 & 0 \\ \hline
+      2 & "{}" & "a" & 1 & 1 \\ \hline
+      3 & "a" & "{}" & 1 & 1 \\ \hline
+      4 & "bababa" & "bebebe" & 3 & 3 \\ \hline
+      5 & "abc" & "cbc" & 1 & 1 \\ \hline
+      6 & "опарышв" & "опарывш" & 2 & 1 \\ \hline
+      7 & "ффф" & "енф" & 2 & 2 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage

@@ -1,0 +1,29 @@
+\babel@toc {russian}{}\relax 
+\thispagestyle {empty}
+\contentsline {chapter}{Введение}{3}{}%
+\contentsline {chapter}{\numberline {1.}Аналитическая часть}{5}{}%
+\contentsline {section}{\numberline {1.1.}Стандартный алгоритм умножения матриц}{5}{}%
+\contentsline {section}{\numberline {1.2.}Алгоритм Винограда}{6}{}%
+\contentsline {section}{\numberline {1.3.}Оптимизированный алгоритм Винограда}{6}{}%
+\contentsline {chapter}{\numberline {2.}Конструкторская часть}{7}{}%
+\contentsline {section}{\numberline {2.1.}Разработка стандартного алгоритма умножения матриц}{7}{}%
+\contentsline {section}{\numberline {2.2.}Разработка алгоритма Винограда}{8}{}%
+\contentsline {section}{\numberline {2.3.}Разработка оптимизированного алгоритма Винограда}{10}{}%
+\contentsline {section}{\numberline {2.4.}Оценка трудоемкости алгоритмов умножения матриц}{12}{}%
+\contentsline {subsection}{\numberline {2.4.1.}Модель вычислений}{12}{}%
+\contentsline {subsection}{\numberline {2.4.2.}Трудоемкость стандартного алгоритма умножения матриц}{13}{}%
+\contentsline {subsection}{\numberline {2.4.3.}Трудоемкость алгоритма Винограда}{14}{}%
+\contentsline {subsection}{\numberline {2.4.4.}Трудоемкость оптимизированного алгоритма Винограда}{15}{}%
+\contentsline {chapter}{\numberline {3.}Технологическая часть}{16}{}%
+\contentsline {section}{\numberline {3.1.}Требования к ПО}{16}{}%
+\contentsline {section}{\numberline {3.2.}Средства реализации}{16}{}%
+\contentsline {section}{\numberline {3.3.}Реализации алгоритмов}{16}{}%
+\contentsline {section}{\numberline {3.4.}Тестирование}{22}{}%
+\contentsline {chapter}{\numberline {4.}Экспериментальная часть}{23}{}%
+\contentsline {section}{\numberline {4.1.}Технические характеристики}{23}{}%
+\contentsline {section}{\numberline {4.2.}Измерение процессорного времени выполнения реализаций алгоритмов}{23}{}%
+\contentsline {subsection}{\numberline {4.2.1.}Худший случай}{23}{}%
+\contentsline {subsection}{\numberline {4.2.2.}Лучший случай}{25}{}%
+\contentsline {section}{\numberline {4.3.}Измерение объёма потребляемой памяти реализаций алгоритмов}{27}{}%
+\contentsline {chapter}{Заключение}{30}{}%
+\contentsline {chapter}{Список использованных источников}{31}{}%

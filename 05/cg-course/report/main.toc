@@ -1,0 +1,73 @@
+\babel@toc {russian}{}\relax 
+\contentsline {chapter}{Введение}{5}{}%
+\contentsline {chapter}{\numberline {1.}Аналитическая часть}{6}{}%
+\contentsline {section}{\numberline {1.1.}Описание объектов}{6}{}%
+\contentsline {subsection}{\numberline {1.1.1.}Типы моделей}{6}{}%
+\contentsline {subsubsection}{Каркасная модель}{6}{}%
+\contentsline {subsubsection}{Поверхностная модель}{6}{}%
+\contentsline {subsubsection}{Объемная модель}{6}{}%
+\contentsline {subsubsection}{Выбор типа модели}{6}{}%
+\contentsline {subsection}{\numberline {1.1.2.}Способы задания модели}{7}{}%
+\contentsline {subsubsection}{Аналитический}{7}{}%
+\contentsline {subsubsection}{С использованием полигональной сетки}{7}{}%
+\contentsline {subsubsection}{Выбор способа задания модели}{7}{}%
+\contentsline {section}{\numberline {1.2.}Составляющие сцены}{8}{}%
+\contentsline {section}{\numberline {1.3.}Построение реалистичного изображения}{8}{}%
+\contentsline {subsection}{\numberline {1.3.1.}Удаление невидимых линий и поверхностей}{9}{}%
+\contentsline {subsubsection}{Алгоритмы разбиения на окна}{9}{}%
+\contentsline {subsubsection}{Алгоритм, использующий z-буфер}{10}{}%
+\contentsline {subsubsection}{Алгоритмы построчного сканирования}{10}{}%
+\contentsline {subsubsection}{Алгоритмы трассировки лучей}{11}{}%
+\contentsline {subsubsection}{Выбор алгоритма удаления невидимых линий и поверхностей}{12}{}%
+\contentsline {subsection}{\numberline {1.3.2.}Учет теней и освещения}{13}{}%
+\contentsline {section}{\numberline {1.4.}Генерация дерева}{13}{}%
+\contentsline {section}{\numberline {1.5.}Выводы по аналитической части}{13}{}%
+\contentsline {chapter}{\numberline {2.}Конструкторская часть}{14}{}%
+\contentsline {section}{\numberline {2.1.}Разработка алгоритма обратной трассировки лучей}{14}{}%
+\contentsline {subsection}{\numberline {2.1.1.}Входные данные}{14}{}%
+\contentsline {subsection}{\numberline {2.1.2.}Выходные данные}{14}{}%
+\contentsline {subsection}{\numberline {2.1.3.}Алгоритм}{14}{}%
+\contentsline {subsubsection}{Общий алгоритм}{14}{}%
+\contentsline {subsubsection}{Нахождение пересечения с ближайшим объектом сцены}{15}{}%
+\contentsline {subsubsection}{Нахождение пересечения с ближайшим полигоном объекта}{15}{}%
+\contentsline {subsubsection}{Нахождение точки пересечения луча и полигона}{16}{}%
+\contentsline {subsubsection}{Проверка пересечения луча и сферической оболочки}{17}{}%
+\contentsline {subsubsection}{Нахождение освещенности точки с учетом света от источников света}{18}{}%
+\contentsline {section}{\numberline {2.2.}Разработка алгоритма генерации лесистой местности}{19}{}%
+\contentsline {subsection}{\numberline {2.2.1.}Входные данные}{19}{}%
+\contentsline {subsection}{\numberline {2.2.2.}Выходные данные}{19}{}%
+\contentsline {subsection}{\numberline {2.2.3.}Алгоритм}{19}{}%
+\contentsline {subsubsection}{Рост дерева}{19}{}%
+\contentsline {subsubsection}{Деление ветки}{20}{}%
+\contentsline {subsubsection}{Размещение деревьев по площадке}{20}{}%
+\contentsline {section}{\numberline {2.3.}Обоснование типов и структур данных}{21}{}%
+\contentsline {subsection}{\numberline {2.3.1.}Материал}{21}{}%
+\contentsline {subsection}{\numberline {2.3.2.}Полигон}{21}{}%
+\contentsline {subsection}{\numberline {2.3.3.}Объект сцены}{22}{}%
+\contentsline {subsection}{\numberline {2.3.4.}Источник света}{22}{}%
+\contentsline {subsection}{\numberline {2.3.5.}Сцена}{22}{}%
+\contentsline {subsection}{\numberline {2.3.6.}Дерево}{23}{}%
+\contentsline {subsection}{\numberline {2.3.7.}Лес}{23}{}%
+\contentsline {section}{\numberline {2.4.}Выводы по конструкторской части}{23}{}%
+\contentsline {chapter}{\numberline {3.}Технологическая часть}{24}{}%
+\contentsline {section}{\numberline {3.1.}Требования к ПО}{24}{}%
+\contentsline {subsection}{\numberline {3.1.1.}Функциональная модель}{24}{}%
+\contentsline {section}{\numberline {3.2.}Средства реализации}{25}{}%
+\contentsline {subsection}{\numberline {3.2.1.}Язык программирования}{25}{}%
+\contentsline {subsection}{\numberline {3.2.2.}Набор библиотек}{25}{}%
+\contentsline {subsection}{\numberline {3.2.3.}Формат выходных файлов}{26}{}%
+\contentsline {section}{\numberline {3.3.}Реализация алгоритма обратной трассировки лучей}{26}{}%
+\contentsline {section}{\numberline {3.4.}Реализация алгоритма генерации лесистой местности}{31}{}%
+\contentsline {section}{\numberline {3.5.}Описание интерфейса программы}{36}{}%
+\contentsline {section}{\numberline {3.6.}Описание управления из командной строки}{37}{}%
+\contentsline {section}{\numberline {3.7.}Тестирование}{37}{}%
+\contentsline {section}{\numberline {3.8.}Примеры работы программы}{38}{}%
+\contentsline {section}{\numberline {3.9.}Выводы по технологической части}{41}{}%
+\contentsline {chapter}{\numberline {4.}Исследовательская часть}{42}{}%
+\contentsline {section}{\numberline {4.1.}Технические характеристики}{42}{}%
+\contentsline {section}{\numberline {4.2.}Постановка исследования}{42}{}%
+\contentsline {section}{\numberline {4.3.}Средства исследования}{42}{}%
+\contentsline {section}{\numberline {4.4.}Результаты исследования}{42}{}%
+\contentsline {section}{\numberline {4.5.}Выводы по исследовательской части}{44}{}%
+\contentsline {chapter}{Заключение}{45}{}%
+\contentsline {chapter}{Список использованных источников}{46}{}%

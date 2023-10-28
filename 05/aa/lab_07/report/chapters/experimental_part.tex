@@ -1,0 +1,168 @@
+\chapter{Экспериментальная часть}
+
+В данном разделе описаны замерные эксперименты и представлены результаты исследования.
+
+\section{Технические характеристики}
+Технические характеристики устройства, на котором выполнялось исследование \cite{bib:5}:
+\begin{itemize}
+	\item 8 ГБ оперативной памяти;
+	\item процессор Apple M2 (тактовая частота~---~до $3.5$ГГц);
+    \item операционная система macOS Ventura 13.0.
+\end{itemize}
+
+\section{Параметризация муравьиного алгоритма}
+Параметризация~---~подбор таких параметров алгоритма, при котором он будет выдавать наиболее точный и стабильный результат. 
+
+В результате параметризации была получена таблица со следующими столбцами:
+
+\begin{itemize}
+	\item $\alpha$~---~коэффициент стадности;
+	\item $\rho$~---~коэффициент испарения феромона;
+	\item $T$~---~количество циклов жизни колонии;
+	\item $ideal$~---~идеальное значение, полученное в результате работы полного перебора;
+	\item $\Delta$~---~разница между идеальным и фактическим результатом.
+\end{itemize}
+
+\newpage
+
+\subsection{Параметризация для графа №1}
+Матрица смежности для графа №1 равна
+
+\begin{equation}
+	\begin{pmatrix}
+	  -1 & 1797 & 2326 & 4022 \\ 
+1797 & -1 & 3954 & 5650 \\ 
+2326 & 3954 & -1 & 1905 \\ 
+4022 & 5650 & 1905 & -1 \\
+	  \end{pmatrix}
+\end{equation}
+
+В таблице \ref{t:t01} представлена выборка параметризации с коэффициентами, дающими наибольшую точность.
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{longtable}[c]{|l|l|l|l|l|}
+	\caption{Результаты параметризующего запуска для графа №1 из 4 вершин\label{t:t01}} \\ \hline
+	\endfirsthead
+	\captionsetup{labelformat=continued,labelsep=quad}%
+	\caption{}\\
+	\endhead
+	$\alpha$ & $\rho$ & $T$ & $ideal$ & $\Delta$ 
+	
+	\csvreader{../data/param_best_4.txt}{}
+	{\\ \hline \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv}
+	\\ \hline
+		
+	\end{longtable}	
+\end{center}
+
+\subsection{Параметризация для графа №2}
+Матрица смежности для графа №2 равна
+
+\begin{equation}
+	\begin{pmatrix}
+-1 & 1797 & 2326 & 4022 & 1051 & 2699 & 936 \\ 
+1797 & -1 & 3954 & 5650 & 1008 & 4327 & 1637 \\ 
+2326 & 3954 & -1 & 1905 & 3202 & 1217 & 3115 \\ 
+4022 & 5650 & 1905 & -1 & 4898 & 1897 & 4811 \\ 
+1051 & 1008 & 3202 & 4898 & -1 & 3575 & 891 \\ 
+2699 & 4327 & 1217 & 1897 & 3575 & -1 & 3488 \\ 
+936 & 1637 & 3115 & 4811 & 891 & 3488 & -1 \\
+	  \end{pmatrix}
+\end{equation}
+
+В таблице \ref{t:t02} представлена выборка параметризации с коэффициентами, дающими наибольшую точность.
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{longtable}[c]{|l|l|l|l|l|}
+	\caption{Результаты параметризующего запуска для графа №2 из 7 вершин\label{t:t02}} \\ \hline
+	\endfirsthead
+	\captionsetup{labelformat=continued,labelsep=quad}%
+	\caption{}\\
+	\endhead
+	$\alpha$ & $\rho$ & $T$ & $ideal$ & $\Delta$ 
+	
+	\csvreader{../data/param_best_7.txt}{}
+	{\\ \hline \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv}
+	\\ \hline
+		
+	\end{longtable}	
+\end{center}
+
+\subsection{Параметризация для графа №3}
+Матрица смежности для графа №3 равна
+
+\begin{equation}
+	\begin{pmatrix}
+-1 & 1797 & 2326 & 4022 & 1051 & 2699 & 936 & 1428 & 2147 & 2712 \\ 
+1797 & -1 & 3954 & 5650 & 1008 & 4327 & 1637 & 1425 & 3775 & 4340 \\ 
+2326 & 3954 & -1 & 1905 & 3202 & 1217 & 3115 & 3573 & 227 & 589 \\ 
+4022 & 5650 & 1905 & -1 & 4898 & 1897 & 4811 & 5269 & 1964 & 1333 \\ 
+1051 & 1008 & 3202 & 4898 & -1 & 3575 & 891 & 417 & 3023 & 3588 \\ 
+2699 & 4327 & 1217 & 1897 & 3575 & -1 & 3488 & 3946 & 1176 & 866 \\ 
+936 & 1637 & 3115 & 4811 & 891 & 3488 & -1 & 1270 & 2936 & 3501 \\ 
+1428 & 1425 & 3573 & 5269 & 417 & 3946 & 1270 & -1 & 3394 & 3959 \\ 
+2147 & 3775 & 227 & 1964 & 3023 & 1176 & 2936 & 3394 & -1 & 654 \\ 
+2712 & 4340 & 589 & 1333 & 3588 & 866 & 3501 & 3959 & 654 & -1 \\
+	  \end{pmatrix}
+\end{equation}
+
+В таблице \ref{t:t03} представлена выборка параметризации с коэффициентами, дающими наибольшую точность.
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{longtable}[c]{|l|l|l|l|l|}
+	\caption{Результаты параметризующего запуска для графа №3 из 10 вершин\label{t:t03}} \\ \hline
+	\endfirsthead
+	\captionsetup{labelformat=continued,labelsep=quad}%
+	\caption{}\\
+	\endhead
+	$\alpha$ & $\rho$ & $T$ & $ideal$ & $\Delta$ 
+	
+	\csvreader{../data/param_best_7.txt}{}
+	{\\ \hline \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv}
+	\\ \hline
+		
+	\end{longtable}	
+\end{center}
+
+
+\section{Измерение процессорного времени выполнения реализаций алгоритмов}
+
+Для измерения процессорного времени выполнения реализаций алгоритмов была использована функция языка $C$~---~$clock\_gettime$, которая позволяет получить текущее процессорное время в наносекундах \cite{bib:6}.
+
+В таблице \ref{table:time} представлены результаты измерений процессорного времени выполнения в зависимости от размера графа для алгоритма полного перебора и муравьиного алгоритма. На рисунке \ref{img:time} представлена зависимость времени выполнения от количества вершин графва.
+
+\begin{table}[h]
+  \caption{\label{table:time} Результаты замеров процессорного времени (в нс)}
+  \begin{center}
+    \begin{tabular}{|r|r|r|r|}
+      \hline
+      Количество вершин & Полный перебор & Муравьиный алгоритм \\ \hline
+2 & 160 & 415320 \\ \hline 
+3 & 360 & 747320 \\ \hline 
+4 & 1260 & 1320880 \\ \hline 
+5 & 10680 & 2144000 \\ \hline 
+6 & 28900 & 3083100 \\ \hline 
+7 & 211940 & 4222370 \\ \hline 
+8 & 4177960 & 5475500 \\ \hline 
+9 & 32073460 & 6915110 \\ \hline 
+10 & 381928610 & 8661820 \\ \hline 
+
+
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage
+
+\noindent
+\begin{figure}[h!]
+	\centering
+    \includegraphics[width=0.75\linewidth]{../data/time}
+    \caption{Результаты замеров времени}
+    \label{img:time}
+\end{figure}
+
+\newpage

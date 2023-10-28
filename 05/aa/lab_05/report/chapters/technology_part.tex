@@ -1,0 +1,299 @@
+\chapter{Технологическая часть}
+
+В данном разделе представлены реализации алгоритмов сортировки. Кроме того, указаны требования к ПО и средства реализации.
+
+\section{Требования к ПО}
+\begin{itemize}
+	\item программа позволяет вводить имя файла, содержащего информацию о наборах слов, с помощью аргументов командной строки;
+	\item программа аварийно завершается в случае ошибок, выводя сообщение о соответствующей ошибке;
+	\item программа выполняет замеры времени работы реализаций алгоритмов;
+	\item программа строит зависимости времени работы реализаций алгоритмов от размеров входных данных;
+	\item программа принимает на вход файл в следующем формате: наборы слов (тексты) разделены последовательностью символов <<***>>, слова разделены символами переноса строки;
+	\item программа принимает на вход набор массивов слов, нормализует его, удаляет дубликаты и рассчитывает частоту терма для каждого терма в тексте.
+\end{itemize}
+
+\section{Средства реализации}
+Для реализации данной работы выбран язык программирования Go, так как он содержит необходимые для тестирования библиотеки, а также обладает достаточными инструментами для реализации ПО, удовлетворяющего требованиям данной работы \cite{bib:3}.
+
+\section{Реализации алгоритмов}
+В листингах \ref{code:1}~--~\ref{code:3} представлены реализации алгоритмов обработки текста.
+
+В листингах \ref{code:4}~--~\ref{code:6} представлены реализации алгоритмов обработчиков конвейера.
+
+В листингах \ref{code:7}~--~\ref{code:8} представлены реализации алгоритмов конвейерной обработки данных.
+
+\newpage
+
+\begin{code}
+\caption{Реализация алгоритма нахождения начальных форм слов}
+\label{code:1}
+\begin{minted}{go}
+func Normalize(words []string) []string {
+	terms := make([]string, 0)
+	
+	for _, v := range words {
+		_, normals, _ := morph.Parse(strings.ToLower(v))
+		if len(normals) == 0 {
+			panic("no normals")
+		}
+		
+		terms = append(terms, normals[0])
+	}
+	
+	return terms
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+\caption{Реализация алгоритма дедупликации}
+\label{code:2}
+\begin{minted}{go}
+func Deduplicate(terms []string) map[string]int {
+	termsMap := make(map[string]int)
+	
+	for _, v := range terms {
+		termsMap[v] = termsMap[v] + 1
+	}
+	
+	return termsMap
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Реализация алгоритма подсчета частоты терма}
+\label{code:3}
+\begin{minted}{go}
+func CountTF(termsMap map[string]int) map[string]float64 {
+	n := 0
+	
+	for _, v := range termsMap {
+		n += v
+	}
+	
+	tfs := make(map[string]float64)
+	
+	for k, v := range termsMap {
+		tfs[k] = float64(v) / float64(n)
+	}
+	
+	return tfs
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+\caption{Обработчик первой ленты конвейера~---~нормализация текста}
+\label{code:4}
+\begin{minted}{go}
+func Normalize(in <-chan task.Task, out chan<- task.Task) {
+	for t := range in {
+		t.StartTime1 = time.Now()
+		t.Terms = text.Normalize(t.Text)
+		t.EndTime1 = time.Now()
+		
+		out <- t
+	}
+	
+	close(out)
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Обработчик второй ленты конвейера~---~дедупликация текста}
+\label{code:5}
+\begin{minted}{go}
+func Deduplicate(in <-chan task.Task, out chan<- task.Task) {
+	for t := range in {
+		t.StartTime2 = time.Now()
+		t.Stat = text.Deduplicate(t.Terms)
+		t.EndTime2 = time.Now()
+		
+		out <- t
+	}
+	
+	close(out)
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+\caption{Обработчик третьей ленты конвейера~---~поиск частоты слова}
+\label{code:6}
+\begin{minted}{go}
+func CountTF(in <-chan task.Task, out chan<- task.Task) {
+	for t := range in {
+		t.StartTime3 = time.Now()
+		t.TFs = text.CountTF(t.Stat)
+		t.EndTime3 = time.Now()
+		
+		out <- t
+	}
+
+	close(out)
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Реализация последовательного конвейера}
+\label{code:7}
+\begin{minted}{go}
+func Pipeline(texts [][]string, log bool) []map[string]float64 {
+	tfs := make([]map[string]float64, len(texts))
+	resTasks := make([]task.Task, 0, len(texts))
+	now := time.Now()
+	
+	for _, v := range texts {
+		chanNormalize := make(chan task.Task, 1)
+		chanDeduplicate := make(chan task.Task, 1)
+		chanCountTF := make(chan task.Task, 1)
+		chanResult := make(chan task.Task, 1)
+		
+		t := task.Task{
+			Text: v,
+			TimeStat: task.TimeStat{
+				StartTime0: now,
+			},
+		}
+		
+		chanNormalize <- t
+		close(chanNormalize)
+		
+		workers.Normalize(chanNormalize, chanDeduplicate)
+		workers.Deduplicate(chanDeduplicate, chanCountTF)
+		workers.CountTF(chanCountTF, chanResult)
+		resTasks = append(resTasks, <-chanResult)
+	}
+	
+	for i, v := range resTasks {
+		tfs[i] = v.TFs
+	}
+	
+	return tfs
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Реализация параллельного конвейера}
+\label{code:8}
+\begin{minted}{go}
+func Pipeline(texts [][]string, log bool) []map[string]float64 {
+	tfs := make([]map[string]float64, len(texts))
+	resTasks := make([]task.Task, 0, len(texts))
+	now := time.Now()
+	chanNormalize := make(chan task.Task, len(texts))
+	chanDeduplicate := make(chan task.Task, len(texts))
+	chanCountTF := make(chan task.Task, len(texts))
+	chanResult := make(chan task.Task, len(texts))
+	go workers.Normalize(chanNormalize, chanDeduplicate)
+	go workers.Deduplicate(chanDeduplicate, chanCountTF)
+	go workers.CountTF(chanCountTF, chanResult)
+
+	for _, v := range texts {
+		t := task.Task{
+			Text: v,
+			TimeStat: task.TimeStat{
+				StartTime0: now,
+			},
+		}
+
+		chanNormalize <- t
+	}
+	close(chanNormalize)
+	for t := range chanResult {
+		resTasks = append(resTasks, t)
+	}
+	for i, v := range resTasks {
+		tfs[i] = v.TFs
+	}
+
+	return tfs
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\section{Тестирование}
+Тестирование проводилось по методологии чёрного ящика. \textbf{Тесты пройдены успешно.}
+
+В таблице \ref{table:tests} представлены тестовые данные для реализаций алгоритмов конвейерной обработки данных. 
+
+\begin{table}[H]
+  \caption{\label{table:tests} Тестовые данные для алгоритмов конвейерной обработки данных}
+  \begin{center}
+    \begin{tabular}{|c|l|l|}
+      \hline
+      № & Набор слов & Результат \\ \hline
+      1 
+      & 
+      \makecell{
+      <<Автомобили>> \\
+	  <<ехали>> \\
+	  <<и>> \\
+	  <<едут>> \\
+	  <<и>> \\
+	  <<будут>> \\
+	  <<ехать>> \\
+      }
+      &
+      \makecell{
+      <<и>>: $0.285714$ \\
+        <<быть>>: $0.142857$ \\
+        <<автомобиль>>: $0.142857$ \\
+        <<ехать>>: $0.428571$
+      }
+      \\ \hline
+      
+      
+      2
+      & 
+      \makecell{
+      <<тридцать>> \\
+	  <<девять>> \\
+	  <<около>> \\
+	  <<девяти>> 
+      }
+      &
+      \makecell{
+      <<тридцать>>: $0.250000$ \\
+        <<девять>>: $0.500000$ \\
+        <<около>>: $0.250000$
+      }
+      \\ \hline
+      
+      3
+      & 
+      \makecell{
+      <<летел>> \\
+	  <<лебедь>> \\
+	  <<по>> \\
+	  <<синему>> \\
+	  <<морю>>
+      }
+      &
+      \makecell{
+      <<лететь>>: $0.200000$ \\
+        <<лебедь>>: $0.200000$ \\
+        <<по>>: $0.200000$ \\
+        <<синий>>: $0.200000$ \\
+        <<море>>: $0.200000$ \\
+      }
+      \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage

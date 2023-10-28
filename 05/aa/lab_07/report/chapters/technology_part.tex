@@ -1,0 +1,215 @@
+\chapter{Технологическая часть}
+
+В данном разделе представлены реализации алгоритмов поиска кратчайшего расстояния в графе. Кроме того, указаны требования к ПО и средства реализации.
+
+\section{Требования к ПО}
+\begin{itemize}
+	\item программа позволяет вводить имя файла, содержащего информацию о графе, с помощью аргументов командной строки;
+	\item программа аварийно завершается в случае ошибок, выводя сообщение о соответствующей ошибке;
+	\item программа выполняет замеры времени работы реализаций алгоритмов;
+	\item программа строит зависимости времени работы реализаций алгоритмов от размеров входных данных;
+	\item программа позволяет вводить основные параметры муравьиного алгоритма, такие как $\alpha$, $\beta$ и другие с помощью аргументов командной строки.
+\end{itemize}
+
+\section{Средства реализации}
+Для реализации данной работы выбран язык программирования Go, так как он содержит необходимые для тестирования библиотеки, а также обладает достаточными инструментами для реализации ПО, удовлетворяющего требованиям данной работы \cite{bib:3}.
+
+\section{Реализации алгоритмов}
+В листингах \ref{code:1}~--~\ref{code:6} представлены реализации алгоритма полного перебора и муравьиного алгоритма.
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации алгоритма полного перебора}
+\label{code:1}
+\begin{minted}{go}
+func (m *Manager) MinPath(g *graph.Graph) ([]int, int, bool) {
+	paths := allPaths(g.GetSize())
+	minLen := math.MaxInt
+	var minPath []int
+
+	for _, path := range paths {
+		l, ok := g.LenPath(path)
+		if !ok {
+			continue
+		}
+
+		if l < minLen {
+			minLen = l
+			minPath = path
+		}
+	}
+
+	return minPath, minLen, minLen != math.MaxInt
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+\caption{Исходный код реализации алгоритма поиска следующей вершины в маршруте муравья}
+\label{code:2}
+\begin{minted}{go}
+func (a *ant) trip(vertices []int, pheromones [][]float64, 
+visibles [][]float64) (int, bool) {
+	probabilities := make([]float64, 0)
+	probability := 0.0
+
+	for _, v := range vertices {
+		if visibles[a.getPos()][v] != -1 {
+			p := math.Pow(visibles[a.getPos()][v], a.beta) * 
+			math.Pow(pheromones[a.getPos()][v], a.alpha)
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации алгоритма поиска следующей вершины в маршруте муравья (продолжение листинга \ref{code:2})}
+\label{code:3}
+\begin{minted}{go}
+			probabilities = append(probabilities, p)
+			probability += p
+		}
+	}
+
+	if probability <= 0 {
+		return 0, false
+	}
+
+	maxProbability := 0.0
+	idx := 0
+	for i, v := range probabilities {
+		v /= probability
+		if v > maxProbability {
+			maxProbability = v
+			idx = vertices[i]
+		}
+	}
+
+	if a.elite {
+		return idx, true
+	}
+
+	return vertices[randVariant(probabilities, probability)-1], true
+}
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации алгоритма поиска маршрута для муравья}
+\label{code:4}
+\begin{minted}{go}
+func (a *ant) findPath(g *graph.Graph, pheromones [][]float64, 
+visibles [][]float64) bool {
+	vertices := make([]int, 0, g.GetSize())
+	for i := 0; i < g.GetSize(); i++ {
+		if i != a.getPos() {
+			vertices = append(vertices, i)
+		}
+	}
+	for len(vertices) != 0 {
+		next, ok := a.trip(vertices, pheromones, visibles)
+		if !ok {
+			return false
+		}
+		dst, _ := g.GetDistance(a.getPos(), next)
+		a.move(next, dst)
+		vertices = rm(vertices, next)
+	}
+	return true
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+\caption{Исходный код реализации муравьиного алгоритма}
+\label{code:5}
+\begin{minted}{go}
+func (m *Manager) MinPath(g *graph.Graph) ([]int, int, bool) {
+	minLen := math.MaxInt
+	var minPath []int
+	pheromones := newPheromones(g)
+	visibles := newVisibles(g)
+	for t := 0; t < m.n; t++ {
+		c := newColony(g, m.alpha, m.beta, m.k)
+		c.evaporate(pheromones)
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Исходный код реализации муравьиного алгоритма (продолжение листинга \ref{code:5}}
+\label{code:6}
+\begin{minted}{go}
+		for _, v := range c.ants {
+			ok := v.findPath(g, pheromones, visibles)
+			if !ok {
+				return nil, 0, false
+			}
+			if v.len < minLen && len(v.path) == g.GetSize() {
+				minLen = v.len
+				minPath = v.path
+			}
+		}
+		c.correct(pheromones)
+	}
+	if len(minPath) == 0 {
+		return nil, 0, false
+	}
+	return minPath, minLen, true
+}
+\end{minted}
+\end{code}
+
+
+\section{Тестирование}
+Тестирование проводилось по методологии чёрного ящика. \textbf{Тесты пройдены успешно.}
+
+В таблице \ref{table:tests}  представлены тестовые данные для реализаций алгоритма полного перебора и муравьиного алгоритма. 
+
+\begin{table}[H]
+  \caption{\label{table:tests} Тестовые данные для реализаций алгоритма полного перебора и муравьиного алгоритма}
+  \begin{center}
+    \begin{tabular}{|c|l|l|}
+      \hline
+      № & Граф & Результат \\ \hline
+      1 
+      & 
+      $\begin{pmatrix}
+	  -1 & 875 \\
+875 & -1 \\
+	  \end{pmatrix}$
+      &
+      875
+      \\ \hline
+      
+      2 
+      & 
+      $\begin{pmatrix}
+	  -1 &	1797 &	2326 \\
+1797 &	-1 &	3954 \\
+2326 &	3954 &	-1 \\
+	  \end{pmatrix}$
+      &
+      4123
+      \\ \hline
+      
+      3 
+      & 
+      $\begin{pmatrix}
+	  -1 &	1797 &	2326 &	4022 \\
+1797 &	-1 &	3954 &	5650 \\
+2326 &	3954 &	-1 &	1905 \\
+4022 &	5650 &	1905 &	-1 \\
+	  \end{pmatrix}$
+      &
+      6028
+      \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage

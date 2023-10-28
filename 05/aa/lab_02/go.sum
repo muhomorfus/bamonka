@@ -1,0 +1,10 @@
+git.parasha.space/go/libs v1.1.0-3cbf5ce7b0b931920d00f2e01abce21d2f2bde95 h1:LEL+ntDtXSYsAfFYv71yWLFhTdbDUO1li+KctO/BXb0=
+git.parasha.space/go/libs v1.1.0-3cbf5ce7b0b931920d00f2e01abce21d2f2bde95/go.mod h1:htkLKhY6kOJybfepJ75AB1w6I4Lt1+LGRk0d9vTMX/I=
+github.com/corpix/uarand v0.0.0-20170723150923-031be390f409 h1:9A+mfQmwzZ6KwUXPc8nHxFtKgn9VIvO3gXAOspIcE3s=
+github.com/corpix/uarand v0.0.0-20170723150923-031be390f409/go.mod h1:JSm890tOkDN+M1jqN8pUGDKnzJrsVbJwSMHBY4zwz7M=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/icrowley/fake v0.0.0-20220625154756-3c7517006344 h1:gvlL0h+DFa2eX4rLg/lbtBV4z81p1qHGcvPIpWtlXn0=
+github.com/icrowley/fake v0.0.0-20220625154756-3c7517006344/go.mod h1:dQ6TM/OGAe+cMws81eTe4Btv1dKxfPZ2CX+YaAFAPN4=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/stretchr/testify v1.7.5 h1:s5PTfem8p8EbKQOctVV53k6jCJt3UX4IEJzwh+C324Q=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
