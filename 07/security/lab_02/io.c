@@ -3,14 +3,14 @@
 
 #include "io.h"
 
-int io_read(char* filename, unsigned char** buf, int* size) {
+int ReadFile(char* filename, unsigned char** buf, int* size) {
     FILE* f;
 
     f = fopen(filename, "rb");
     if (f == NULL)
     {
-        printf("Cannot open file.\n");
-        return EXIT_FAILURE;
+        printf("fopen()\n");
+        return 1;
     }
 
     fseek(f, 0L, SEEK_END);
@@ -19,36 +19,36 @@ int io_read(char* filename, unsigned char** buf, int* size) {
 
     *buf = malloc(*size + 1);
 
-    for (size_t i = 0; i < *size; i++) {
+    for (int i = 0; i < *size; i++) {
         char c = (char) fgetc(f);
         (*buf)[i] = c;
     }
-    (*buf)[*size] = '\0';
+    (*buf)[*size] = 0;
 
     fclose(f);
 
-    return EXIT_SUCCESS;
+    return 0;
 }
 
-int io_write(char* filename, unsigned char* buf, int size) {
+int WriteFile(char* filename, unsigned char* buf, int size) {
     FILE* f;
 
     f = fopen(filename, "wb");
     if (f == NULL)
     {
-        printf("Cannot open file.\n");
-        return EXIT_FAILURE;
+        printf("fopen()\n");
+        return 1;
     }
 
     size_t n = fwrite(buf, sizeof(unsigned char), size, f);
     if (n != size) {
         fclose(f);
-        printf("Cannot write.\n");
-        return EXIT_FAILURE;
+        printf("fwrite()\n");
+        return 1;
     }
 
     fclose(f);
 
-    return EXIT_SUCCESS;
+    return 0;
 }
 

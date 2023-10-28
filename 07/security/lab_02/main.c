@@ -1,72 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "des.h"
-#include "pcbc.h"
+#include "crypto.h"
 #include "io.h"
 
 int main() {
-    char src[100];
-    char dst[100];
-    block_t key, iv;
+    char source[100];
+    char destination[100];
+    int mode = 0;
+    Block key = 0, iv = 0;
 
-    printf("Input source file: ");
-    if (scanf("%s", src) != 1) {
-        printf("Cannot read src file name.\n");
-        return EXIT_FAILURE;
-    }
+    printf("Mode = 0 => encrypt, else => decrypt.\n");
+    printf("Type dividing by newlines (mode, source, destination, key, iv):\n\n");
 
-    printf("Input destination file: ");
-    if (scanf("%s", dst) != 1) {
-        printf("Cannot read dst file name.\n");
-        return EXIT_FAILURE;
-    }
-
-    printf("Input key, iv: ");
-    if (scanf("%llu %llu", &key, &iv) != 2) {
-        printf("Cannot read keys.\n");
-        return EXIT_FAILURE;
-    }
-
-    fflush(stdin);
-
-    char mode;
-    printf("Input mode, 'e' for encrypt, 'd' for decrypt: ");
-    if (scanf("%c", &mode) != 1) {
-        printf("Cannot read mode.\n");
-        return EXIT_FAILURE;
+    if (scanf("%d %s %s %llu %llu", &mode, source, destination, &key, &iv) != 5) {
+        printf("scanf()\n");
+        return 1;
     }
 
     unsigned char *buf;
     int size;
-    if (io_read(src, &buf, &size) != EXIT_SUCCESS) {
-        printf("Cannot read file.\n");
-        return EXIT_FAILURE;
+    if (ReadFile(source, &buf, &size) != 0) {
+        printf("ReadFile()\n");
+        return 1;
     }
 
+    int newLen = 0;
     unsigned char *result = NULL;
-    int new_len;
-    if (mode == 'e') {
-        result = pcbc_encrypt(buf, size, key, iv, &new_len);
-    } else if (mode == 'd') {
-        result = pcbc_decrypt(buf, size, key, iv, &new_len);
+    if (mode == 0) {
+        result = EncryptPCBC(buf, key, iv, size, &newLen);
+        if (result == NULL) {
+            free(buf);
+            printf("EncryptPCBC()\n");
+            return 1;
+        }
     } else {
-        free(buf);
-        printf("Unknown mode.\n");
-        return EXIT_FAILURE;
+        result = DecryptPCBC(buf, iv, key, size, &newLen);
+        if (result == NULL) {
+            free(buf);
+            printf("DecryptPCBC()\n");
+            return 1;
+        }
     }
 
-    if (result == NULL) {
-        free(buf);
-        printf("Cannot make result.\n");
-        return EXIT_FAILURE;
-    }
-
-    if (io_write(dst, result, new_len) != EXIT_SUCCESS) {
+    if (WriteFile(destination, result, newLen) != 0) {
         free(buf);
         free(result);
-        printf("Cannot write.\n");
-        return EXIT_FAILURE;
+        printf("WriteFile()\n");
+        return 1;
     }
 
     free(buf);

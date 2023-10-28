@@ -4,9 +4,7 @@ project(lab_02 C)
 set(CMAKE_C_STANDARD 23)
 
 add_executable(lab_02 main.c
-        des.c
-        des.h
-        pcbc.c
-        pcbc.h
+        crypto.c
+        crypto.h
         io.c
         io.h)

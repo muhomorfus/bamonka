@@ -2,6 +2,173 @@
 
 \section{Листинг алгоритма DES}
 
+\begin{lstlisting}[language=C, label=lst:des, caption={Реализация алгоритма DES}]
+Block f(Block r, Block k) {
+    r = E(r) ^ k;
+
+    Block b[8];
+    for (int i = 8; i > 0; i--) {
+        b[i - 1] = r & mask(6);
+        r >>= 6;
+    }
+
+    for (int i = 8; i > 0; i--) {
+        b[i - 1] = sTable[i - 1][(bit(b[i - 1], 5) << 1 | bit(b[i - 1], 0))][((b[i - 1] >> 1) & mask(4))];
+    }
+
+    r = 0;
+    for (int i = 1; i <= 8; i++) {
+        r <<= 4;
+        r |= b[i - 1];
+    }
+
+    return P(r);
+}
+
+Block shift(Block block, int size, int shift) {
+    shift %= size;
+
+    Block k = block >> (size - shift);
+    block <<= shift;
+
+    block &= mask(size);
+    block |= k;
+
+    return block;
+}
+
+void generateKeys(Block k[17], Block key) {
+    k[0] = G(key);
+
+    Block c[17], d[17];
+    c[0] = (k[0] >> 28) & mask(28);
+    d[0] = k[0] & mask(28);
+
+    for (int i = 1; i <= 16; i++) {
+        c[i] = shift(c[i - 1], 28, shifts[i - 1]);
+        d[i] = shift(d[i - 1], 28, shifts[i - 1]);
+
+        k[i] = H(d[i] | (c[i] << 28));
+    }
+}
+
+Block encryptDES(Block t, Block key) {
+    Block t0 = IP(t);
+
+    Block r[17], l[17];
+    r[0] = t0 & mask(32);
+    l[0] = (t0 >> 32) & mask(32);
+
+    Block k[17];
+    generateKeys(k, key);
+
+    for (int i = 1; i <= 16; i++) {
+        l[i] = r[i-1];
+        r[i] = l[i-1] ^ f(r[i-1], k[i]);
+    }
+
+    Block t16 = l[16] | (r[16] << 32);
+
+    return IPReversed(t16);
+}
+
+Block decryptDES(Block t, Block key) {
+    Block t16 = IP(t);
+
+    Block r[17], l[17];
+    l[16] = t16 & mask(32);
+    r[16] = (t16 >> 32) & mask(32);
+
+    Block k[17];
+    generateKeys(k, key);
+
+    for (int i = 16; i > 0; i--) {
+        r[i-1] = l[i];
+        l[i-1] = r[i] ^ f(l[i], k[i]);
+    }
+
+    Block t0 = r[0] | (l[0] << 32);
+
+    return IPReversed(t0);
+}
+\end{lstlisting}
+
 \section{Листинг алгоритма PCBC}
 
+\begin{lstlisting}[language=C, label=lst:pcbc, caption={Реализация алгоритма PCBC}]
+Block* encryptPCBC(Block* blocks, int len, Block key, Block iv) {
+    Block* result = calloc(len, sizeof(Block));
+    if (result == NULL) {
+        printf("calloc()\n");
+        return NULL;
+    }
+
+    result[0] = encryptDES(blocks[0] ^ iv, key);
+    for (int i = 1; i < len; i++) {
+        result[i] = encryptDES(result[i - 1] ^ blocks[i - 1] ^ blocks[i], key);
+    }
+
+    return result;
+}
+
+Block* decryptPCBC(Block* blocks, int len, Block key, Block iv) {
+    Block* result = calloc(len, sizeof(Block));
+    if (result == NULL) {
+        printf("calloc()\n");
+        return NULL;
+    }
+
+    result[0] = decryptDES(blocks[0], key) ^ iv;
+    for (int i = 1; i < len; i++) {
+        result[i] = decryptDES(blocks[i], key) ^ result[i - 1] ^ blocks[i - 1];
+    }
+
+    return result;
+}
+\end{lstlisting}	
+
+
+
 \section{Тестирование}
+
+Корректность алгоритма проверялось путем применения дешифрации на шифрованное сообщение.
+
+Тестирование было проведено на файлах с типами:
+
+\begin{enumerate}[label=\arabic*)]
+	\item текстовый (txt);
+	\item графический (jpg, png);
+	\item архив (zip).
+\end{enumerate}
+
+
+
+В таблице \ref{tbl:test} представлены тестовые данные.
+
+\begin{table}[H]
+	\begin{center}
+		\centering
+		\caption{Тестовые данные}
+		\label{tbl:test}
+		\begin{tabular}{|c|c|c|} 
+			
+			\hline
+			\multicolumn{1}{|c|}{Номер теста}
+			&  \multicolumn{1}{c|}{Тип файла} &  \multicolumn{1}{c|}{Содержимое файла}\\
+			\hline
+			
+			1& txt &  {\specialcell{Стоят два бобра в речке...}} \\ \hline
+			
+			2& txt &  {\specialcell{@alexodnodvorcev}} \\ \hline
+			
+			3& txt &  \\ \hline
+			
+			4& png & {\specialcell{\includegraphics[width=1in]{../data/4.png}}} \\ \hline
+			
+			5& jpg & {\specialcell{\includegraphics[width=1in]{../data/5.jpg}}} \\ \hline
+			
+			6& zip & Архив с файлами предыдущих тестов \\ \hline
+			
+		\end{tabular}
+	\end{center}
+\end{table}
