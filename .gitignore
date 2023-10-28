@@ -4,4 +4,5 @@
 *.aux
 **/.idea/
 **/.vscode/
-07/security/**/data/
+07/security/**/data/*enc*
+07/security/**/data/*dec*
