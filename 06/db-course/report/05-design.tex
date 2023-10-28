@@ -1,0 +1,119 @@
+\chapter{Конструкторский раздел}
+
+\section{Описание сущностей базы данных}
+При описании сущностей базы данных, после названия поле в скобочках находится описание типа поля.
+
+\paragraph{Сотрудник} \mbox{}
+
+\texttt{Employee}~---~хранит информацию о сотруднике организации. Содержит следующие поля:
+
+\begin{itemize}
+	\item \texttt{uuid (integer)}~---~идентификатор сотрудника. Не может быть пустым.
+	\item \texttt{name (text)}~---~имя сотрудника. Не может быть пустым.
+	\item \texttt{nickname (text)}~---~псевдоним сотрудника. Не может быть пустым, длиной не менее четырех символов.
+	\item \texttt{department\_uuid (integer)}~---~идентификатор департамента, в котором состоит сотрудник. Не может быть пустым.
+	\item \texttt{position (text)}~---~должность. Не может быть пустым.
+	\item \texttt{email (text)}~---~адрес электронной почты. Не может быть пустым.
+	\item \texttt{phone (text)}~---~номер телефона. Не может быть пустым.
+	\item \texttt{social (text)}~---~контакты сотрудника в социальных сетях. 
+	\item \texttt{boss\_uuid (integer)}~---~идентификатор непосредственного руководителя сотрудника.
+	\item \texttt{description (text)}~---~описание профиля сотрудника.
+\end{itemize}
+
+\paragraph{Команда} \mbox{}
+
+\texttt{Team}~---~хранит информацию о команде. Содержит следующие поля:
+
+\begin{itemize}
+	\item \texttt{uuid (integer)}~---~идентификатор команды. Не может быть пустым.
+	\item \texttt{name (text)}~---~название команды. Не может быть пустым.
+	\item \texttt{description (text)}~---~описание команды.
+\end{itemize}
+
+\paragraph{Отдел} \mbox{}
+
+\texttt{Department}~---~хранит информацию об отделе, юридической единицы деления организации. Содержит следующие поля:
+
+\begin{itemize}
+	\item \texttt{uuid (integer)}~---~идентификатор отдела. Не может быть пустым.
+	\item \texttt{parent\_uuid (integer)}~---~идентификатор родительского отдела.
+	\item \texttt{name (text)}~---~название отдела. Не может быть пустым.
+	\item \texttt{description (text)}~---~описание отдела.
+\end{itemize}
+
+\paragraph{Отпуск} \mbox{}
+
+\texttt{Vacation}~---~хранит информацию об отпуске сотрудника. Содержит следующие поля:
+
+\begin{itemize}
+	\item \texttt{uuid (integer)}~---~идентификатор отпуска. Не может быть пустым.
+	\item \texttt{employee\_uuid (integer)}~---~идентификатор сотрудника, уходящего в отпуск. Не может быть пустым.
+	\item \texttt{start (timestamp)}~---~время начала отпуска. Не может быть пустым.
+	\item \texttt{end (timestamp)}~---~время конца отпуска. Не может быть пустым.
+	\item \texttt{description (text)}~---~описание отпуска.
+\end{itemize}
+
+\paragraph{Подписка} \mbox{}
+
+\texttt{Subscription}~---~хранит информацию о подписке сотрудника на другого сотрудника. Содержит следующие поля:
+
+\begin{itemize}
+	\item \texttt{uuid (integer)}~---~идентификатор подписки. Не может быть пустым.
+	\item \texttt{author\_uuid (integer)}~---~идентификатор автора, то есть сотрудника, на которого происходит подписка. Не может быть пустым.
+	\item \texttt{subscriber\_uuid (integer)}~---~идентификатор подписчика. Не может быть пустым.
+\end{itemize}
+
+\section{Разработка функции базы данных}
+Функция будет осуществлять получение полного положения сотрудника в организационной структуре компании, включая все вложенные отделы.
+
+Алгоритм работы функции будет следующим:
+
+\begin{enumerate}
+	\item Добавить текущий отдел к результату.
+	\item Если родительский отдел пуст, то возврат.
+	\item Если родительский отдел не пуст, то рекурсивно вызвать функцию поиска полного положения сотрудника в компании с аргументом~---~родительским отделом.
+\end{enumerate}
+
+\newpage
+
+\section{Диаграмма сущностей базы данных}
+На рисунке~\ref{img:martin} изображена диаграмма сущностей базы данных в нотации Мартина.
+
+\begin{figure}[h!]
+\centering
+    \includegraphics[width=0.9\linewidth]{assets/martin.pdf}
+    \caption{Диаграмма сущностей в нотации Мартина}
+    \label{img:martin}	
+\end{figure}
+
+\section{Ролевая модель}
+В базе данных должно существовать три роли~---~административная, сотрудника и рекрутера. Каждый роль наделена своим набором прав на внутренние структуры.
+
+\begin{itemize}
+	\item Сотрудник:
+	\begin{itemize}
+		\item \texttt{Subscription}~---~\texttt{SELECT}, \texttt{INSERT}, \texttt{DELETE}.
+		\item \texttt{Team}~---~\texttt{SELECT}.
+		\item \texttt{Employee}~---~\texttt{SELECT, UPDATE}.
+		\item \texttt{Department}~---~\texttt{SELECT}.
+		\item \texttt{Vacation}~---~\texttt{SELECT}, \texttt{INSERT}.
+	\end{itemize}
+	
+	\item Рекрутер:
+	\begin{itemize}
+		\item Все права обычного сотрудника.
+		\item \texttt{Employee}~---~\texttt{INSERT}.
+	\end{itemize}
+	
+	\item Администратор:
+	\begin{itemize}
+	    \item Все права рекрутера.
+		\item \texttt{Team}~---~\texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}.
+		\item \texttt{Employee}~---~\texttt{DELETE}.
+		\item \texttt{Department}~---~\texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}.
+	\end{itemize}
+\end{itemize}
+
+Каждый пользовательский сценарий должен использовать только соответствующую ему роль. Например, для просмотра информации о сотруднике необходимо использовать роль «Сотрудник».
+
+

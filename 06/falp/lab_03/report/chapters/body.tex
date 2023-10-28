@@ -1,0 +1,282 @@
+\setcounter{page}{3}
+\chapter{Теоретическая часть}
+\section{Базис языка Lisp}
+Базис~---~это минимальный набор правил/конструкций языка, к которым могут быть сведены все остальные. Базис языка Lisp представлен атомами, структурами, базовыми функциями, базовыми функционалами. Некоторые базисные функции: \texttt{car}, \texttt{cdr}, \texttt{cons}, \texttt{eq}.
+
+\section{Классификация функций языка Lisp}
+Функции в Lisp бывают базисными, пользовательскими и функциями ядра. Также функции можно разделить на:
+
+\begin{itemize}
+	\item чистые~---~не создающие побочных эффектов, принимающие фиксированное число аргументов, не получающие данные неявно, результат работы которых не зависит от внешних переменных;
+	\item особые, или формы;
+	\item функции более высоких порядков, или функционалы~---~функции, результатом и/или аргументом которых является функция.
+\end{itemize}
+
+\section{Способы создания функций в языке Lisp}
+Функцию можно определить двумя способами: неименованную с помощью \texttt{lambda} и именованную с помощью \texttt{defun}.
+
+\begin{code}
+\begin{minted}{lisp}
+(lambda (x_1 x_2 ... x_n) f)
+\end{minted}
+\end{code}
+
+\begin{itemize}
+	\item \texttt{f}~---~тело функции;
+	\item \texttt{x\_i}~---~формальные параметры.
+\end{itemize}
+
+\begin{code}
+\begin{minted}{lisp}
+(defun <имя> [lambda] (x_1 x_2 ... x_n) f)
+\end{minted}
+\end{code}
+
+\begin{itemize}
+	\item \texttt{f}~---~тело функции;
+	\item \texttt{x\_i}~---~формальные параметры. 
+\end{itemize}
+
+Тогда имя будет ссылкой на описание функции.
+
+\section{Функции \texttt{cond}, \texttt{if}, \texttt{and}, \texttt{or}}
+Функции \texttt{cond}, \texttt{if}, \texttt{and}, \texttt{or} являются основными условными функциями в Lisp.
+
+\subsection{\texttt{cond}}
+Форма \texttt{cond} содержит некоторое (возможно нулевое) количество подвыражений, которые является списками форм. Каждое подвыражение содержит форму условия и ноль и более форм для выполнения. Например:
+
+\begin{code}
+\begin{minted}{lisp}
+(cond (test-1 consequent-1-1 consequent-1-2 ...) 
+      (test-2)
+      (test-3 consequent-3-1 ...)
+      ... )
+\end{minted}
+\end{code}
+
+\texttt{cond} обрабатывает свои подвыражения слева направо. Для каждого подвыражения, вычисляется форма условия. Если результат \texttt{nil}, \texttt{cond} переходит к следующему подвыражению. Если результат \texttt{t}, \texttt{cdr} подвыражения обрабатывается, как список форм. После выполнения списка форм, \texttt{cond} возвращает управление без обработки оставшихся подвыражений. Оператор \texttt{cond} возвращает результат выполнения последней формы из списка. Если этот список пустой, тогда возвращается значение формы условия. Если \texttt{cond} вернула управление без вычисления какой-либо ветки (все условные формы вычислялись в \texttt{nil}), возвращается значение \texttt{nil}.
+
+\subsection{\texttt{if}}
+Оператор \texttt{if} обозначает то же, что и конструкция if-then-else в большинстве других языках программирования. Сначала выполняется форма \texttt{test}. Если результат не равен \texttt{nil}, тогда выбирается форма \texttt{then}. Иначе выбирается форма \texttt{else}. Выбранная ранее форма выполняется, и \texttt{if} возвращает то, что вернула это форма.
+
+\begin{code}
+\begin{minted}{lisp}
+(if test then else)
+\end{minted}
+\end{code}
+
+\subsection{\texttt{and}}
+\texttt{and} последовательно слева направо вычисляет формы. Если какая-либо форма \texttt{formN} вычислилась в \texttt{nil}, тогда немедленно возвращается значение \texttt{nil} без выполнения оставшихся форм. Если все формы кроме последней вычисляются в не-\texttt{nil} значение, and возвращает то, что вернула последняя форма. Таким образом, and может использоваться, как для логических операций, где \texttt{nil} обозначает ложь и не-\texttt{nil} значения истину, так и для условных выражений.
+
+\begin{code}
+\begin{minted}{lisp}
+(and form1 form2 ... )
+\end{minted}
+\end{code}
+
+\subsection{\texttt{or}}
+\texttt{or} последовательно выполняет каждую форму слева направо. Если какая-либо непоследняя форма выполняется в что-либо отличное от \texttt{nil}, or немедленно возвращает это не-\texttt{nil} значение без выполнения оставшихся форм. Если все формы кроме последней, вычисляются в \texttt{nil}, \texttt{or} возвращает то, что вернула последняя форма. Таким образом \texttt{or} может быть использована как для логических операций, в который \texttt{nil} обозначает ложь, и не-\texttt{nil} истину, так и для условного выполнения форм.
+
+\newpage
+
+\chapter{Практическая часть}
+\section{Задание 1}
+\subsection*{Задание}
+Написать функцию, которая принимает целое число и возвращает первое четное число, не меньшее аргумента.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f1 (x) (+ x (mod x 2)))
+\end{minted}
+\end{code}
+
+\begin{code}
+\begin{minted}{lisp}
+(defun f1 (x) (if (oddp x) (+ x 1) x))
+\end{minted}
+\end{code}
+
+
+\section{Задание 2}
+\subsection*{Задание}
+Написать функцию, которая принимает число и возвращает число того же знака, но с модулем на 1 больше модуля аргумента.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f2 (x)
+	(cond
+		((equal x 0) 0)
+		((< x 0) (- x 1))
+		((> x 0) (+ x 1))
+	)
+)
+\end{minted}
+\end{code}
+
+
+\section{Задание 3}
+\subsection*{Задание}
+Написать функцию, которая принимает два числа и возвращает список из этих чисел, расположенный по возрастанию.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f3 (x y)
+	(if (< x y)
+		(list x y)
+		(list y x)
+	)
+)
+\end{minted}
+\end{code}
+
+
+\section{Задание 4}
+\subsection*{Задание}
+Написать функцию, которая принимает три числа и возвращает Т только тогда, когда первое число расположено между вторым и третьим.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f4 (x y z)
+	(if (or (and (< y x) (< x z)) (and (< z x) (< x y)))
+		t
+		nil
+	)
+)
+\end{minted}
+\end{code}
+
+
+\section{Задание 5}
+\subsection*{Задание}
+Каков результат вычисления следующих выражений?
+
+\begin{enumerate}
+	\item \texttt{(and 'fee 'fie 'foe)}
+	\item \texttt{(or nil 'fie 'foe)}
+	\item \texttt{(and (equal 'abc 'abc) 'yes)}
+	\item \texttt{(or 'fee 'fie 'foe)}
+	\item \texttt{(and nil 'fie 'foe)}
+	\item \texttt{(or (equal 'abc 'abc) 'yes)}
+\end{enumerate}
+
+\subsection*{Решение}
+\begin{enumerate}
+	\item \texttt{FOE}
+	\item \texttt{FIE}
+	\item \texttt{YES}
+	\item \texttt{FEE}
+	\item \texttt{NIL}
+	\item \texttt{T}
+\end{enumerate}
+
+
+\section{Задание 6}
+\subsection*{Задание}
+Написать предикат, который принимает два числа-аргумента и возвращает Т, если первое число не меньше второго.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f5 (x y) (>= x y))
+\end{minted}
+\end{code}
+
+
+\section{Задание 7}
+\subsection*{Задание}
+Какой из следующих двух вариантов предиката ошибочен и почему?
+
+\begin{enumerate}
+	\item \texttt{(defun pred1 (x) (and (numberp x) (plusp x)))}
+	\item \texttt{(defun pred2 (x) (and (plusp x) (numberp x)))}
+\end{enumerate}
+
+\subsection*{Решение}
+\begin{enumerate}
+	\item предикат работает на любых входных данных, если передать строку, то \texttt{and} вернет \texttt{nil} на первой же проверке;
+	\item предикат не работает на данных, отличных от числовых, так как сначала идет проверка знака, потом уже проверка на то, что аргумент является числом, таким образом, если ввести строку, то произойдет ошибка на проверке знака.
+\end{enumerate}
+
+
+\section{Задание 8}
+\subsection*{Задание}
+Решить задачу 4, используя для ее решения конструкции: только \texttt{IF}, только \texttt{COND}, только \texttt{AND}/\texttt{OR}.
+
+\subsection*{Решение}
+\subsubsection*{\texttt{IF}}
+\begin{code}
+\begin{minted}{lisp}
+(defun f6 (x y z)
+	(if (< y x) 
+		(< x z)
+		(if (< z x)
+			(< x y)
+			nil
+		)
+	)
+)
+\end{minted}
+\end{code}
+
+\subsubsection*{\texttt{COND}}
+\begin{code}
+\begin{minted}{lisp}
+(defun f7 (x y z)
+	(cond
+		((< y x) (< x z))
+		((< z x) (< x y))
+	)
+)
+\end{minted}
+\end{code}
+
+\subsubsection*{\texttt{AND}/\texttt{OR}}
+\begin{code}
+\begin{minted}{lisp}
+(defun f8 (x y z)
+	(or 
+		(and (< y x) (< x z))
+		(and (< z x) (< x y))
+	)
+)
+\end{minted}
+\end{code}
+
+
+\section{Задание 9}
+\subsection*{Задание}
+Переписать функцию how-alike, приведенную в лекции и использующую \texttt{COND}, используя только конструкции \texttt{IF}, \texttt{AND/OR}.
+
+\begin{code}
+\begin{minted}{lisp}
+(Defun how_alike (x y)
+(cond ((or (= x y) (equal x y)) `the_same)
+((and (oddp x) (oddp y)) `both_odd) ((and (evenp x) (evenp y)) `both_even)
+	`(t `difference)))
+\end{minted}
+\end{code}
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun how_alike (x y)
+	(if (or (= x y) (equal x y))
+		`the_same
+		(if (and (oddp x) (oddp y))
+			`both_odd
+			(if (and (evenp x) (evenp y))
+				`both_even
+				`difference
+			)
+		)
+	)
+)
+\end{minted}
+\end{code}
+
+
+\newpage

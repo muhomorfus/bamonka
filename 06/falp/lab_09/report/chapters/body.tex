@@ -1,0 +1,560 @@
+\setcounter{page}{3}
+
+\chapter{Практическая часть}
+\section{Задание №1}
+Создать базу знаний: <<ПРЕДКИ>>, позволяющую наиболее эффективным способом (за меньшее количество шагов, что обеспечивается меньшим количеством предложений БЗ – правил), и используя разные варианты (примеры) одного вопроса, определить (указать: какой вопрос для какого варианта):
+
+\begin{enumerate}
+	\item По имени субъекта определить всех его бабушек (предки 2-го колена);
+	\item По имени субъекта определить всех его дедушек (предки 2-го колена);
+	\item По имени субъекта определить всех его бабушек и дедушек (предки 2-го колена);
+	\item По имени субъекта определить его бабушку по материнской линии (предки 2-го колена);
+	\item По имени субъекта определить его бабушку и дедушку по материнской линии (предки 2-го колена).
+\end{enumerate}
+
+Минимизировать количество правил и количество вариантов вопросов. Использовать конъюнктивные правила и простой вопрос.
+
+Для одного из вариантов ВОПРОСА задания 1 составить таблицу, отражающую конкретный порядок работы системы.
+
+
+\section{Задание №2}
+В одной программе написать правила, позволяющие найти:
+
+\begin{enumerate}
+	\item Максимум из двух чисел:
+	\begin{itemize}
+		\item Без использования отсечения;
+		\item С использованием отсечения;
+	\end{itemize}
+	\item Максимум из трех чисел:
+	\begin{itemize}
+		\item Без использования отсечения;
+		\item С использованием отсечения.
+	\end{itemize}
+\end{enumerate}
+
+Для каждого случая пункта 2 обосновать необходимость всех условий тела. Для одного из вариантов ВОПРОСА и каждого варианта задания 2 составить таблицу, отражающую конкретный порядок работы системы.
+  
+\begin{code}
+\caption{Задание №1-2}
+\label{code:bf1}
+\begin{minted}{lisp}
+domains
+	name = symbol.
+	gender = symbol.
+	human = human(name, gender).
+	
+predicates
+	nondeterm parent(human, human).
+	
+	nondeterm grandparent_gender(name, name, gender).
+	
+	nondeterm grandparent(name, name).
+	nondeterm grandfather(name, name).
+	nondeterm grandparent(name, name).
+	
+	nondeterm m_grandparent_gender(name, name, gender).
+	nondeterm m_grandparent(name, name).
+	nondeterm m_grandparent(name, name).
+	
+	nondeterm max2(integer, integer, integer).
+	nondeterm c_max2(integer, integer, integer).
+	
+	nondeterm max3(integer, integer, integer, integer).
+	nondeterm c_max3(integer, integer, integer, integer).
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Задание №1-2}
+\label{code:bf2}
+\begin{minted}{lisp}		
+clauses
+	parent(human(vasya, m), human(katya, f)).
+	parent(human(masha, f), human(katya, f)).
+	parent(human(vasya, m), human(galya, f)).
+	parent(human(masha, f), human(galya, f)).
+	parent(human(vasya, m), human(lesha, m)).
+	parent(human(masha, f), human(lesha, m)).		  
+	parent(human(sonya, f), human(masha, f)).
+	parent(human(gosha, m), human(vasya, m)).
+	parent(human(ira, f), human(vasya, m)).
+	parent(human(tolya, m), human(gosha, m)).
+	parent(human(nina, f), human(ira, f)).
+	
+	grandparent_gender(Grand, Name, Gender) :- parent(human(Name,
+	Gender), Parent), parent(Parent, human(Grand, _)).
+	
+	grandparent(Grand, Name) :- grandparent_gender(Grand, Name,
+	f).
+	grandfather(Grand, Name) :- grandparent_gender(Grand, Name, 
+	m).
+	grandparent(Grand, Name) :- grandparent_gender(Grand, Name, 
+	_).
+	
+	m_grandparent_gender(Grand, Name, Gender) :- 
+	parent(human(Name, Gender), human(ParentName, f)), 
+	parent(human(ParentName, f), human(Grand, _)).
+	
+	m_grandparent(Grand, Name) :- 
+	m_grandparent_gender(Grand, Name, f).
+	m_grandparent(Grand, Name) :- 
+	m_grandparent_gender(Grand, Name, _).
+\end{minted}
+\end{code}
+
+\newpage
+
+\begin{code}
+\caption{Задание №1-2}
+\label{code:bf3}
+\begin{minted}{lisp}
+	max2(A, B, A) :- A > B.
+	max2(A, B, B) :- B >= A.
+	
+	max3(A, B, C, A) :- A >= B, A >= C.
+	max3(A, B, C, B) :- B > A, B >= C.
+	max3(A, B, C, C) :- C > A, C > B.
+	
+	c_max2(A, B, A) :- A > B, !.
+	c_max2(_, B, B) :- !.
+
+	c_max3(A, B, C, A) :- A >= B, A >= C, !.
+	c_max3(_, B, C, B) :- B >= C, !.
+	c_max3(_, _, C, C) :- !.
+goal
+	% grandparent(vasya, Result).
+	% grandparent(lesha, Result).
+	% m_grandparent(lesha, Result).				  
+	%max2(2, 4, Result).
+	%max3(3, 2, 3, Result).
+	
+	%c_max2(2, 4, Result).
+	c_max3(1, 2, 3, Result).
+\end{minted}
+\end{code}
+
+%\begin{table}[]
+%\begin{tabular}{|l|l|l|}
+%\hline
+%№ шага & \begin{tabular}[c]{@{}l@{}}Сравниваемые термы; \\ результат; подстановки\end{tabular}                                                                                                                                                                                                                                                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}Дальнейшие \\ действия\end{tabular}           \\ \hline
+%1      & \begin{tabular}[c]{@{}l@{}}all\_properties\_prices("lesha", Name, Price)=\\ phone\_note("katya", "111111", address("New-York", "One", 1, 2))\\ не унифицируется, тк разные функторы\end{tabular}                                                                                                                                                                                                                                                                                                          & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%2      & аналогичные действия до совпадения функтора                                                                                                                                                                                                                                                                                                                                                                                                                                                                &          \\ \hline
+%3      & \begin{tabular}[c]{@{}l@{}}all\_properties\_prices("lesha", Name, Price)=\\ all\_properties\_prices(Surname, Name, Price)\\ Константа "lesha" унифицируется с \\ несвязанной переменной Surname, Surname \\ принимает значение "lesha"; остальные \\ несвязанные переменные становятся сцепленными\end{tabular}                                                                                                                                                                                         & \begin{tabular}[c]{@{}l@{}}переход к \\ проверке \\ условий\end{tabular} \\ \hline
+%4      & \begin{tabular}[c]{@{}l@{}}ownership(Surname, car(Name, \_, \_, Price))=\\ phone\_note("katya", "111111", address("New-York", "One", 1, 2))\\ не унифицируется, тк разные функторы\end{tabular}                                                                                                                                                                                                                                                                                                            & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%5      & аналогичные действия до совпадения функтора                                                                                                                                                                                                                                                                                                                                                                                                                                                                &          \\ \hline
+%6      & \begin{tabular}[c]{@{}l@{}}ownership(Surname, car(Name, \_, \_, Price))=\\ ownership("katya", car("BMW", "black", "AAA111", 1000))\\ не унифицируется, так как не совпадает константа \\ "katya" и значение связанной переменной Surname\end{tabular}                                                                                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%7      & аналогичные действия до совпадения функтора                                                                                                                                                                                                                                                                                                                                                                                                                                                                &          \\ \hline
+%8      & \begin{tabular}[c]{@{}l@{}}ownership(Surname, car(Name, \_, \_, Price))=\\ ownership("lesha", car("Ford", "yellow", "BBB222", 1500))\\ успешная унификация\\ Константа "lesha" унифицируется со\\ связанной переменной Surname; константа "Ford"\\ унифицируется с несвязанной переменной Name, Name\\ принимает значение "Ford"; анонимные переменные не \\ связываются со значениями; константа 1500 унифицируется \\ с несвязанной переменной Price, Price пр.знач. 1500\end{tabular} & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%9      & попытки унификации до конца БЗ                                                                                                                                                                                                                                                                                                                                                                                                                                                                             & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%10     & аналогичные действия для остальных функторов условий                                                                                                                                                                                                                                                                                                                                                                                                                                                       &          \\ \hline
+%\end{tabular}
+%\end{table}
+
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
+  
+\begin{table}[]
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Резольвента} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+
+1   
+& \specialcell{grandparent(vasya, Result)} 
+& \specialcell{grandparent(vasya, Result) = \\ parent(human(vasya, m), \\ human(katya, f)) \\ 
+\textbf{Нет} \\ 
+Подстановка пуста} 
+& \specialcell{Прямой ход} \\ \hline
+
+2-10   
+& \specialcell{...} 
+&  
+&  \\ \hline
+
+11   
+& \specialcell{grandparent\_gender(vasya, Name, f)} 
+& \specialcell{grandparent(vasya, Result) = \\ grandparent(Grand, Name \\ 
+\textbf{Успех} \\ 
+\textbf{Grand = vasya} \\ 
+\textbf{Остальные - сцепленные}} 
+& \specialcell{Прямой ход} \\ \hline
+
+12   
+& \specialcell{grandparent\_gender(vasya, Name, f)} 
+& \specialcell{grandparent\_gender(vasya, Name, f) = \\ parent(human(vasya, m), \\ human(katya, f)) \\ 
+\textbf{Нет} \\ 
+\textbf{Grand = vasya}} 
+& \specialcell{Прямой ход} \\ \hline
+
+13-22   
+& \specialcell{...} 
+&  
+&  \\ \hline
+
+23   
+& \specialcell{parent(human(Name, f), Parent) \\ parent(Parent, human(vasya, \_))} 
+& \specialcell{grandparent\_gender(vasya, Name, f) = \\ grandparent\_gender(Grand, Name, Gender) \\ 
+\textbf{Успех} \\ 
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f} \\ 
+\textbf{Остальные - сцепленные}} 
+& \specialcell{Прямой ход} \\ \hline
+
+24   
+& \specialcell{parent(human(Name, f), Parent) \\ parent(Parent, human(vasya, \_))} 
+& \specialcell{parent(human(Name, f), Parent) = \\ parent(human(vasya, m), \\ human(katya, f)) \\ 
+\textbf{Нет} \\ 
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f} \\ 
+\textbf{Остальные - сцепленные}} 
+& \specialcell{Прямой ход} \\ \hline
+
+25   
+& \specialcell{parent(human(katya, f), human(vasya, \_))} 
+& \specialcell{parent(human(Name, f), Parent) = \\ parent(human(masha, f), human(katya, f)) \\ 
+\textbf{Успех} \\ 
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f} \\ 
+\textbf{Name = masha} \\ 
+\textbf{Parent =  human(katya, f)}} 
+& \specialcell{Прямой ход} \\ \hline
+
+26   
+& \specialcell{parent(human(katya, f), human(vasya, \_))} 
+& \specialcell{parent(human(katya, f), human(vasya, \_)) = \\ parent(human(vasya, m), human(katya, f)) \\ 
+\textbf{Нет} \\
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f} \\ 
+\textbf{Name = masha} \\ 
+\textbf{Parent =  human(katya, f)}} 
+& \specialcell{Прямой ход} \\ \hline
+
+\end{tabular}
+}
+\end{table}
+
+\newpage
+
+\begin{table}[]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Резольвента} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+
+27-52   
+& \specialcell{...} 
+&  
+&  \\ \hline
+
+53   
+& \specialcell{parent(human(katya, f), human(vasya, \_))} 
+& \specialcell{Конец базы знаний \\
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f}} 
+& \specialcell{Откат к пункту 25} \\ \hline
+
+54-246   
+& \specialcell{...} 
+&  
+&  \\ \hline
+
+247   
+& \specialcell{parent(human(ira, f), human(vasya, \_))} 
+& \specialcell{parent(human(Name, f), Parent) = \\ parent(human(nina, f), human(ira, f)) \\ 
+\textbf{Успех} \\ 
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f} \\
+\textbf{Name = nina} \\ 
+\textbf{Parent = human(ira, f)}} 
+& \specialcell{Прямой ход} \\ \hline
+
+248   
+& \specialcell{parent(human(ira, f), human(vasya, \_))} 
+& \specialcell{parent(human(ira, f), human(vasya, \_)) = \\ parent(human(vasya, m), human(katya, f)) \\ 
+\textbf{Нет} \\
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f} \\
+\textbf{Name = nina} \\ 
+\textbf{Parent = human(ira, f)}} 
+& \specialcell{Прямой ход} \\ \hline
+
+248-253   
+& \specialcell{...} 
+&  
+&  \\ \hline
+
+254   
+& \specialcell{Пусто} 
+& \specialcell{parent(human(ira, f), human(vasya, \_)) = \\ parent(human(ira, f), human(vasya, m)) \\ \textbf{Успех}
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f} \\
+\textbf{Name = nina} \\ 
+\textbf{Parent = human(ira, f)}}
+& \specialcell{Откат к пункту 247} \\ \hline
+
+255   
+& \specialcell{parent(human(Name, f), Parent) \\ parent(Parent, human(vasya, \_))} 
+& \specialcell{parent(human(Name, f), Parent) = \\ grandparent\_gender(Grand, Name, Gender) \\ 
+\textbf{Нет} \\
+\textbf{Grand = vasya} \\ 
+\textbf{Gender = f}}  
+& \specialcell{Прямой ход} \\ \hline
+
+255-271   
+& \specialcell{...} 
+&  
+&  \\ \hline
+
+272   
+& \specialcell{parent(human(Name, f), Parent) \\ parent(Parent, human(vasya, _))} 
+& \specialcell{Конец базы знаний} 
+& \specialcell{Откат к пункту 23} \\ \hline
+
+273   
+& \specialcell{grandparent\_gender(vasya, Name, f)} 
+& \specialcell{grandparent\_gender(vasya, Name, f) = \\ grandparent(Grand, Name) \\ \textbf{Нет} \\ Подстановка пуста} 
+& \specialcell{Прямой ход} \\ \hline
+
+274-288   
+& \specialcell{...} 
+&  
+&  \\ \hline
+
+289   
+& \specialcell{grandparent\_gender(vasya, Name, f)} 
+& \specialcell{Конец базы знаний \\ Подстановка пуста} 
+& \specialcell{Откат к пункту 11} \\ \hline
+
+290-305   
+& \specialcell{...} 
+&  
+&  \\ \hline
+
+306   
+& \specialcell{Пусто} 
+& \specialcell{Конец базы знаний. \\ Подстановка пуста} 
+& \specialcell{Завершение работы} \\ \hline
+
+
+
+\end{tabular}
+}
+\end{table}
+
+\newpage
+
+
+\begin{table}[]
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Резольвента} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+
+1   
+& \specialcell{max3(1, 2, 3, Result).} 
+& \specialcell{max3(1, 2, 3, Result = \\ parent(human(vasya, m), \\ human(katya, f)) \\ 
+\textbf{Нет} \\ 
+Подстановка пуста} 
+& \specialcell{Прямой ход} \\ \hline
+
+2-21
+& \specialcell{max3(1, 2, 3, Result).} 
+& ...
+& \specialcell{Прямой ход} \\ \hline
+
+22  
+& \specialcell{Пусто} 
+& \specialcell{max3(1, 2, 3, Result = \\ max3(A, B, C, A) \\ 
+\textbf{Успех} \\ 
+\textbf{A = 1} \\ 
+\textbf{B = 2} \\ 
+\textbf{C = 3} \\ 
+\textbf{Res, A - сцепленные} \\ 
+} 
+& \specialcell{Прямой ход} \\ \hline
+
+23
+& \specialcell{A >= B \\ A >= C} 
+& \specialcell{A >= B \\ 
+\textbf{Нет} \\ 
+Подстановка пуста
+} 
+& \specialcell{Откат к пункту 21} \\ \hline
+
+24
+& \specialcell{B >= C \\ B >= A} 
+& \specialcell{max3(1, 2, 3, Result = \\ max3(A, B, C, B) \\  
+\textbf{Успех} \\ 
+\textbf{A = 1} \\ 
+\textbf{B = 2} \\ 
+\textbf{C = 3} \\ 
+\textbf{Res, B - сцепленные} \\ 
+} 
+& \specialcell{Прямой ход} \\ \hline
+
+25
+& \specialcell{B >= C \\ B >= A} 
+& \specialcell{B >= C \\ 
+\textbf{Нет} \\ 
+Подстановка пуста
+} 
+& \specialcell{Откат к пункту 21} \\ \hline
+
+\end{tabular}
+}
+\end{table}
+
+\newpage 
+
+\begin{table}[]
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Резольвента} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+
+26
+& \specialcell{C > A \\ C > B} 
+& \specialcell{max3(1, 2, 3, Result = \\ max3(A, B, C, C) \\  
+\textbf{Успех} \\ 
+\textbf{A = 1} \\ 
+\textbf{B = 2} \\ 
+\textbf{C = 3} \\ 
+\textbf{Res, C - сцепленные} \\ 
+} 
+& \specialcell{Прямой ход} \\ \hline
+
+27
+& \specialcell{C > B} 
+& \specialcell{C > A \\  
+\textbf{Успех} \\ 
+\textbf{A = 1} \\ 
+\textbf{B = 2} \\ 
+\textbf{C = 3} \\ 
+\textbf{Res, C - сцепленные} \\ 
+} 
+& \specialcell{Прямой ход} \\ \hline
+
+28
+& \specialcell{Пусто} 
+& \specialcell{C > B \\  
+\textbf{Успех} \\ 
+\textbf{A = 1} \\ 
+\textbf{B = 2} \\ 
+\textbf{C = 3} \\ 
+\textbf{Res, C - сцепленные} \\ 
+} 
+& \specialcell{Откат к пункту 21} \\ \hline
+
+29-34
+& \specialcell{max3(1, 2, 3, Result).} 
+& ...
+& \specialcell{Прямой ход} \\ \hline
+
+35   
+& \specialcell{Пусто} 
+& \specialcell{Конец базы знаний. \\ Подстановка пуста} 
+& \specialcell{Завершение работы} \\ \hline
+
+\end{tabular}
+}
+\end{table}
+
+\newpage
+
+
+\begin{table}[]
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Резольвента} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+
+1   
+& \specialcell{c\_max3(1, 2, 3, Result).} 
+& \specialcell{c\_max3(1, 2, 3, Result = \\ parent(human(vasya, m), \\ human(katya, f)) \\ 
+\textbf{Нет} \\ 
+Подстановка пуста} 
+& \specialcell{Прямой ход} \\ \hline
+
+2-21
+& \specialcell{c\_max3(1, 2, 3, Result).} 
+& ...
+& \specialcell{Прямой ход} \\ \hline
+
+22  
+& \specialcell{Пусто} 
+& \specialcell{c\_max3(1, 2, 3, Result = \\ c\_max3(A, B, C, A) \\ 
+\textbf{Успех} \\ 
+\textbf{A = 1} \\ 
+\textbf{B = 2} \\ 
+\textbf{C = 3} \\ 
+\textbf{Res, A - сцепленные} \\ 
+} 
+& \specialcell{Прямой ход} \\ \hline
+
+23
+& \specialcell{A >= B \\ A >= C} 
+& \specialcell{A >= B \\ 
+\textbf{Нет} \\ 
+Подстановка пуста
+} 
+& \specialcell{Откат к пункту 21} \\ \hline
+
+24
+& \specialcell{B >= C} 
+& \specialcell{c\_max3(1, 2, 3, Result = \\ c\_max3(\_, B, C, B) \\  
+\textbf{Успех} \\ 
+\textbf{A = 1} \\ 
+\textbf{B = 2} \\ 
+\textbf{C = 3} \\ 
+\textbf{Res, B - сцепленные} \\ 
+} 
+& \specialcell{Прямой ход} \\ \hline
+
+25
+& \specialcell{Пусто} 
+& \specialcell{B >= C \\ 
+\textbf{Нет} \\ 
+Подстановка пуста
+} 
+& \specialcell{Откат к пункту 21} \\ \hline
+
+\end{tabular}
+}
+\end{table}
+
+\newpage 
+
+\begin{table}[]
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Резольвента} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+
+26
+& \specialcell{Пусто} 
+& \specialcell{c\_max3(1, 2, 3, Result = \\ c\_max3(\_, \_, C, C) \\  
+\textbf{Успех} \\ 
+\textbf{A = 1} \\ 
+\textbf{B = 2} \\ 
+\textbf{C = 3} \\ 
+\textbf{Res, C - сцепленные} \\ 
+} 
+& \specialcell{Откат к пункту 21} \\ \hline
+
+27-32
+& \specialcell{c\_max3(1, 2, 3, Result).} 
+& ...
+& \specialcell{Прямой ход} \\ \hline
+
+33 
+& \specialcell{Пусто} 
+& \specialcell{Конец базы знаний. \\ Подстановка пуста} 
+& \specialcell{Завершение работы} \\ \hline
+
+\end{tabular}
+}
+\end{table}

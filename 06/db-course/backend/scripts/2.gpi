@@ -1,0 +1,12 @@
+reset
+set terminal pdf
+set output "./data/2.pdf"
+set size ratio 0.5625
+set xlabel "Количество записей"
+set ylabel "Время, мкс"
+set grid
+
+plot "./data/2_json.txt" with lp title 'JSON' lw 2, \
+     "./data/2_cbor.txt" with lp title 'CBOR' lw 2, \
+     "./data/2_gzip_json.txt" with lp title 'JSON + GZIP' lw 2, \
+     "./data/2_gzip_cbor.txt" with lp title 'CBOR + GZIP' lw 2, \

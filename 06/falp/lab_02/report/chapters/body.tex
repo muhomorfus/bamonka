@@ -1,0 +1,233 @@
+\setcounter{page}{3}
+\chapter{Теоретическая часть}
+\section{Базис языка Lisp}
+Базис~---~это минимальный набор правил/конструкций языка, к которым могут быть сведены все остальные. Базис языка Lisp представлен атомами, структурами, базовыми функциями, базовыми функционалами. Некоторые базисные функции: \texttt{car}, \texttt{cdr}, \texttt{cons}, \texttt{quote}, \texttt{eq}, \texttt{eval}.
+
+\section{Классификация функций языка Lisp}
+Функции в Lisp бывают базисными, пользовательскими и функциями ядра. Также функции можно разделить на:
+
+\begin{itemize}
+	\item чистые~---~не создающие побочных эффектов, принимающие фиксированное число аргументов, не получающие данные неявно, результат работы которых не зависит от внешних переменных;
+	\item особые, или формы;
+	\item функции более высоких порядков, или функционалы~---~функции, результатом и/или аргументом которых является функция.
+\end{itemize}
+
+\section{Способы создания функций в языке Lisp}
+Функцию можно определить двумя способами: неименованную с помощью \texttt{lambda} и именованную с помощью \texttt{defun}.
+
+\begin{code}
+\begin{minted}{lisp}
+(lambda (x_1 x_2 ... x_n) f)
+\end{minted}
+\end{code}
+
+\begin{itemize}
+	\item \texttt{f}~---~тело функции;
+	\item \texttt{x\_i}~---~формальные параметры.
+\end{itemize}
+
+\begin{code}
+\begin{minted}{lisp}
+(defun <имя> [lambda] (x_1 x_2 ... x_n) f)
+\end{minted}
+\end{code}
+
+\begin{itemize}
+	\item \texttt{f}~---~тело функции;
+	\item \texttt{x\_i}~---~формальные параметры. 
+\end{itemize}
+
+Тогда имя будет ссылкой на описание функции.
+
+\section{Функции \texttt{car}, \texttt{cdr}, \texttt{eq}, \texttt{eql}, \texttt{equal}, \texttt{equalp}}
+Функции \texttt{car}, \texttt{cdr} являются базовыми функциями доступа к данным.
+
+\begin{itemize}
+	\item \texttt{car} принимает точечную пару или список в качестве аргумента и возвращает указатель на первый элемент (если список пустой, то \texttt{Nil}).
+	\item \texttt{cdr} принимает точечную пару или список в качестве аргумента и возвращает все элементы, кроме первого или \texttt{Nil} (указатель на хвост списка).
+\end{itemize}
+
+Функции сравнения~---~\texttt{eq}, \texttt{eql}, \texttt{equal}, \texttt{equalp}.
+
+\begin{itemize}
+	\item \texttt{eq} возвращает истину тогда и только тогда, когда ее аргументы соответствуют одному и тому же объекту в памяти.
+	\item \texttt{eql} возвращает истину, если его аргументы равны с точки зрения \texttt{eq}, или если это числа одинакового типа и с одинаковыми значениями, или если это одинаковые буквы.
+	\item \texttt{equal} возвращает истину, если его аргументы равны с точки зрения \texttt{eql},  либо являются списковыми ячейками, чьи \texttt{car} и \texttt{cdr} эквивалентны с точки зрения \texttt{equal}, либо являются строками.
+	\item \texttt{equalp} возвращает истину, если его аргументы равны с точки зрения \texttt{equal},  либо являются списковыми ячейками, чьи \texttt{car} и \texttt{cdr} эквивалентны с точки зрения \texttt{equalp}, либо являются списками одинаковой длины, элементы которых эквивалентны с точки зрения \texttt{equalp}.
+\end{itemize}
+
+\section{Назначение и отличие в работе \texttt{cons} и \texttt{list}}
+Функции \texttt{list}, \texttt{cons} являются функциями создания списков (\texttt{cons}~---~базисная, \texttt{list}~---~нет). 
+
+\begin{itemize}
+	\item \texttt{cons} принимает два аргумента (первый необязательно список, второй список), создает списковую ячейку и устанавливает два указателя на аргументы. Если второй аргумент \texttt{cons}~---~атом, то формируется точечная пара.
+	\item \texttt{list} принимает переменное число аргументов, создаёт списковые ячейки, количество которых соответствует количеству переданных параметров, и расставляет указатели. Возвращает список, элементы которого~---~переданные в функцию аргументы.
+\end{itemize}
+
+\subsection*{Отличия}
+\begin{itemize}
+	\item количество аргументов (у \texttt{cons}~---~фиксированное, у \texttt{list}~---~переменное);
+	\item результат (у \texttt{cons}~---~списковая ячейка, у \texttt{list}~---~список);
+	\item реализация доступа к памяти.
+\end{itemize}
+
+\newpage
+
+\chapter{Практическая часть}
+\section{Задание 1}
+\subsection*{Задание}
+Составить диаграмму вычисления следующих выражений:
+
+\begin{enumerate}
+	\item \texttt{(equal 3 (abs - 3))}
+	\item \texttt{(equal (+ 1 2) 3)}
+	\item \texttt{(equal (* 4 7) 21)}
+	\item \texttt{(equal (* 2 3) (+ 7 2))}
+	\item \texttt{(equal (- 7 3) (* 3 2))}
+	\item \texttt{(equal (abs (- 2 4)) 3))}
+\end{enumerate}
+
+
+\subsection*{Решение}
+Приложено на отдельном листе.
+
+\section{Задание 2}
+\subsection*{Задание}
+Написать функцию, вычисляющую гипотенузу прямоугольного треугольника по заданным катетам и составить диаграмму её вычисления.
+
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun hypot (a b) (sqrt (+ (* a a) (* b b))))
+\end{minted}
+\end{code}
+
+Диаграмма приложена на отдельном листе.
+
+\section{Задание 3}
+\subsection*{Задание}
+Каковы результаты вычисления следующих выражений? (объяснить возможную ошибку и варианты ее устранения)
+
+\begin{enumerate}
+	\item \texttt{(list 'a c)}
+	\item \texttt{(cons 'a (b c))}
+	\item \texttt{(cons 'a '(b c))}
+	\item \texttt{(caddr (1 2 3 4 5))}
+	\item \texttt{(cons 'a 'b 'c)}
+	\item \texttt{(list 'a (b c))}
+	\item \texttt{(list a '(b c))}
+	\item \texttt{(list (+ 1 '(length '(1 2 3))))}
+\end{enumerate}
+
+
+\subsection*{Решение}
+\begin{enumerate}
+	\item \texttt{SYSTEM::READ-EVAL-PRINT: variable C has no value}~---~\texttt{C} воспринимается как переменная.
+	\item \texttt{EVAL: undefined function B}~---~\texttt{B} воспринимается как функция.
+	\item \texttt{(A B C)}.
+	\item \texttt{EVAL: 1 is not a function name; try using a symbol instead}~---~\texttt{1} воспринимается как функция.
+	\item \texttt{EVAL: too many arguments given to CONS: (CONS 'A 'B 'C)}~---~слишком много аргументов у функции.
+	\item \texttt{EVAL: undefined function B}~---~\texttt{B} воспринимается как функция.
+	\item \texttt{SYSTEM::READ-EVAL-PRINT: variable A has no value}~---~\texttt{A} воспринимается как переменная.
+	\item \texttt{+: (LENGTH '(1 2 3)) is not a number}~---~\texttt{(LENGTH '(1 2 3))} должно быть числом.
+\end{enumerate}
+
+\section{Задание 4}
+\subsection*{Задание}
+Написать функцию \texttt{longer\_than} от двух списков-аргументов, которая возвращает \texttt{Т}, если первый аргумент имеет большую длину.
+
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun longer_than (a b) (> (length a) (length b)))
+\end{minted}
+\end{code}
+
+\section{Задание 5}
+\subsection*{Задание}
+Каковы результаты вычисления следующих выражений?
+
+\begin{enumerate}
+	\item \texttt{(cons 3 (list 5 6))}
+	\item \texttt{(list 3 'from 9 'lives (- 9 3))}
+	\item \texttt{(+ (length for 2 too)) (car '(21 22 23)))}
+	\item \texttt{(cdr '(cons is short for ans))}
+	\item \texttt{(car (list one two))}
+	\item \texttt{(cons 3 '(list 5 6))}
+	\item \texttt{(car (list 'one 'two))}
+\end{enumerate}
+
+
+\subsection*{Решение}
+\begin{enumerate}
+	\item \texttt{(3 5 6)}
+	\item \texttt{(3 FROM 9 LIVES 6)}
+	\item \texttt{SYSTEM::READ-EVAL-PRINT: variable FOR has no value}
+	\item \texttt{(IS SHORT FOR ANS)}
+	\item \texttt{SYSTEM::READ-EVAL-PRINT: variable ONE has no value}
+	\item \texttt{(3 LIST 5 6)}
+	\item \texttt{ONE}
+\end{enumerate}
+
+\section{Задание 6}
+\subsection*{Задание}
+Дана функция \texttt{(defun mystery (x) (list (second x) (first x)))}. Какие результаты вычисления следующих выражений?
+
+\begin{enumerate}
+	\item \texttt{(mystery (one two))}
+	\item \texttt{(mystery (last one two))}
+	\item \texttt{(mystery free)}
+	\item \texttt{(mystery one 'two))}
+\end{enumerate}
+
+
+\subsection*{Решение}
+\begin{enumerate}
+	\item \texttt{EVAL: undefined function ONE}
+	\item \texttt{SYSTEM::READ-EVAL-PRINT: variable ONE has no value}
+	\item \texttt{SYSTEM::READ-EVAL-PRINT: variable FREE has no value}
+	\item \texttt{SYSTEM::READ-EVAL-PRINT: variable ONE has no value}
+\end{enumerate}
+
+\section{Задание 7}
+\subsection*{Задание}
+Написать функцию, которая переводит температуру в системе Фаренгейта температуру по Цельсию.
+
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f_to_c (f) (* 5/9 (- f 320)))
+\end{minted}
+\end{code}
+
+\section{Задание 8}
+\subsection*{Задание}
+Что получится при вычисления каждого из выражений?
+
+\begin{enumerate}
+	\item \texttt{(list 'cons t NIL)}
+	\item \texttt{(eval (eval (list 'cons t NIL)))}
+	\item \texttt{(apply \#cons "(t NIL))}
+	\item \texttt{(list 'eval NIL)}
+	\item \texttt{(eval (list 'cons t NIL))}
+	\item \texttt{(eval NIL)}
+	\item \texttt{(eval (list 'eval NIL))}
+\end{enumerate}
+
+
+\subsection*{Решение}
+\begin{enumerate}
+	\item \texttt{(CONS T NIL)}
+	\item \texttt{EVAL: undefined function T}
+	\item \texttt{READ from \#<INPUT CONCATENATED-STREAM \#<INPUT STRING-INPUT-STREAM>  \\ \#<IO TERMINAL-STREAM>>: bad syntax for complex number: \#CONS}
+	\item \texttt{(EVAL NIL)}
+	\item \texttt{(T)}
+	\item \texttt{NIL}
+	\item \texttt{NIL}
+\end{enumerate}
+
+
+\newpage

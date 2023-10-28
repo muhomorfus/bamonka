@@ -1,0 +1,1075 @@
+openapi: 3.0.0
+info:
+  description: API for balteca
+  title: balteca
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /departments:
+    get:
+      operationId: GetDepartmentList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDepartmentListResponse'
+          description: List of departments.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+    post:
+      operationId: CreateDepartment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDepartmentRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDepartmentResponse'
+          description: Created department info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /departments/{id}:
+    delete:
+      operationId: DeleteDepartment
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Department deleted.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+    get:
+      operationId: GetDepartment
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Deleted department.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+    put:
+      operationId: UpdateDepartment
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDepartmentRequest'
+        required: true
+      responses:
+        "200":
+          description: Updated department.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee:
+    get:
+      operationId: GetEmployeeList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEmployeeListResponse'
+          description: Employee info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+    post:
+      operationId: CreateEmployee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmployeeRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmployeeResponse'
+          description: Created employer info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/{id}:
+    put:
+      operationId: UpdateEmployee
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmployeeRequest'
+        required: true
+      responses:
+        "200":
+          description: Updated employee.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/{id}/fire:
+    delete:
+      operationId: FireEmployee
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Fired employee.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/{id}/delete:
+    delete:
+      operationId: DeleteEmployee
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Deleted employee.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/id/{id}:
+    get:
+      operationId: GetEmployeeByID
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: Employee info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/nickname/{nickname}:
+    get:
+      operationId: GetEmployeeByNickname
+      parameters:
+      - explode: false
+        in: path
+        name: nickname
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: Employee info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/team/{id}:
+    get:
+      operationId: GetEmployeeByTeam
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEmployeeListResponse'
+          description: Employee list info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/department/{id}:
+    get:
+      operationId: GetEmployeeByDepartment
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEmployeeListResponse'
+          description: Employee list info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /department/{id}/breadcrumbs:
+    get:
+      operationId: GetDepartmentBreadcrumbs
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDepartmentBreadcrumbsResponse'
+          description: Departments list.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /login:
+    post:
+      operationId: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: Login info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/{id}/subscribe:
+    get:
+      operationId: IsSubscribed
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscribeResponse'
+          description: Subscription info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+    put:
+      operationId: Subscribe
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscribeResponse'
+          description: Subscription info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /me/vacations:
+    post:
+      operationId: CreateVacation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVacationRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateVacationResponse'
+          description: Created vacation.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /employee/{id}/vacations:
+    get:
+      operationId: GetVacationList
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetVacationListResponse'
+          description: List vacations.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /me:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: Current employee info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /teams:
+    get:
+      operationId: GetTeamList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTeamListResponse'
+          description: Created team.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+    post:
+      operationId: CreateTeam
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTeamRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTeamResponse'
+          description: Created team.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /teams/{id}:
+    delete:
+      operationId: DeleteTeam
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Team deleted.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+    get:
+      operationId: GetTeam
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: Team info.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+    put:
+      operationId: UpdateTeam
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamRequest'
+        required: true
+      responses:
+        "200":
+          description: Updated team.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+  /search:
+    get:
+      operationId: Search
+      parameters:
+      - explode: true
+        in: query
+        name: query
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+          description: Search results.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error response.
+components:
+  schemas:
+    DepartmentShort:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    Department:
+      allOf:
+      - $ref: '#/components/schemas/DepartmentShort'
+      - $ref: '#/components/schemas/Department_allOf'
+    CreateDepartmentRequest:
+      example:
+        parent_id: parent_id
+        name: name
+        description: description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parent_id:
+          nullable: true
+          type: string
+      required:
+      - description
+      - name
+      type: object
+    CreateDepartmentResponse:
+      $ref: '#/components/schemas/Department'
+    UpdateDepartmentRequest:
+      example:
+        parent_id: parent_id
+        name: name
+        description: description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parent_id:
+          nullable: true
+          type: string
+      required:
+      - description
+      - name
+      type: object
+    GetDepartmentResponse:
+      $ref: '#/components/schemas/Department'
+    GetDepartmentListResponse:
+      example:
+        list:
+        - null
+        - null
+      properties:
+        list:
+          items:
+            $ref: '#/components/schemas/Department'
+          type: array
+      type: object
+    Team:
+      example:
+        name: name
+        description: description
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      type: object
+    TeamRole:
+      example:
+        role: role
+        from: from
+        team:
+          name: name
+          description: description
+          id: id
+      properties:
+        team:
+          $ref: '#/components/schemas/Team'
+        role:
+          type: string
+        from:
+          type: string
+      type: object
+    CreateEmployeeRequest:
+      example:
+        password: password
+        teams:
+        - role: role
+          from: from
+          team:
+            name: name
+            description: description
+            id: id
+        - role: role
+          from: from
+          team:
+            name: name
+            description: description
+            id: id
+        department_id: department_id
+        phone: phone
+        level: level
+        name: name
+        nickname: nickname
+        photo: photo
+        position: position
+        boss_id: boss_id
+        email: email
+      properties:
+        password:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+        department_id:
+          type: string
+        position:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        boss_id:
+          nullable: true
+          type: string
+        photo:
+          type: string
+        level:
+          type: string
+        teams:
+          items:
+            $ref: '#/components/schemas/TeamRole'
+          type: array
+      type: object
+    Employee:
+      example:
+        teams:
+        - role: role
+          from: from
+          team:
+            name: name
+            description: description
+            id: id
+        - role: role
+          from: from
+          team:
+            name: name
+            description: description
+            id: id
+        level: level
+        created: created
+        description: description
+        photo: photo
+        phone: phone
+        name: name
+        nickname: nickname
+        working: true
+        id: id
+        position: position
+        boss_id: boss_id
+        department: null
+        socials:
+          key: socials
+        email: email
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+        department:
+          $ref: '#/components/schemas/Department'
+        position:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        socials:
+          additionalProperties:
+            type: string
+          type: object
+        boss_id:
+          nullable: true
+          type: string
+        description:
+          type: string
+        photo:
+          type: string
+        level:
+          type: string
+        teams:
+          items:
+            $ref: '#/components/schemas/TeamRole'
+          type: array
+        created:
+          type: string
+        working:
+          type: boolean
+      type: object
+    CreateEmployeeResponse:
+      $ref: '#/components/schemas/Employee'
+    UpdateEmployeeRequest:
+      $ref: '#/components/schemas/Employee'
+    GetDepartmentBreadcrumbsResponse:
+      example:
+        list:
+        - name: name
+          id: id
+        - name: name
+          id: id
+      properties:
+        list:
+          items:
+            $ref: '#/components/schemas/DepartmentShort'
+          type: array
+      type: object
+    LoginRequest:
+      example:
+        password: password
+        login: login
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+      type: object
+    LoginResponse:
+      example:
+        token: token
+      properties:
+        token:
+          type: string
+      type: object
+    SubscribeResponse:
+      example:
+        subscribed: true
+      properties:
+        subscribed:
+          type: boolean
+      required:
+      - subscribed
+      type: object
+    GetEmployeeListResponse:
+      example:
+        list:
+        - teams:
+          - role: role
+            from: from
+            team:
+              name: name
+              description: description
+              id: id
+          - role: role
+            from: from
+            team:
+              name: name
+              description: description
+              id: id
+          level: level
+          created: created
+          description: description
+          photo: photo
+          phone: phone
+          name: name
+          nickname: nickname
+          working: true
+          id: id
+          position: position
+          boss_id: boss_id
+          department: null
+          socials:
+            key: socials
+          email: email
+        - teams:
+          - role: role
+            from: from
+            team:
+              name: name
+              description: description
+              id: id
+          - role: role
+            from: from
+            team:
+              name: name
+              description: description
+              id: id
+          level: level
+          created: created
+          description: description
+          photo: photo
+          phone: phone
+          name: name
+          nickname: nickname
+          working: true
+          id: id
+          position: position
+          boss_id: boss_id
+          department: null
+          socials:
+            key: socials
+          email: email
+      properties:
+        list:
+          items:
+            $ref: '#/components/schemas/Employee'
+          type: array
+      type: object
+    Vacation:
+      example:
+        start: start
+        description: description
+        end: end
+        id: id
+      properties:
+        start:
+          type: string
+        end:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+      type: object
+    CreateVacationRequest:
+      example:
+        start: start
+        description: description
+        end: end
+        id: id
+      properties:
+        start:
+          type: string
+        end:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+      type: object
+    CreateVacationResponse:
+      $ref: '#/components/schemas/Vacation'
+    GetVacationListResponse:
+      example:
+        list:
+        - start: start
+          description: description
+          end: end
+          id: id
+        - start: start
+          description: description
+          end: end
+          id: id
+      properties:
+        list:
+          items:
+            $ref: '#/components/schemas/Vacation'
+          type: array
+      type: object
+    CreateTeamRequest:
+      example:
+        name: name
+        description: description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      type: object
+    CreateTeamResponse:
+      $ref: '#/components/schemas/Team'
+    UpdateTeamRequest:
+      $ref: '#/components/schemas/Team'
+    GetTeamListResponse:
+      example:
+        list:
+        - name: name
+          description: description
+          id: id
+        - name: name
+          description: description
+          id: id
+      properties:
+        list:
+          items:
+            $ref: '#/components/schemas/Team'
+          type: array
+      type: object
+    TeamShort:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    EmployeeShort:
+      example:
+        name: name
+        nickname: nickname
+        working: true
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        nickname:
+          type: string
+        working:
+          type: boolean
+      type: object
+    SearchResponse:
+      example:
+        teams:
+        - name: name
+          id: id
+        - name: name
+          id: id
+        departments:
+        - name: name
+          id: id
+        - name: name
+          id: id
+        employee:
+        - name: name
+          nickname: nickname
+          working: true
+          id: id
+        - name: name
+          nickname: nickname
+          working: true
+          id: id
+      properties:
+        employee:
+          items:
+            $ref: '#/components/schemas/EmployeeShort'
+          type: array
+        teams:
+          items:
+            $ref: '#/components/schemas/TeamShort'
+          type: array
+        departments:
+          items:
+            $ref: '#/components/schemas/DepartmentShort'
+          type: array
+      type: object
+    Error:
+      properties:
+        error:
+          type: string
+        comment:
+          type: string
+      required:
+      - comment
+      - error
+      type: object
+    Department_allOf:
+      properties:
+        description:
+          type: string
+        parent_id:
+          nullable: true
+          type: string
+      type: object
+      example: null

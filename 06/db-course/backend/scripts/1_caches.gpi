@@ -1,0 +1,10 @@
+reset
+set terminal pdf
+set output "./data/1_caches.pdf"
+set size ratio 0.5625
+set xlabel "Количество записей"
+set ylabel "Время, мкс"
+set grid
+
+plot "./data/1_redis.txt" with lp title 'Redis' lw 2, \
+     "./data/1_in_memory.txt" with lp title 'Кеш в оперативной памяти' lw 2, \

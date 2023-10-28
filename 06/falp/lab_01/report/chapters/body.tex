@@ -1,0 +1,189 @@
+\setcounter{page}{3}
+\chapter{Теоретическая часть}
+\section{Элементы языка: определение, синтаксис, представление в памяти}
+Вся информация (данные и программы) в Lisp представляется в виде символьных выражений~---~S-выражений. По определению 
+
+\begin{center}
+	\text{S-выражение ::= <атом> | <точечная пара>}.
+\end{center}
+
+Элементарные значения структур данных: 
+\begin{itemize}
+	\item Атомы
+	\begin{itemize}
+		\item символы (идентификаторы)~---~синтаксически~---~набор литер (букв и цифр), начинающихся с буквы;
+		\item специальные символы~---~\texttt{{Т, Nil}} (используются для обозначения логических констант);
+		\item самоопределимые атомы~---~натуральные числа, дробные числа (например 2/3), вещественные числа, строки~---~последовательность символов, заключенных в двойные апострофы (например “abc”);
+	\end{itemize}
+	
+	\item Точечные пары
+	\begin{center}
+	Точечные пары ::= (<атом>.<атом>) | (<атом>.<точечная пара>) |
+(<точечная пара>.<атом>) | (<точечная пара>.<точечная пара>).
+	\end{center}
+	
+	\item Списки
+	\begin{center}
+		Список ::= <пустой список> | <непустой список>,
+		
+		<пустой список> ::= ( ) | Nil,
+		
+<непустой список>::= (<первый элемент> . <хвост>),
+
+ <первый элемент> ::= <S-выражение>,
+<хвост> ::= <список>.
+	\end{center}
+\end{itemize}
+
+Более сложные данные~---~списки и точечные пары (структуры) строятся из унифицированных структур~---~блоков памяти~---~бинарных узлов.
+
+Синтаксически любая структура (точечная пара или список) заключается в круглые скобки \texttt{(A . B)}~---~точечная пара, \texttt{(А)}~---~список из одного элемента,
+пустой список изображается как \texttt{Nil} или \texttt{()};
+непустой список по определению может быть изображен:
+\texttt{(A . (B . (C . (D ()))))}, допустимо изображение списка последовательностью атомов, разделенных пробелами~---~\texttt{(A B C D)}.
+Элементы списка могут, в свою очередь, быть списками (любой список заключается в круглые скобки), например~---~\texttt{(A (B C) (D (E)))}. 
+
+Таким образом, синтаксически наличие скобок является признаком структуры~---~списка или точечной пары.
+Любая непустая структура Lisp в памяти представляется списковой ячейкой, хранящей два указателя: на голову (первый элемент) и хвост~---~все остальное.
+
+\section{Особенности языка Lisp. Структура программы. Символ апостроф}
+Важной особенностью языка Lisp является то, что программы, написанные на Lisp, представляются в виде его же структур данных. Это позволяет выдать программы за данные и изменять их.
+
+Программа на языке Lisp представляет собой последовательность вычислимых выражений, которые являются атомами или списками.
+
+Символ \texttt{'} (апостроф) эквивалентен функции \texttt{quote}~---~блокирует вычисление выражения, и оно воспринимается интерпретатором как данные.
+
+\section{Базис языка Lisp. Ядро языка}
+Базис~---~это минимальный набор действий в языке программирования. Базис языка Lisp представлен атомами, структурами и функциями. Некоторые базисные функции: \texttt{car}, \texttt{cdr}, \texttt{cons}, \texttt{list}, \texttt{lambda}, \texttt{quote}, \texttt{eq}.
+
+Ядром языка называется базис языка и функции стандартной библиотеки (часто используемые функции, созданные на основе базиса).
+
+\newpage
+
+\chapter{Практическая часть}
+\section{Задание 1}
+\subsection{Задание}
+Представить следующие списки в виде списочных ячеек:
+
+\begin{itemize}
+	\item \texttt{'(open close halph)}
+	\item \texttt{'((open1) (close2) (halph3))} 
+	\item \texttt{'((one) for all (and (me (for you))))};
+	\item \texttt{'((TOOL) (call))};
+	\item \texttt{'((TOOL1) ((call2)) ((sell)))}
+	\item \texttt{'(((TOOL) (call)) ((sell)))}.
+\end{itemize}
+
+
+\subsection{Решение}
+Приложено на отдельном листе.
+
+\section{Задание 2}
+\subsection{Задание}
+Используя только функции \texttt{CAR} и \texttt{CDR}, написать выражения, возвращающие
+
+\begin{enumerate}
+	\item второй
+	\item третий
+	\item четвертый
+\end{enumerate}
+
+элементы заданного списка.
+
+\subsection{Решение}
+\begin{enumerate}
+	\item \texttt{(car (cdr `(1 2 3 4 5 6)))}
+	\item \texttt{(car (cdr (cdr `(1 2 3 4 5 6))))}
+	\item \texttt{(car (cdr (cdr(cdr `(1 2 3 4 5 6)))))}
+\end{enumerate}
+
+\section{Задание 3}
+\subsection{Задание}
+Что будет в результате вычисления выражений?
+\begin{enumerate}
+	\item \texttt{(CAADR ' ((blue cube) (red pyramid)))}
+	\item \texttt{(CDAR '((abc) (def) (ghi)))}
+	\item \texttt{(CADR ' ((abc) (def) (ghi)))}
+	\item \texttt{(CADDR ' ((abc) (def) (ghi)))}
+\end{enumerate}
+
+\subsection{Решение}
+\begin{enumerate}
+	\item \texttt{RED}
+	\item \texttt{NIL}
+	\item \texttt{(DEF)}
+	\item \texttt{(GHI)}
+\end{enumerate}
+
+\section{Задание 4}
+\subsection{Задание}
+Напишите результат вычисления выражений и объясните как он получен:
+\begin{enumerate}
+	\item \texttt{(list 'Fred 'and 'Wilma)}
+	\item \texttt{(list 'Fred '(and Wilma))}
+	\item \texttt{(cons Nil Nil)}
+	\item \texttt{(cons T Nil)}
+	\item \texttt{(cons Nil T)}
+	\item \texttt{(list Nil)}
+	\item \texttt{(cons ' (T) Nil)}
+	\item \texttt{(list ' (one two) ' (free temp))}
+	\item \texttt{(cons 'Fred '(and Wilma))}
+	\item \texttt{(cons 'Fred '(Wilma))}
+	\item \texttt{(list Nil Nil)}
+	\item \texttt{(list T Nil)}
+	\item \texttt{(list Nil T)}
+	\item \texttt{(cons T (list Nil))}
+	\item \texttt{(list '(T) Nil)}
+	\item \texttt{(cons '(one two) '(free temp))}
+\end{enumerate}
+\subsection{Решение}
+Функция \texttt{cons} создает списочную ячейку. Принимает два аргумента. Если второй аргумент~---~список, то результатом вызова функции будет список, если атом~---~результатом будет точечная пара. Если второй аргумент~---~\texttt{Nil}, то результатом будет список из одного элемента.
+
+Функция \texttt{list} создает столько списочных ячеек, сколько ей было передано аргументов. Она не является частью базиса.
+
+\begin{enumerate}
+	\item \texttt{(FRED AND WILMA)}
+	\item \texttt{(FRED (AND WILMA))}
+	\item \texttt{(NIL)}
+	\item \texttt{(T)}
+	\item \texttt{(NIL . T)}
+	\item \texttt{(NIL)}
+	\item \texttt{((T))}
+	\item \texttt{((ONE TWO) (FREE TEMP))}
+	\item \texttt{(FRED AND WILMA)}
+	\item \texttt{(FRED WILMA)}
+	\item \texttt{(NIL NIL)}
+	\item \texttt{(T NIL)}
+	\item \texttt{(NIL T)}
+	\item \texttt{(T NIL) }
+	\item \texttt{((T) NIL)}
+	\item \texttt{((ONE TWO) FREE TEMP)}
+\end{enumerate}
+
+\section{Задание 5}
+\subsection{Задание}
+Написать лямбда-выражение и соответствующую функцию:
+\begin{enumerate}
+	\item Написать функцию \texttt{(f arl ar2 ar3 ar4)}, возвращающую список: \texttt{((arl ar2) (ar3 ar4))}.
+	\item Написать функцию \texttt{(f arl ar2)}, возвращающую \texttt{((arl) (ar2))}.
+	\item Написать функцию \texttt{(f arl)}, возвращающую \texttt{(((arl)))}.
+	\item Представить результаты в виде списочных ячеек.
+\end{enumerate}
+\subsection{Решение}
+\begin{enumerate}
+	\item \texttt{((lambda (ar1 ar2 ar3 ar4) (list (list ar1 ar2) (list ar3 ar4))) 1 2 3 4)}
+	
+	\texttt{(defun f1 (ar1 ar2 ar3 ar4) (list (list ar1 ar2) (list ar3 ar4)))}
+	
+	\item \texttt{((lambda (ar1 ar2) (list (list ar1) (list ar2))) 1 2)}
+	
+	\texttt{(defun f2 (ar1 ar2) (list (list ar1) (list ar2)))}
+	
+	\item \texttt{((lambda (ar1) (list (list (list ar1)))) 1)}
+	
+	\texttt{(defun f3 (ar1) (list (list (list ar1))))}
+	
+	\item Приложено на отдельном листе.
+\end{enumerate}
+
+\newpage

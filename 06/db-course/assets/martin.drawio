@@ -1,0 +1,403 @@
+<mxfile host="app.diagrams.net" modified="2023-03-27T18:50:34.803Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15" etag="0asBjfC3u6NsV2-iM8uv" version="21.1.1" type="device">
+  <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
+    <mxGraphModel dx="820" dy="1619" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-1" value="" style="edgeStyle=entityRelationEdgeStyle;endArrow=ERzeroToMany;startArrow=ERone;endFill=1;startFill=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="C-vyLk0tnHw3VtMMgP7b-24" target="C-vyLk0tnHw3VtMMgP7b-3" edge="1">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="340" y="720" as="sourcePoint" />
+            <mxPoint x="440" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-12" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERzeroToMany;startArrow=ERone;endFill=1;startFill=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;exitX=1.003;exitY=0.8;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" parent="1" source="C-vyLk0tnHw3VtMMgP7b-3" target="1CaEl50cDmSCbLy7Dy35-75" edge="1">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="400" y="180" as="sourcePoint" />
+            <mxPoint x="700" y="675" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="770" y="174" />
+              <mxPoint x="770" y="715" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-2" value="Employee" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontColor=#000000;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="450" y="120" width="290" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-3" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-2" vertex="1">
+          <mxGeometry y="30" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-4" value="PK" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-3" vertex="1">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-5" value="uuid UUID NOT NULL " style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-3" vertex="1">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-6" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-2" vertex="1">
+          <mxGeometry y="60" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-7" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-6" vertex="1">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-8" value="name TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-6" vertex="1">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-9" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-2" vertex="1">
+          <mxGeometry y="90" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-10" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-9" vertex="1">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-11" value="nickname TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-9" vertex="1">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-21" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="C-vyLk0tnHw3VtMMgP7b-2">
+          <mxGeometry y="120" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-22" value="FK1" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-21">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-23" value="department_uuid UUID NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-21">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-24" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="C-vyLk0tnHw3VtMMgP7b-2">
+          <mxGeometry y="150" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-25" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-24">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-26" value="position TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-24">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-27" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="C-vyLk0tnHw3VtMMgP7b-2">
+          <mxGeometry y="180" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-28" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-27">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-29" value="email TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-27">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-30" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="C-vyLk0tnHw3VtMMgP7b-2">
+          <mxGeometry y="210" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-31" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-30">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-32" value="phone TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-30">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-33" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="C-vyLk0tnHw3VtMMgP7b-2">
+          <mxGeometry y="240" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-34" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-33">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-35" value="social JSON NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-33">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-36" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="C-vyLk0tnHw3VtMMgP7b-2">
+          <mxGeometry y="270" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-37" value="FK2" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-36">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-38" value="boss_uuid UUID NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-36">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-39" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="C-vyLk0tnHw3VtMMgP7b-2">
+          <mxGeometry y="300" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-40" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-39">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-41" value="description TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-39">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-87" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERzeroToMany;startArrow=ERone;endFill=1;startFill=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.003;exitY=0.8;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="C-vyLk0tnHw3VtMMgP7b-2" source="C-vyLk0tnHw3VtMMgP7b-3" target="1CaEl50cDmSCbLy7Dy35-36">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-110" y="315" as="sourcePoint" />
+            <mxPoint x="10" y="145" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-30" y="54" />
+              <mxPoint x="-30" y="285" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-23" value="Team" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="80" y="120" width="250" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-24" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-23" vertex="1">
+          <mxGeometry y="30" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-25" value="PK" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-24" vertex="1">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-26" value="uuid UUID NOT NULL " style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-24" vertex="1">
+          <mxGeometry x="30" width="220" height="30" as="geometry">
+            <mxRectangle width="220" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-27" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-23" vertex="1">
+          <mxGeometry y="60" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-28" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-27" vertex="1">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C-vyLk0tnHw3VtMMgP7b-29" value="name TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" parent="C-vyLk0tnHw3VtMMgP7b-27" vertex="1">
+          <mxGeometry x="30" width="220" height="30" as="geometry">
+            <mxRectangle width="220" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-52" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="C-vyLk0tnHw3VtMMgP7b-23">
+          <mxGeometry y="90" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-53" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-52">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-54" value="description TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-52">
+          <mxGeometry x="30" width="220" height="30" as="geometry">
+            <mxRectangle width="220" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-56" value="Department" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="70" y="380" width="260" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-57" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-56">
+          <mxGeometry y="30" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-58" value="PK" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-57">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-59" value="uuid UUID NOT NULL " style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-57">
+          <mxGeometry x="30" width="230" height="30" as="geometry">
+            <mxRectangle width="230" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-60" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-56">
+          <mxGeometry y="60" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-61" value="FK1" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-60">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-62" value="parent_uuid UUID NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-60">
+          <mxGeometry x="30" width="230" height="30" as="geometry">
+            <mxRectangle width="230" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-66" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-56">
+          <mxGeometry y="90" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-67" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-66">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-68" value="name TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-66">
+          <mxGeometry x="30" width="230" height="30" as="geometry">
+            <mxRectangle width="230" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-63" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-56">
+          <mxGeometry y="120" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-64" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-63">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-65" value="description TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-63">
+          <mxGeometry x="30" width="230" height="30" as="geometry">
+            <mxRectangle width="230" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-70" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERzeroToMany;startArrow=ERone;endFill=1;startFill=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="1CaEl50cDmSCbLy7Dy35-57" target="1CaEl50cDmSCbLy7Dy35-21">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="340" y="420" as="sourcePoint" />
+            <mxPoint x="460" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-71" value="Vacation" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="460" y="640" width="280" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-72" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-71">
+          <mxGeometry y="30" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-73" value="PK" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-72">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-74" value="uuid UUID NOT NULL " style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-72">
+          <mxGeometry x="30" width="250" height="30" as="geometry">
+            <mxRectangle width="250" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-75" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-71">
+          <mxGeometry y="60" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-76" value="FK1" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-75">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-77" value="employee_uuid UUID NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-75">
+          <mxGeometry x="30" width="250" height="30" as="geometry">
+            <mxRectangle width="250" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-81" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-71">
+          <mxGeometry y="90" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-82" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-81">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-83" value="description TEXT NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-81">
+          <mxGeometry x="30" width="250" height="30" as="geometry">
+            <mxRectangle width="250" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-78" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-71">
+          <mxGeometry y="120" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-79" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-78">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-80" value="start TIMESPAMP NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-78">
+          <mxGeometry x="30" width="250" height="30" as="geometry">
+            <mxRectangle width="250" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-84" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-71">
+          <mxGeometry y="150" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-85" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-84">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-86" value="end TIMESPAMP NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-84">
+          <mxGeometry x="30" width="250" height="30" as="geometry">
+            <mxRectangle width="250" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-88" value="Subscription" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="450" y="-110" width="290" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-89" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-88">
+          <mxGeometry y="30" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-90" value="PK" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-89">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-91" value="uuid UUID NOT NULL " style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-89">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-92" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-88">
+          <mxGeometry y="60" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-93" value="FK1" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-92">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-94" value="author_uuid UUID NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-92">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-95" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-88">
+          <mxGeometry y="90" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-96" value="FK2" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-95">
+          <mxGeometry width="30" height="30" as="geometry">
+            <mxRectangle width="30" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-97" value="subscriber_uuid UUID NOT NULL" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;" vertex="1" parent="1CaEl50cDmSCbLy7Dy35-95">
+          <mxGeometry x="30" width="260" height="30" as="geometry">
+            <mxRectangle width="260" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-100" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERzeroToMany;startArrow=ERone;endFill=1;startFill=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;exitX=0.998;exitY=0.227;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="C-vyLk0tnHw3VtMMgP7b-3" target="1CaEl50cDmSCbLy7Dy35-95">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="880" y="220" as="sourcePoint" />
+            <mxPoint x="810" y="-40" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="770" y="157" />
+              <mxPoint x="770" y="-5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CaEl50cDmSCbLy7Dy35-101" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERzeroToMany;startArrow=ERone;endFill=1;startFill=0;fontFamily=cmunui;fontSource=http%3A%2F%2Fmirrors.ctan.org%2Ffonts%2Fcm-unicode%2Ffonts%2Fotf%2Fcmunui.otf;fontSize=14;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.998;exitY=0.235;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="C-vyLk0tnHw3VtMMgP7b-3" target="1CaEl50cDmSCbLy7Dy35-92">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="740" y="156" as="sourcePoint" />
+            <mxPoint x="750" y="5" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="751" y="157" />
+              <mxPoint x="780" y="157" />
+              <mxPoint x="780" y="-35" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

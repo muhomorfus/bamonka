@@ -1,0 +1,156 @@
+\setcounter{page}{3}
+
+\chapter{Практическая часть}
+
+\section{Задание 1}
+\subsection*{Задание}
+Написать хвостовую рекурсивную функцию \texttt{my-reverse}, которая развернет верхний уровень своего списка-аргумента \texttt{lst}.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun my-reverse1 (lst res)
+    (cond
+        ((null lst) res)
+        (t (my-reverse1 (cdr lst) (cons (car lst) res)))
+    )
+)
+
+(defun my-reverse (lst) (my-reverse1 lst NIL))
+\end{minted}
+\end{code}
+
+
+\section{Задание 2}
+\subsection*{Задание}
+Написать функцию, которая возвращает первый элемент списка~---~аргумента, который сам является непустым списком.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun get_atom (x)
+    (cond
+        ((atom x) x)
+        (t (get_atom (car x)))
+    )
+)
+
+(defun f1 (x)
+    (cond
+        ((null x) NIL)
+        ((atom (car x)) (f1 (cdr x)))
+        (t (get_atom (car x)))
+    )
+)
+\end{minted}
+\end{code}
+
+
+\section{Задание 3}
+\subsection*{Задание}
+Напишите рекурсивную функцию, которая умножает на заданное число-аргумент все числа из заданного списка-аргумента, когда
+
+\begin{enumerate}
+    \item все элементы списка~---~числа;
+    \item элементы списка~---~любые объекты.
+\end{enumerate}
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f21 (x n res)
+    (cond 
+        ((null x) res)
+        (t (f21 (cdr x) n (cons (* (car x) n) res)))
+    )
+)
+
+(defun f2 (x n)
+    (f21 x n NIL)
+)
+\end{minted}
+\end{code}
+
+\begin{code}
+\begin{minted}{lisp}
+(defun f31 (x n res)
+    (cond 
+        ((null x) res)
+        ((numberp (car x)) (f31 (cdr x) n (cons (* (car x) n) res)))
+        ((atom (car x)) (f31 (cdr x) n (cons (car x) res)))
+        (t (f31 (cdr x) n (cons (f31 (car x) n NIL) res)))
+    )
+)
+
+(defun f3 (x n) 
+	(f31 x n NIL)
+)
+\end{minted}
+\end{code}
+
+
+\section{Задание 4}
+\subsection*{Задание}
+Напишите функцию, \texttt{select-between}, которая из списка-аргумента, содержащего только числа, выбирает только те, которые расположены между двумя указанными числами~---~границами-аргументами и возвращает их в виде списка.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun select-between1 (x a b)
+    (cond 
+        ((null x) NIL)
+        ((< a (car x) b) (cons (car x) (select-between1 (cdr x) a b)))
+        (t (select-between1 (cdr x) a b))
+    )
+)
+
+(defun select-between (x a b)
+    (cond 
+        ((< a b) (select-between1 x a b))
+        (t (select-between1 x b a))
+    )
+)
+\end{minted}
+\end{code}
+
+
+\section{Задание 5}
+\subsection*{Задание}
+Написать рекурсивную версию (с именем \texttt{rec-add}) вычисления суммы чисел заданного списка:
+
+\begin{enumerate}
+    \item одноуровнего смешанного;
+    \item структурированного.
+\end{enumerate}
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun rec-add1 (x res)
+    (cond
+        ((null x) res)
+        ((numberp (car x)) (rec-add (cdr x) (+ (car x) res)))
+        (t (rec-add (cdr x) res))
+    )
+)
+
+(defun rec-add (x)
+	(rec-add1 x NIL)
+)
+\end{minted}
+\end{code}
+
+\begin{code}
+\begin{minted}{lisp}
+(defun rec-add (x)
+    (cond
+        ((null x) 0)
+        ((numberp (car x)) (+ (car x) (rec-add (cdr x))))
+        ((atom (car x)) (rec-add (cdr x)))
+        (t (+ (rec-add (car x)) (rec-add (cdr x))))
+    )
+)
+\end{minted}
+\end{code}
+
+\newpage

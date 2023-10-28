@@ -1,0 +1,179 @@
+\setcounter{page}{3}
+
+\chapter{Практическая часть}
+Создать базу знаний «Собственники», дополнив (и минимально изменив) базу
+знаний, хранящую знания:
+\begin{itemize}
+	\item «Телефонный справочник»: Фамилия, Noтел, Адрес – структура (Город, Улица, Noдома, Noкв),
+	\item «Автомобили»: Фамилия владельца, Марка, Цвет, Стоимость, и др.,
+	\item «Вкладчики банков»: Фамилия, Банк, счет, сумма, др.
+\end{itemize}
+знаниями о дополнительной собственности владельца. Преобразовать знания об автомобиле к форме знаний о собственности.
+Вид собственности (кроме автомобиля): строение, стоимость и другие его характеристики; участок, стоимость и другие его характеристики; водный транспорт, стоимость и другие его характеристики.
+Описать и использовать вариантный домен: собственность. Владелец может иметь, но только один объект каждого вида собственности (это касается и автомобиля), или не иметь некоторых видов собственности.
+Используя конъюнктивное правило и разные формы задания одного вопроса (пояснять для какого задания – какой вопрос), обеспечить возможность поиска:
+\begin{itemize}
+	\item Названий всех объектов собственности заданного субъекта,
+	\item Названий и стоимости всех объектов собственности заданного субъекта,
+	\item Разработать правило, позволяющее найти суммарную стоимость всех объектов собственности заданного субъекта.
+\end{itemize}
+
+Для 2-го пункт и одной фамилии составить таблицу, отражающую конкретный порядок работы системы, с объяснениями порядка работы и особенностей использования доменов (указать конкретные Т1 и Т2 и полную подстановку на каждом шаге)
+  
+\begin{lstlisting}
+domains
+    surname, name, phone = symbol.
+    city, street = symbol.
+    color, number = symbol.
+    building, appartment = integer.
+    floors, size = integer.
+    price = integer.
+    sum = integer.
+    bank_name = symbol.
+    account = symbol.
+    address = address(city, street, building, appartment).
+
+    property = car(name, color, number, price);
+               building(name, floors, price);
+               land(name, size, price);
+               water(name, color, number, price).
+ 
+predicates
+    nondeterm contact(surname, phone, address).
+    nondeterm owner(surname, property).
+    nondeterm bank(surname, bank_name, account, sum).
+
+    nondeterm prop_names(surname, name).
+    nondeterm prop_prices(surname, name, price).
+
+    nondeterm car_price(surname, price).
+    nondeterm building_price(surname, price).
+    nondeterm land_price(surname, price).
+    nondeterm water_price(surname, price).
+    nondeterm sum_price(surname, price).
+
+clauses
+    contact("Thomas", "000-001", address("Erevan", "Manhatan", 1, 2)).
+    contact("Artur", "000-002", address("London", "Kr. Armii", 3, 4)).
+    contact("Thomas", "000-003", address("Paris", "Piva", 5, 6)).
+    contact("John", "000-004", address("Moscow", "Mira", 7, 8)).
+    contact("Mike", "000-005", address("Minsk", "Pobody", 9, 10)).
+ 
+    owner("Thomas", car("Lada", "black", "pbd001", 5000)).
+    owner("John", car("Bentley", "yellow", "pbd002", 10000)).
+    owner("John", water("Yacht", "brown", "pbd003", 4000)).
+    owner("Mike", building("House", 57, 5000)).
+    owner("Artur", land("Hotel", 500, 4000)).
+    owner("Artur", building("Bar", 4, 5000)).
+    owner("Artur", car("Bentley", "brown", "GGG777", 10000)).
+
+    bank("Thomas", "Sber", "debit", 5000).
+    bank("John", "Tinkoff", "credit", 10000).
+    bank("John", "Sovkombank", "credit", 4000).
+    bank("Mike", "Sber", "debit", 5000).
+    bank("Artur", "Sovkombank", "credit", 4000).
+ 
+    prop_names(Surname, Name) :- owner(Surname, car(Name, _, _, _)); 
+    				             owner(Surname, building(Name, _, _)); 
+    				             owner(Surname, land(Name, _, _)); 
+    				             owner(Surname, water(Name, _, _, _)).
+ 
+    prop_prices(Surname, Name, Price) :- owner(Surname, car(Name, _, _, Price)); 
+    				                     owner(Surname, building(Name, _, Price)); 
+    				                     owner(Surname, land(Name, _, Price));
+    				                     owner(Surname, water(Name, _, _, Price)).
+ 				  
+    car_price(Surname, Price) :- owner(Surname, car(_, _, _, Price)), !; Price = 0.
+    building_price(Surname, Price) :- owner(Surname, building(_, _, Price)), !; Price = 0.
+    land_price(Surname, Price) :- owner(Surname, land(_, _, Price)), !; Price = 0.
+    water_price(Surname, Price) :- owner(Surname, water(_, _, _, Price)), !; Price = 0.
+ 				  
+    sum_price(Surname, S) :- car_price(Surname, Pc),
+    				         building_price(Surname, Pb),
+    				         land_price(Surname, Pl),
+    				         water_price(Surname, Pw),
+    				         S = Pc + Pb + Pl + Pw.
+ 
+goal
+    %prop_names("Artur", Name).
+    %prop_prices("John", Name, Price).
+    sum_price("John", SumPrice).
+\end{lstlisting}
+
+%\begin{table}[]
+%\begin{tabular}{|l|l|l|}
+%\hline
+%№ шага & \begin{tabular}[c]{@{}l@{}}Сравниваемые термы; \\ результат; подстановки\end{tabular}                                                                                                                                                                                                                                                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}Дальнейшие \\ действия\end{tabular}           \\ \hline
+%1      & \begin{tabular}[c]{@{}l@{}}prop\_prices("John", Name, Price)=\\ contact("Thomas", "000-001", address("Erevan", "Manhatan", 1, 2))\\ не унифицируется, тк разные функторы\end{tabular}                                                                                                                                                                                                                                                                                                          & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%2      & аналогичные действия до совпадения функтора                                                                                                                                                                                                                                                                                                                                                                                                                                                                &          \\ \hline
+%3      & \begin{tabular}[c]{@{}l@{}}prop\_prices("John", Name, Price)=\\ prop\_prices(Surname, Name, Price)\\ Константа "John" унифицируется с \\ несвязанной переменной Surname, Surname \\ принимает значение "John"; остальные \\ несвязанные переменные становятся сцепленными\end{tabular}                                                                                                                                                                                         & \begin{tabular}[c]{@{}l@{}}переход к \\ проверке \\ условий\end{tabular} \\ \hline
+%4      & \begin{tabular}[c]{@{}l@{}}owner(Surname, car(Name, \_, \_, Price))=\\ contact("Thomas", "000-001", address("Erevan", "Manhatan", 1, 2))\\ не унифицируется, тк разные функторы\end{tabular}                                                                                                                                                                                                                                                                                                            & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%5      & аналогичные действия до совпадения функтора                                                                                                                                                                                                                                                                                                                                                                                                                                                                &          \\ \hline
+%6      & \begin{tabular}[c]{@{}l@{}}owner(Surname, car(Name, \_, \_, Price))=\\ owner("Thomas", car("Lada", "black", "pbd001", 5000))\\ не унифицируется, так как не совпадает константа \\ "Thomas" и значение связанной переменной Surname\end{tabular}                                                                                                                                                                                                                                                      & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%7      & аналогичные действия до совпадения функтора                                                                                                                                                                                                                                                                                                                                                                                                                                                                &          \\ \hline
+%8      & \begin{tabular}[c]{@{}l@{}}owner(Surname, car(Name, \_, \_, Price))=\\ owner("John", car("Bentley", "yellow", "pbd002", 10000))\\ успешная унификация\\ Константа "John" унифицируется со\\ связанной переменной Surname; константа "Bentley"\\ унифицируется с несвязанной переменной Name, Name\\ принимает значение "Bentley"; анонимные переменные не \\ связываются со значениями; константа 10000 унифицируется \\ с несвязанной переменной Price, Price пр.знач. 10000\end{tabular} & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%9      & попытки унификации до конца БЗ                                                                                                                                                                                                                                                                                                                                                                                                                                                                             & \begin{tabular}[c]{@{}l@{}}переход на \\ след. терм\end{tabular}         \\ \hline
+%10     & аналогичные действия для остальных функторов условий                                                                                                                                                                                                                                                                                                                                                                                                                                                       &          \\ \hline
+%\end{tabular}
+%\end{table}
+
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
+  
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+1   & \specialcell{prop\_prices(<<John>>, Name, Price)=\\ contact(<<Thomas>>, <<000-001>>, address(<<New-York>>, \\ <<One>>, 1, 2)) \\ \textbf{Нет}} & \specialcell{Прямой ход} \\ \hline
+2-18   & \specialcell{...} & \specialcell{} \\ \hline
+19   & \specialcell{prop\_prices(<<John>>, Name, Price)=\\prop\_prices(Surname, Name, Price) \\ \textbf{Успех} \\ \textbf{Surname = <<John>>} \\ \textbf{Остальные~---~сцепленные} } & \specialcell{Прямой ход \\ Унификация \\ owner(Surname, car)} \\ \hline
+20   & \specialcell{owner(Surname, car(Name, \_, \_, Price))=\\ contact(<<Thomas>>, <<000-001>>, address(<<New-York>>, \\ <<One>>, 1, 2))  \\ \textbf{Нет}} & \specialcell{Прямой ход} \\ \hline
+21-29   & \specialcell{...} & \specialcell{} \\ \hline
+30   & \specialcell{owner(Surname, car(Name, \_, \_, Price))=\\ owner(<<Thomas>>, car(<<Lada>>, <<black>>, <<pbd001>>, \\ 5000)) \\ \textbf{Нет}} & \specialcell{Прямой ход} \\ \hline
+31-33   & \specialcell{...} & \specialcell{} \\ \hline
+34   & \specialcell{owner(Surname, car(Name, \_, \_, Price))=\\ owner(<<Artur>>, land(<<Hotel>>, 500, 4000)) \\ \textbf{Нет}} & \specialcell{Прямой ход} \\ \hline
+35   & \specialcell{...} & \specialcell{} \\ \hline
+36  & \specialcell{owner(Surname, car(Name, \_, \_, Price))=\\ owner(<<Artur>>, car(<<Bentley>>, <<brown>>, <<GGG777>>, \\ 10000)) \\ \textbf{Успех} \\ \textbf{Surname = <<Artur>>} \\ \textbf{Name = <<Bentley>>} \\ \textbf{Price = 10000}} & \specialcell{Решение найдено \\ Откат} \\ \hline
+
+\end{tabular}
+\end{table}
+
+\newpage
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+
+37  & \specialcell{owner(Surname, car(Name, \_, \_, Price))=\\ prop\_names(Surname, Name) \\ \textbf{Нет}} & \specialcell{\specialcell{Прямой ход}} \\ \hline
+38-42  & \specialcell{...} & \specialcell{} \\ \hline
+43  & \specialcell{owner(Surname, car(Name, \_, \_, Price))=\\ sum\_price(Surname, S) \\ \textbf{Нет}} & \specialcell{Откат к шагу 19 \\ Унификация \\ owner(Surname, building)} \\ \hline
+44-58  & \specialcell{...} & \specialcell{} \\ \hline
+59  & \specialcell{owner(Surname, building(Name, \_, Price)) = \\ owner(<<Artur>>, building(<<Bar>>, 4, \\ 5000)) \\ \textbf{Успех} \\ \textbf{Surname = <<Artur>>} \\ \textbf{Name = <<Bar>>} \\ \textbf{Price = 5000}} & \specialcell{Решение найдено \\ Откат} \\ \hline
+60-66  & \specialcell{...} & \specialcell{} \\ \hline
+67  & \specialcell{owner(Surname, building(Name, \_, Price)) = \\ sum\_price(Surname, S)} & \specialcell{Откат к шагу 19 \\ Унификация \\ owner(Surname, land)} \\ \hline
+68-81  & \specialcell{...} & \specialcell{} \\ \hline
+82  & \specialcell{owner(Surname, land(Name, \_, Price)) = \\ owner(<<Artur>>, land(<<Hotel>>, 500, 4000)) \\ \textbf{Успех} \\ \textbf{Surname = <<Artur>>} \\ \textbf{Name = <<Hotel>>} \\ \textbf{Price = 4000}} & \specialcell{Решение найдено \\ Откат} \\ \hline
+83-90  & \specialcell{...} & \specialcell{} \\ \hline
+91  & \specialcell{owner(Surname, land(Name, \_, Price)) = \\ sum\_price(Surname, S) \\ \textbf{Нет}} & \specialcell{Откат к шагу 19 \\ Унификация \\ owner(Surname, water)} \\ \hline
+92-114  & \specialcell{...} & \specialcell{} \\ \hline
+
+\end{tabular}
+\end{table}
+
+\newpage
+\noindent
+
+\begin{table}[t!]
+\begin{tabular}{|l|l|l|}
+\hline
+\specialcell{№ шага} & \specialcell{Сравниваемые термы; \\ результат; подстановки}                                                                                                                                                                                                                                                                                                                                                                                                                     & \specialcell{Дальнейшие \\ действия} \\ \hline
+
+115  & \specialcell{owner(Surname, water(Name, \\ \_, \_, Price)) = sum\_price(Surname, S) \\ \textbf{Нет}} & \specialcell{Откат к шагу 19 \\ Унификация \\ prop\_prices \\ (<<John>>, Name, Price)} \\ \hline
+116-119  & \specialcell{...} & \specialcell{} \\ \hline
+120  & \specialcell{prop\_prices(<<John>>, Name, Price)=\\sum\_price(Surname, S) \\ \textbf{Нет}} & \specialcell{Прямой ход} \\ \hline
+121 & Конец базы знаний & \\ \hline
+
+\end{tabular}
+\end{table}

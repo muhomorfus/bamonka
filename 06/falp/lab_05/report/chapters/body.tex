@@ -1,0 +1,172 @@
+\setcounter{page}{3}
+
+\chapter{Практическая часть}
+
+\section{Задание 1}
+\subsection*{Задание}
+Напишите функцию, которая уменьшает на 10 все числа из списка-аргумента этой
+функции, проходя по верхнему уровню списковых ячеек. (* Список смешанный структурированный)
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f1 (x)
+	(mapcar #'(lambda (el) (if (numberp el) (- el 10) el)) x)
+)
+\end{minted}
+\end{code}
+
+\section{Задание 2}
+\subsection*{Задание}
+Написать функцию которая получает как аргумент список чисел, а возвращает список квадратов этих чисел в том же порядке.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f2 (x)
+	(mapcar #'(lambda (el) (* el el)) x)
+)
+\end{minted}
+\end{code}
+
+\section{Задание 3}
+\subsection*{Задание}
+Напишите функцию, которая умножает на заданное число-аргумент все числа из заданного списка-аргумента, когда:
+\begin{enumerate}
+	\item все элементы списка~---~числа;
+	\item элементы списка~---~любые объекты.
+\end{enumerate}
+
+\subsection*{Решение}
+Приведен вариант 2. Для первого варианта убрать проверку на число.
+
+\begin{code}
+\begin{minted}{lisp}
+(defun f3 (x n)
+	(mapcar #'(lambda (el) (if (numberp el) (* el n) el)) x)
+)
+\end{minted}
+\end{code}
+
+\section{Задание 4}
+\subsection*{Задание}
+Написать функцию, которая по своему списку-аргументу lst определяет является ли он палиндромом (то есть равны ли lst и (reverse lst)), для одноуровнего смешанного списка.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun my_and (x y) (and x y))
+(defun f4 (lst)
+        (reduce #'my_and (mapcar #'equalp lst (reverse lst)))
+)
+\end{minted}
+\end{code}
+
+\section{Задание 5}
+\subsection*{Задание}
+Используя функционалы, написать предикат set-equal, который возвращает t, если два его множества-аргумента (одноуровневые списки) содержат одни и те же элементы, порядок которых не имеет значения.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun in_element (e x)
+	(reduce
+		#'(lambda (res elem) (or res (equal elem e)))
+		x
+		:initial-value NIL
+	)
+)
+
+(defun in (x y)
+	(reduce
+		#'my_and
+		(mapcar #'(lambda (elem) (in_element elem y)) x)
+		:initial-value T
+	)
+)
+
+(defun set-equal (x y)
+	(and (in x y) (in y x))
+)
+\end{minted}
+\end{code}
+
+\section{Задание 6}
+\subsection*{Задание}
+Напишите функцию, select-between, которая из списка-аргумента, содержащего только числа, выбирает только те, которые расположены между двумя указанными числами - границами-аргументами и возвращает их в виде списка (упорядоченного по возрастанию (+ 2 балла)).
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f5 (x a b)
+	(reduce
+		#'(lambda (res elem) 
+			(if (< a elem b) (append res (cons elem nil)) res)
+		)
+		x
+		:initial-value ()
+	)
+)
+\end{minted}
+\end{code}
+
+\section{Задание 7}
+\subsection*{Задание}
+Написать функцию, вычисляющую декартово произведение двух своих списков- аргументов. (Напомним, что А х В это множество всевозможных пар (a b), где а принадлежит А, b принадлежит В).
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f6 (x y)
+    (reduce
+        #'append
+        (mapcar
+            #'(lambda (elem1)
+                (mapcar #'(lambda (elem2) (cons elem1 elem2)) y)
+            )
+            x
+        )
+        :initial-value ()
+    )
+)
+\end{minted}
+\end{code}
+
+\section{Задание 8}
+\subsection*{Задание}
+Почему так реализовано reduce, в чем причина? 
+
+\begin{code}
+\begin{minted}{lisp}
+(reduce #'+ ()) -> 0
+\end{minted}
+\end{code}
+
+\begin{code}
+\begin{minted}{lisp}
+(reduce #'* ()) -> 1
+\end{minted}
+\end{code}
+
+\subsection*{Решение}
+В данном случае, \texttt{reduce} применяет функцию-аргумент к нулевому количеству аргументов. Так как при отсутствии аргументов, функции \texttt{+} и \texttt{*} возвращают нейтральные элементы, то \texttt{reduce} возвращает соответствующее значение.
+
+\section{Задание 9}
+\subsection*{Задание}
+* Пусть list-of-list список, состоящий из списков. Написать функцию, которая вычисляет сумму длин всех элементов list-of-list (количество атомов), т.е. например для аргумента
+((1 2) (3 4)) -> 4.
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{lisp}
+(defun f (l)
+	(reduce
+		(lambda (res elem) (+ res (length elem)))
+		l
+		:initial-value 0
+	)
+)
+\end{minted}
+\end{code}
+
+\newpage

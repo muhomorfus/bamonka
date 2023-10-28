@@ -1,0 +1,74 @@
+stages:
+  - lint
+  - build
+  - deploy
+
+Lint:
+  stage: lint
+  image: node:lts
+  before_script:
+    - npm install
+  script:
+    - npm run lint
+
+Build static:
+  stage: build
+  needs:
+    - Lint
+  image: node:lts
+  before_script:
+    - npm install
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 30 days
+
+Deploy (windows-amd64):
+  stage: deploy
+  needs:
+    - Build static
+  image: golang
+  script:
+    - cd server
+    - go mod tidy
+    - GOOS=windows GOARCH=amd64 go build -o ../balteca-frontend.exe main.go
+    - cd ..
+  artifacts:
+    paths:
+      - balteca-frontend.exe
+      - dist/
+    expire_in: 1 week
+
+Deploy (darwin-arm64):
+  stage: deploy
+  needs:
+    - Build static
+  image: golang
+  script:
+    - cd server
+    - go mod tidy
+    - GOOS=darwin GOARCH=arm64 go build -o ../balteca-frontend main.go
+    - cd ..
+  artifacts:
+    paths:
+      - balteca-frontend
+      - dist/
+    expire_in: 1 week
+
+Deploy (linux-amd64):
+  stage: deploy
+  needs:
+    - Build static
+  image: golang
+  script:
+    - cd server
+    - go mod tidy
+    - GOOS=linux GOARCH=amd64 go build -o ../balteca-frontend main.go
+    - cd ..
+  artifacts:
+    paths:
+      - balteca-frontend
+      - dist/
+    expire_in: 1 week

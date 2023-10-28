@@ -1,0 +1,77 @@
+\setcounter{page}{3}
+
+\chapter{Теоретическая часть}
+Программа на Prolog состоит из разделов. Каждый раздел начинается со своего заголовка. Структура программы:
+
+\begin{itemize}
+	\item директивы компилятора — зарезервиорванные символьные константы;
+	\item CONSTANTS — раздел описания констант;
+	\item DOMAINS — раздел описания доменов;
+	\item DATABASE — раздел описания предикатов внутренней базы данных;
+	\item PREDICATES — раздел описания предикатов;
+	\item CLAUSES — раздел описания предложений базы знаний;
+	\item GOAL — раздел описания внутренней цели (вопроса).
+\end{itemize}
+
+\newpage
+
+\chapter{Практическая часть}
+
+\section{Задание 1}
+\subsection*{Задание}
+Запустить среду Visual Prolog 5.2. Настроить утилиту TestGoal.
+Запустить тестовую программу, проанализировать реакцию системы и множество ответов.
+Разработать свою программу~---~«Телефонный справочник». Абоненты могут иметь несколько телефонов. Протестировать работу программы, используя разные вопросы.
+
+\begin{itemize}
+  \item «Телефонный справочник»: фамилия, номер телефона, адрес~---~структура (город, улица, номер дома, номер квартиры).
+  \item «Автомобили»: фамилия владельца, марка, цвет, стоимость, номер.
+\end{itemize}
+
+Владелец может иметь несколько телефонов, автомобилей (Факты). В разных городах есть однофамильцы, в одном городе~---~фамилия уникальна.
+Используя конъюнктивное правило и простой вопрос, обеспечить возможность поиска:
+
+\begin{itemize}
+  \item По Марке и Цвету автомобиля найти Фамилию, Город, Телефон. Лишней информации не находить и не передавать!!!
+\end{itemize}
+
+\subsection*{Решение}
+\begin{code}
+\begin{minted}{prolog}
+domains
+  name, phone = symbol.
+  city, street = symbol.
+  model, color, number = symbol.
+  building, appartment = integer.
+  price = integer.
+  address = address(city, street, building, appartment).
+
+predicates
+  nondeterm phone_book(name, phone, address).
+  nondeterm car(name, model, color, price, number).
+  nondeterm info_by_car(model, color, name, city, phone).
+
+clauses
+  phone_book("Tomas", "123-456", address("London", "Temza", 3, 1)).
+  phone_book("Tomas", "123-450", address("Paris", "Blabla", 2, 55)).
+  phone_book("John", "123-111", address("London", "Temza", 333, 61)).
+  phone_book("Artur", "123-000", address("Moskow", "Tverskaya", 15, 112)).
+  
+  car("Tomas", "Bentley", "black", 1200, "AE222K").
+  car("Tomas", "Rolce Royce", "pink", 1500, "AE341C").
+  car("Artur", "Bentley", "black", 1000, "AT111K").
+  car("Vasya", "Zhigulie", "white", 3000, "EK228X").
+  
+  info_by_car(Model, Color, Name, City, Phone) :- 
+  car(Name, Model, Color, _, _), 
+  phone_book(Name, Phone, address(City, _, _, _)).
+  
+goal
+  %car("Tomas", Model, Color, Price, Number).
+  %car(Name, "Bentley", "black", _, Number).
+  %phone_book(Name, Phone, address("London", Street, House, Room)).
+  info_by_car("Bentley", "black", Name, City, Phone).
+\end{minted}
+\end{code}
+
+\newpage

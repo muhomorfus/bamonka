@@ -1,0 +1,65 @@
+stages:
+  - lint
+  - test
+  - deploy
+
+Lint:
+  stage: lint
+  image: golang
+  before_script:
+    - go mod tidy
+    - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.1
+  script:
+    - golangci-lint run --skip-dirs internal/openapi
+
+Test:
+  stage: test
+  needs:
+    - Lint
+  image: golang
+  before_script:
+    - go mod tidy
+  script:
+    - go test ./...
+
+Deploy (windows-amd64):
+  stage: deploy
+  needs:
+    - Test
+  image: golang
+  before_script:
+    - go mod tidy
+  script:
+    - GOOS=windows GOARCH=amd64 go build -o balteca-backend.exe cmd/balteca/main.go
+  artifacts:
+    paths:
+      - balteca-backend.exe
+    expire_in: 1 week
+
+Deploy (darwin-arm64):
+  stage: deploy
+  needs:
+    - Test
+  image: golang
+  before_script:
+    - go mod tidy
+  script:
+    - GOOS=darwin GOARCH=arm64 go build -o balteca-backend cmd/balteca/main.go
+  artifacts:
+    paths:
+      - balteca-backend
+    expire_in: 1 week
+
+Deploy (linux-amd64):
+  stage: deploy
+  needs:
+    - Test
+  image: golang
+  before_script:
+    - go mod tidy
+  script:
+    - GOOS=linux GOARCH=amd64 go build -o balteca-backend cmd/balteca/main.go
+  artifacts:
+    paths:
+      - balteca-backend
+    expire_in: 1 week

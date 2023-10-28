@@ -1,0 +1,58 @@
+{
+  "AdminPostgres": {
+    "Host": "localhost",
+    "Port": 5437,
+    "User": "admin",
+    "Password": "admin_password",
+    "Database": "balteca"
+  },
+
+  "HRPostgres": {
+    "Host": "localhost",
+    "Port": 5437,
+    "User": "recruiter",
+    "Password": "recruiter_password",
+    "Database": "balteca"
+  },
+
+  "UserPostgres": {
+    "Host": "localhost",
+    "Port": 5437,
+    "User": "employer",
+    "Password": "employer_password",
+    "Database": "balteca"
+  },
+
+  "Logger": {
+    "Level": "info",
+    "Path": "app.log"
+  },
+
+  "Port": 9095,
+
+  "Cache": {
+    "TTL": 60000,
+    "Size": 1000000
+  },
+
+  "Token": {
+    "Expire": 187200,
+    "Secret": "abcabc"
+  },
+
+  "Initial": {
+    "DepartmentName": "Холдинг «Близнецы»",
+    "Nickname": "muhomorfus",
+    "Name": "Алексей Княжев",
+    "Password": "password"
+  },
+
+  "Redis": {
+    "Address": "localhost:6379",
+    "Password": "",
+    "DB": 0
+  },
+
+  "CacheType": "nop",
+  "CacheCoder": "gzip_cbor"
+}

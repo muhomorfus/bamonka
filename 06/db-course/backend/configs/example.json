@@ -1,0 +1,26 @@
+{
+  "Postgres": {
+    "Host": "localhost",
+    "Port": 5435,
+    "User": "user",
+    "Password": "password",
+    "Database": "backend"
+  },
+
+  "Logger": {
+    "Level": "info",
+    "Path": "app.log"
+  },
+
+  "Port": 8000,
+
+  "Cache": {
+    "TTL": 60,
+    "Size": 1000
+  },
+
+  "Token": {
+    "Expire": 3600,
+    "Secret": "abc"
+  }
+}

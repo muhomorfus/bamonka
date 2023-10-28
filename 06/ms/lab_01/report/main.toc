@@ -1,0 +1,13 @@
+\babel@toc {russian}{}\relax 
+\thispagestyle {empty}
+\contentsline {chapter}{\numberline {1.}Задание}{3}{}%
+\contentsline {chapter}{\numberline {2.}Теоретическая часть}{4}{}%
+\contentsline {section}{\numberline {2.1.}Формулы для вычисления величин}{4}{}%
+\contentsline {section}{\numberline {2.2.}Определение эмпирической плотности и гистограммы}{4}{}%
+\contentsline {section}{\numberline {2.3.}Эмпирическая функция распределения}{5}{}%
+\contentsline {section}{\numberline {2.4.}Функция плотности и функция распределения нормальной случайной величины}{5}{}%
+\contentsline {chapter}{\numberline {3.}Практическая часть}{7}{}%
+\contentsline {section}{\numberline {3.1.}Код программы}{7}{}%
+\contentsline {section}{\numberline {3.2.}Результат работы программы}{8}{}%
+\contentsline {subsection}{\numberline {3.2.1.}Числовые характеристики}{8}{}%
+\contentsline {subsection}{\numberline {3.2.2.}Графики}{9}{}%
