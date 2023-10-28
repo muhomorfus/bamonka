@@ -1,0 +1,41 @@
+# Сброс настроек
+reset
+
+set terminal svg size 1920, 1080
+
+# Вывод
+set output "../data/graph.svg"
+
+# 1080/1920 как отношение осей
+set size ratio 0.5625
+
+# Подпись горизонтальной оси
+set xlabel "Количество элементов, шт"
+
+# Подпись вертикальной оси
+set ylabel "Время, мкс"
+
+# Диапазон оси x
+set xrange [0:13000]
+
+# Включение сетки
+set grid
+
+# Заголовок рисунка
+set title "Зависимость скорости"
+
+# Интерполянты с коэффициентами по МНК
+InterpolantCube0(x) = a0 * x + b0 * x * x + c0 * x * x * x
+fit InterpolantCube0(x) "../data/plot/0.txt" via a0, b0, c0
+
+InterpolantCube1(x) = a1 * x + b1 * x * x + c1 * x * x * x
+fit InterpolantCube1(x) "../data/plot/1.txt" via a1, b1, c1
+
+InterpolantCube2(x) = a2 * x + b2 * x * x + c2 * x * x * x
+fit InterpolantCube2(x) "../data/plot/2.txt" via a2, b2, c2
+
+# Отрисовка
+set key top left
+plot InterpolantCube0(x) title 'Работа с a[i]', \
+     InterpolantCube1(x) title 'Работа с *(a + i)', \
+     InterpolantCube2(x) title 'Работа с указателями',

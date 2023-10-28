@@ -1,0 +1,1 @@
+o shared/invalid_size.txt result.txt

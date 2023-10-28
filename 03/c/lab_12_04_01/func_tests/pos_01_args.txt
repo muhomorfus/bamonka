@@ -1,0 +1,1 @@
+func_tests/shared/all_equal.txt out/out.txt

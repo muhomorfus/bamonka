@@ -1,0 +1,5 @@
+2
+Apples
+15
+Bananas
+30

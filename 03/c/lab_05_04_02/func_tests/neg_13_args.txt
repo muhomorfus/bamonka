@@ -1,0 +1,1 @@
+sb shared/copy_data_08.bin shared/out.bin

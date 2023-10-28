@@ -1,0 +1,5 @@
+string no
+with no
+symbols no
+or yes
+no no

@@ -1,0 +1,1 @@
+func_tests/shared/empty.txt out/out.txt

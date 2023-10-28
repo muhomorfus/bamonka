@@ -1,0 +1,1 @@
+func_tests/shared/invalid_numbers.txt out/out.txt

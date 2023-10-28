@@ -1,0 +1,11 @@
+5
+PS4
+25000
+Computer
+100000
+Phone
+30000
+Tablet
+40000
+MP3-player
+10000

@@ -1,0 +1,1 @@
+m shared/3x2.txt shared/2x3.txt result.txt

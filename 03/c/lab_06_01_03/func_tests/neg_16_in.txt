@@ -1,0 +1,7 @@
+2
+Apples
+10
+Bananas
+20
+Oranges
+70

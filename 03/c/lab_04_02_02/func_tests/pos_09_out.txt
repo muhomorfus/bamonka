@@ -1,0 +1,4 @@
+some yes
+string no
+with yes
+symbols no

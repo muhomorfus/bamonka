@@ -1,0 +1,101 @@
+\babel@toc {russian}{}
+\contentsline {section}{\numberline {1}Условие задачи}{5}{}%
+\contentsline {section}{\numberline {2}Техническое задание}{6}{}%
+\contentsline {subsection}{\numberline {2.1}Общие входные данные}{6}{}%
+\contentsline {subsection}{\numberline {2.2}Входные и выходные данные пунктов меню}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.1}Моделирование процесса с использованием очереди-массива}{7}{}%
+\contentsline {paragraph}{Входные данные}{7}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.2}Моделирование процесса с использованием очереди-списка}{7}{}%
+\contentsline {paragraph}{Входные данные}{7}{}%
+\contentsline {paragraph}{Выходные данные}{8}{}%
+\contentsline {subsubsection}{\numberline {2.2.3}Сравнение скорости работы различных реализаций очереди}{8}{}%
+\contentsline {paragraph}{Входные данные}{8}{}%
+\contentsline {paragraph}{Выходные данные}{8}{}%
+\contentsline {subsubsection}{\numberline {2.2.4}Сравнение потребления памяти различных реализаций очереди}{8}{}%
+\contentsline {paragraph}{Входные данные}{8}{}%
+\contentsline {paragraph}{Выходные данные}{8}{}%
+\contentsline {subsection}{\numberline {2.3}Действие программы}{9}{}%
+\contentsline {subsection}{\numberline {2.4}Обращение к программе}{9}{}%
+\contentsline {subsection}{\numberline {2.5}Аварийные ситуации}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.1}Общие аварийные ситуации}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.2}Пункт меню №1}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.3}Пункт меню №2}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.4}Пункт меню №3}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.5}Пункт меню №4}{10}{}%
+\contentsline {section}{\numberline {3}Структуры данных}{11}{}%
+\contentsline {subsection}{\numberline {3.1}Модуль для работы с ошибками}{11}{}%
+\contentsline {subsubsection}{\numberline {3.1.1}Типы данных}{11}{}%
+\contentsline {subsubsection}{\numberline {3.1.2}Функции}{11}{}%
+\contentsline {subsection}{\numberline {3.2}Модуль для работы со строками}{12}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Основные константы}{12}{}%
+\contentsline {subsubsection}{\numberline {3.2.2}Типы данных}{12}{}%
+\contentsline {subsubsection}{\numberline {3.2.3}Функции}{12}{}%
+\contentsline {subsection}{\numberline {3.3}Модуль <<ядра>> программы}{13}{}%
+\contentsline {subsubsection}{\numberline {3.3.1}Функции}{13}{}%
+\contentsline {subsection}{\numberline {3.4}Модуль для тестирования скорости работы}{13}{}%
+\contentsline {subsubsection}{\numberline {3.4.1}Основные константы}{13}{}%
+\contentsline {subsubsection}{\numberline {3.4.2}Функции}{13}{}%
+\contentsline {subsection}{\numberline {3.5}Модуль для работы с очередью-массивом}{14}{}%
+\contentsline {subsubsection}{\numberline {3.5.1}Основные константы}{14}{}%
+\contentsline {subsubsection}{\numberline {3.5.2}Типы данных}{14}{}%
+\contentsline {subsubsection}{\numberline {3.5.3}Функции}{15}{}%
+\contentsline {subsection}{\numberline {3.6}Модуль для работы с очередью-списком}{16}{}%
+\contentsline {subsubsection}{\numberline {3.6.1}Типы данных}{16}{}%
+\contentsline {subsubsection}{\numberline {3.6.2}Функции}{16}{}%
+\contentsline {subsection}{\numberline {3.7}Модуль для работы с обрабатывающий автоматом}{17}{}%
+\contentsline {subsubsection}{\numberline {3.7.1}Основные константы}{17}{}%
+\contentsline {subsubsection}{\numberline {3.7.2}Типы данных}{18}{}%
+\contentsline {subsubsection}{\numberline {3.7.3}Функции}{19}{}%
+\contentsline {subsection}{\numberline {3.8}Модуль для моделирования процесса}{20}{}%
+\contentsline {subsubsection}{\numberline {3.8.1}Основные константы}{20}{}%
+\contentsline {subsubsection}{\numberline {3.8.2}Типы данных}{21}{}%
+\contentsline {subsubsection}{\numberline {3.8.3}Функции}{21}{}%
+\contentsline {section}{\numberline {4}Описания алгоритмов}{23}{}%
+\contentsline {subsection}{\numberline {4.1}Пункт меню №1}{23}{}%
+\contentsline {subsection}{\numberline {4.2}Пункт меню №2}{23}{}%
+\contentsline {subsection}{\numberline {4.3}Пункт меню №3}{23}{}%
+\contentsline {subsection}{\numberline {4.4}Пункт меню №4}{23}{}%
+\contentsline {section}{\numberline {5}Тестирование}{25}{}%
+\contentsline {subsection}{\numberline {5.1}<<Негативные>> тесты}{25}{}%
+\contentsline {subsubsection}{\numberline {5.1.1}Ввод невалидного пункта меню}{25}{}%
+\contentsline {subsubsection}{\numberline {5.1.2}Ввод некорректного пункта меню}{25}{}%
+\contentsline {subsubsection}{\numberline {5.1.3}Невалидное время}{25}{}%
+\contentsline {subsubsection}{\numberline {5.1.4}Меньшая граница времени больше большей}{25}{}%
+\contentsline {subsubsection}{\numberline {5.1.5}Ввод невалидного количества элементов}{26}{}%
+\contentsline {subsubsection}{\numberline {5.1.6}Ввод неверного количества элементов}{26}{}%
+\contentsline {subsection}{\numberline {5.2}<<Позитивные>> тесты}{26}{}%
+\contentsline {subsubsection}{\numberline {5.2.1}Моделирование с параметрами из задания для массива}{26}{}%
+\contentsline {subsubsection}{\numberline {5.2.2}Моделирование с параметрами из задания для списка}{28}{}%
+\contentsline {subsubsection}{\numberline {5.2.3}Заявки в первую очередь поступают очень часто}{28}{}%
+\contentsline {subsubsection}{\numberline {5.2.4}Автомат очень быстро обрабатывает заявки}{29}{}%
+\contentsline {subsubsection}{\numberline {5.2.5}Все времена одинаковы}{30}{}%
+\contentsline {subsubsection}{\numberline {5.2.6}Заявки в первой очереди приходят и обрабатываются очень быстро}{31}{}%
+\contentsline {subsubsection}{\numberline {5.2.7}Заявки в первой очереди приходят и обрабатываются очень медленно}{32}{}%
+\contentsline {subsubsection}{\numberline {5.2.8}Сравнение скорости работы очереди-массива и очереди-списка}{33}{}%
+\contentsline {subsubsection}{\numberline {5.2.9}Сравнение потребления памяти очереди-массива и очереди-списка}{33}{}%
+\contentsline {section}{\numberline {6}Оценка эффективности}{34}{}%
+\contentsline {subsection}{\numberline {6.1}Объем занимаемой памяти}{34}{}%
+\contentsline {subsection}{\numberline {6.2}Скорость операций}{35}{}%
+\contentsline {subsubsection}{\numberline {6.2.1}Push}{35}{}%
+\contentsline {subsubsection}{\numberline {6.2.2}Pop}{35}{}%
+\contentsline {section}{\numberline {7}Контрольные вопросы}{36}{}%
+\contentsline {subsection}{\numberline {7.1}Что такое FIFO и LIFO?}{36}{}%
+\contentsline {subsection}{\numberline {7.2}Каким образом, и какой объем памяти выделяется под хранение очереди при различной ее реализации?}{36}{}%
+\contentsline {subsubsection}{\numberline {7.2.1}Реализация в виде массива}{36}{}%
+\contentsline {subsubsection}{\numberline {7.2.2}Реализация в виде списка}{36}{}%
+\contentsline {subsection}{\numberline {7.3}Каким образом освобождается память при удалении элемента из очереди при ее различной реализации?}{36}{}%
+\contentsline {subsubsection}{\numberline {7.3.1}Реализация в виде массива}{36}{}%
+\contentsline {subsubsection}{\numberline {7.3.2}Реализация в виде списка}{36}{}%
+\contentsline {subsection}{\numberline {7.4}Что происходит с элементами очереди при ее просмотре?}{37}{}%
+\contentsline {subsection}{\numberline {7.5}От чего зависит эффективность физической реализации очереди?}{37}{}%
+\contentsline {subsection}{\numberline {7.6}Каковы достоинства и недостатки различных реализаций очереди в зависимости от выполняемых над ней операций?}{37}{}%
+\contentsline {subsubsection}{\numberline {7.6.1}Реализация в виде массива}{37}{}%
+\contentsline {subsubsection}{\numberline {7.6.2}Реализация в виде списка}{37}{}%
+\contentsline {subsection}{\numberline {7.7}Что такое фрагментация памяти?}{37}{}%
+\contentsline {subsection}{\numberline {7.8}Для чего нужен алгоритм <<близнецов>>?}{38}{}%
+\contentsline {subsection}{\numberline {7.9}Какие дисциплины выделения памяти вы знаете?}{38}{}%
+\contentsline {subsection}{\numberline {7.10}На что необходимо обратить внимание при тестировании программы?}{38}{}%
+\contentsline {subsection}{\numberline {7.11}Каким образом физически выделяется и освобождается память при динамических запросах?}{38}{}%
+\contentsline {section}{\numberline {8}Вывод}{39}{}%
+\contentsline {section}{Список литературы}{40}{}%

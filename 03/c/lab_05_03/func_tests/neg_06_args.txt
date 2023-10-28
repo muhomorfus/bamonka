@@ -1,0 +1,1 @@
+p shared/copy_data_06.bin

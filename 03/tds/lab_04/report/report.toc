@@ -1,0 +1,118 @@
+\babel@toc {russian}{}
+\contentsline {section}{\numberline {1}Условие задачи}{5}{}%
+\contentsline {section}{\numberline {2}Техническое задание}{6}{}%
+\contentsline {subsection}{\numberline {2.1}Общие входные данные}{6}{}%
+\contentsline {subsection}{\numberline {2.2}Входные и выходные данные пунктов меню}{6}{}%
+\contentsline {subsubsection}{\numberline {2.2.1}Добавление элемента в стек-массив}{6}{}%
+\contentsline {paragraph}{Входные данные}{6}{}%
+\contentsline {paragraph}{Выходные данные}{6}{}%
+\contentsline {subsubsection}{\numberline {2.2.2}Добавление элемента в стек-список}{6}{}%
+\contentsline {paragraph}{Входные данные}{6}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.3}Удаление элемента из стека-массива}{7}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.4}Удаление элемента из стека-списка}{7}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.5}Вывод перевернутых строк в обратном порядке из стека-массива}{7}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.6}Вывод перевернутых строк в обратном порядке из стека-списка}{7}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.7}Вывод состояния стека-массива}{7}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.8}Вывод состояния стека-списка}{7}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.9}Вывод списка свободных областей для стека-списка}{7}{}%
+\contentsline {paragraph}{Выходные данные}{7}{}%
+\contentsline {subsubsection}{\numberline {2.2.10}Сравнение скорости работы стеков двух типов}{8}{}%
+\contentsline {paragraph}{Входные данные}{8}{}%
+\contentsline {paragraph}{Выходные данные}{8}{}%
+\contentsline {subsubsection}{\numberline {2.2.11}Сравнение объема занимаемой памяти стеков двух типов}{8}{}%
+\contentsline {paragraph}{Входные данные}{8}{}%
+\contentsline {paragraph}{Выходные данные}{8}{}%
+\contentsline {subsection}{\numberline {2.3}Действие программы}{8}{}%
+\contentsline {subsection}{\numberline {2.4}Обращение к программе}{8}{}%
+\contentsline {subsection}{\numberline {2.5}Аварийные ситуации}{8}{}%
+\contentsline {subsubsection}{\numberline {2.5.1}Общие аварийные ситуации}{8}{}%
+\contentsline {subsubsection}{\numberline {2.5.2}Пункт меню №1}{8}{}%
+\contentsline {subsubsection}{\numberline {2.5.3}Пункт меню №2}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.4}Пункт меню №3}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.5}Пункт меню №4}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.6}Пункт меню №5}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.7}Пункт меню №6}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.8}Пункт меню №7}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.9}Пункт меню №8}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.10}Пункт меню №9}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.11}Пункт меню №10}{9}{}%
+\contentsline {subsubsection}{\numberline {2.5.12}Пункт меню №11}{9}{}%
+\contentsline {section}{\numberline {3}Структуры данных}{10}{}%
+\contentsline {subsection}{\numberline {3.1}Модуль для работы с ошибками}{10}{}%
+\contentsline {subsubsection}{\numberline {3.1.1}Типы данных}{10}{}%
+\contentsline {subsubsection}{\numberline {3.1.2}Функции}{10}{}%
+\contentsline {subsection}{\numberline {3.2}Модуль для работы со строками}{11}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Основные константы}{11}{}%
+\contentsline {subsubsection}{\numberline {3.2.2}Типы данных}{11}{}%
+\contentsline {subsubsection}{\numberline {3.2.3}Функции}{11}{}%
+\contentsline {subsection}{\numberline {3.3}Модуль для работы со списком указателей}{12}{}%
+\contentsline {subsubsection}{\numberline {3.3.1}Типы данных}{12}{}%
+\contentsline {subsubsection}{\numberline {3.3.2}Функции}{12}{}%
+\contentsline {subsection}{\numberline {3.4}Модуль <<ядра>> программы}{13}{}%
+\contentsline {subsubsection}{\numberline {3.4.1}Функции}{13}{}%
+\contentsline {subsection}{\numberline {3.5}Модуль для тестирования скорости работы}{13}{}%
+\contentsline {subsubsection}{\numberline {3.5.1}Основные константы}{13}{}%
+\contentsline {subsubsection}{\numberline {3.5.2}Функции}{13}{}%
+\contentsline {subsection}{\numberline {3.6}Модуль для работы со стеком-массивом}{14}{}%
+\contentsline {subsubsection}{\numberline {3.6.1}Основные константы}{14}{}%
+\contentsline {subsubsection}{\numberline {3.6.2}Типы данных}{15}{}%
+\contentsline {subsubsection}{\numberline {3.6.3}Функции}{15}{}%
+\contentsline {subsection}{\numberline {3.7}Модуль для работы со стеком-списком}{16}{}%
+\contentsline {subsubsection}{\numberline {3.7.1}Типы данных}{16}{}%
+\contentsline {subsubsection}{\numberline {3.7.2}Функции}{16}{}%
+\contentsline {section}{\numberline {4}Описания алгоритмов}{18}{}%
+\contentsline {subsection}{\numberline {4.1}Пункт меню №1}{18}{}%
+\contentsline {subsection}{\numberline {4.2}Пункт меню №2}{18}{}%
+\contentsline {subsection}{\numberline {4.3}Пункт меню №3}{18}{}%
+\contentsline {subsection}{\numberline {4.4}Пункт меню №4}{18}{}%
+\contentsline {subsection}{\numberline {4.5}Пункт меню №5}{18}{}%
+\contentsline {subsection}{\numberline {4.6}Пункт меню №6}{19}{}%
+\contentsline {subsection}{\numberline {4.7}Пункт меню №7}{19}{}%
+\contentsline {subsection}{\numberline {4.8}Пункт меню №8}{19}{}%
+\contentsline {subsection}{\numberline {4.9}Пункт меню №9}{19}{}%
+\contentsline {subsection}{\numberline {4.10}Пункт меню №10}{19}{}%
+\contentsline {subsection}{\numberline {4.11}Пункт меню №11}{19}{}%
+\contentsline {section}{\numberline {5}Тестирование}{20}{}%
+\contentsline {subsection}{\numberline {5.1}<<Негативные>> тесты}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.1}Ввод невалидного пункта меню}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.2}Ввод некорректного пункта меню}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.3}Ввод слишком длинной строки}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.4}Удаление элемента из пустого стека}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.5}Вывод перевернутых слов из пустого стека}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.6}Вывод состояния пустого стека}{21}{}%
+\contentsline {subsubsection}{\numberline {5.1.7}Ввод невалидного количества элементов}{21}{}%
+\contentsline {subsubsection}{\numberline {5.1.8}Ввод слишком большого количества элементов}{21}{}%
+\contentsline {subsubsection}{\numberline {5.1.9}Ввод слишком маленького количества элементов}{21}{}%
+\contentsline {subsubsection}{\numberline {5.1.10}Переполнение стека-массива}{21}{}%
+\contentsline {subsection}{\numberline {5.2}<<Позитивные>> тесты}{22}{}%
+\contentsline {subsubsection}{\numberline {5.2.1}Добавление элемента в стек-массив}{22}{}%
+\contentsline {subsubsection}{\numberline {5.2.2}Добавление элемента в стек-список}{22}{}%
+\contentsline {subsubsection}{\numberline {5.2.3}Удаление элемента из стека-массива}{22}{}%
+\contentsline {subsubsection}{\numberline {5.2.4}Удаление элемента из стека-списка}{22}{}%
+\contentsline {subsubsection}{\numberline {5.2.5}Вывод состояния стека-массива}{22}{}%
+\contentsline {subsubsection}{\numberline {5.2.6}Вывод перевернутых строк в обратном порядке из стека-массива}{23}{}%
+\contentsline {subsubsection}{\numberline {5.2.7}Вывод состояния стека-списка}{23}{}%
+\contentsline {subsubsection}{\numberline {5.2.8}Вывод перевернутых строк в обратном порядке из стека-списка}{23}{}%
+\contentsline {subsubsection}{\numberline {5.2.9}Вывод списка свободных областей}{24}{}%
+\contentsline {subsubsection}{\numberline {5.2.10}Сравнение стеков по скорости}{24}{}%
+\contentsline {subsubsection}{\numberline {5.2.11}Сравнение стеков по памяти}{25}{}%
+\contentsline {section}{\numberline {6}Оценка эффективности}{26}{}%
+\contentsline {subsection}{\numberline {6.1}Объем занимаемой памяти}{26}{}%
+\contentsline {subsection}{\numberline {6.2}Скорость операций}{26}{}%
+\contentsline {subsubsection}{\numberline {6.2.1}Push}{26}{}%
+\contentsline {subsubsection}{\numberline {6.2.2}Pop}{26}{}%
+\contentsline {section}{\numberline {7}Контрольные вопросы}{27}{}%
+\contentsline {subsection}{\numberline {7.1}Что такое стек?}{27}{}%
+\contentsline {subsection}{\numberline {7.2}Каким образом и сколько памяти выделяется под хранение стека при различной его реализации?}{27}{}%
+\contentsline {subsection}{\numberline {7.3}Каким образом освобождается память при удалении элемента стека при различной реализации стека?}{27}{}%
+\contentsline {subsection}{\numberline {7.4}Что происходит с элементами стека при его просмотре?}{27}{}%
+\contentsline {subsection}{\numberline {7.5}Каким образом эффективнее реализовывать стек? От чего это зависит?}{27}{}%
+\contentsline {section}{\numberline {8}Вывод}{29}{}%
+\contentsline {section}{Список литературы}{30}{}%

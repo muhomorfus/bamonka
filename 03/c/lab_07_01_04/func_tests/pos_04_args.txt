@@ -1,0 +1,1 @@
+func_tests/shared/sorted.txt out/out.txt f

@@ -1,0 +1,14 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define BIG_FLOAT_SIZE 30
+
+#define BIG_FLOAT_MAX_EXPONENT 99999
+#define BIG_FLOAT_MIN_EXPONENT -99999
+
+#define EXP_SYMBOL 'e'
+
+#define BIG_INT_BASE 10
+#define BIG_INT_SIZE BIG_FLOAT_SIZE * 2 + 1
+
+#endif //CONFIG_H

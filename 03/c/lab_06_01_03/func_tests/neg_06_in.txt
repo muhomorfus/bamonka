@@ -1,0 +1,9 @@
+4
+First fruit
+10
+Second fruit
+Eight
+Third fruit
+15
+Fourth fruit
+20

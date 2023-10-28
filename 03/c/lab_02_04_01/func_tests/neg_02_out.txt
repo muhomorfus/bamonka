@@ -1,0 +1,1 @@
+[ERROR] array must have from one to ten elements

@@ -1,0 +1,1 @@
+fb shared/copy_data_08.bin aaa

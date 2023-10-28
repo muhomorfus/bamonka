@@ -1,0 +1,1 @@
+[ERROR] array must have at least one negative number

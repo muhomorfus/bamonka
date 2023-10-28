@@ -1,0 +1,2148 @@
+\documentclass[a4paper,12pt]{extarticle}
+%Gummi|065|=)
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[left=3cm,right=1.5cm,
+    top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{amsmath}
+\usepackage{caption}
+% \usepackage{color}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{verbatimbox}
+\usepackage{verbatim}
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+\usepackage{indentfirst}
+\usepackage{alltt}
+
+\usepackage[cache=false]{minted}
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+
+\linespread{1.3}
+\begin{document}
+
+% НАЧАЛО ТИТУЛЬНОГО ЛИСТА
+
+    \begin{table}[h!]
+     \begin{center}
+     \begin{tabular}{  c  p{0.8\textwidth}  }
+     \raisebox{-\totalheight}{\includegraphics[width=0.15\textwidth, height=30mm]{bmstu.png}}
+      & 
+      \begin{center}
+          Министерство образования и науки Российской Федерации \\
+      Федеральное государственное бюджетное образовательное учреждение высшего образования  \\
+    
+      «Московский государственный технический университет \\
+      имени Н.Э. Баумана» \\
+    
+      (МГТУ им. Н.Э. Баумана)
+      \end{center}
+      \\
+      \hline
+      \end{tabular}
+      \end{center}
+\end{table}
+
+\textbf{ }
+\\
+\textbf{ФАКУЛЬТЕТ: } \underline{Информатика и системы управления}
+\\
+\textbf{КАФЕДРА: } \underline{Программное обеспечение ЭВМ и информационные технологии}
+\\
+\textbf{ДИСЦИПЛИНА: } \underline{Типы и структуры данных}
+\\
+\textbf{ТЕМА: } \underline{Обработка разреженных матриц}
+\\
+\textbf{ВАРИАНТ: } \underline{4}
+
+\vspace{1cm}
+
+\begin{center}
+    \large{\textbf{\underline{ОТЧЕТ ПО ЛАБОРАТОРНОЙ РАБОТЕ №3}}}
+\end{center}
+
+\textbf{ }
+\vspace{1cm}
+\\
+\textbf{Студент: } \hspace{5.2cm} \underset{\text{(подпись, дата)}}{\underline{\hspace{0.3\textwidth}}} \textit{ Княжев А. В. }
+\vspace{0.2cm}
+\\
+\textbf{Преподаватель: } \hspace{4cm} \underset{\text{(подпись, дата)}}{\underline{\hspace{0.3\textwidth}}} \textit{ Силантьева А. В. }
+
+\vspace{7cm}
+\begin{center} \textit{2021 г.} \end{center}
+\thispagestyle{empty}
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Условие задачи}
+Разреженная (содержащая много нулей) матрица хранится в форме трех объектов: 
+\begin{itemize}
+    \item[$*$] вектор A содержит значения ненулевых элементов;
+    \item[$*$] вектор A содержит значения ненулевых элементов;
+    \item[$*$] вектор IA содержит номера строк для элементов вектора A;
+    \item[$*$] связный список JA, в элементе Nk которого находится номер компонент в A и IA, с которых начинается описание столбца Nk матрицы A.
+\end{itemize}
+
+Необходимо:
+\begin{enumerate}
+    \item[$*$] смоделировать операцию умножения матрицы и вектора-столбца, хранящихся в этой форме, с получением результата в той же форме;
+    \item[$*$] произвести операцию умножения, применяя стандартный алгоритм работы с матрицами;
+    \item[$*$] сравнить время выполнения операций и объем памяти при использовании этих 2-х алгоритмов при различном проценте заполнения матриц.
+\end{enumerate}
+
+\newpage
+
+\section{Техническое задание}
+Разработать программу умножения или сложения разреженных матриц. Предусмотреть возможность ввода данных, как с клавиатуры, так и использования заранее подготовленных данных. Матрицы хранятся и выводятся в форме трех объектов. Для небольших матриц можно дополнительно вывести матрицу в виде матрицы. Величина матриц --- любая (допустим, 1000x1000). 
+
+Сравнить эффективность (по памяти и по времени выполнения) стандартных алгоритмов обработки матриц с алгоритмами обработки разреженных матриц при различной степени разреженности матриц и различной размерности матриц.
+
+Программа должна выводить меню с возможностью выбирать варианты. При вводе нуля на запрос варианта меню, происходит выход из программы.
+
+\subsection{Общие входные данные}
+\begin{itemize}
+    \item[$*$] номер выбранного пункта меню.
+\end{itemize}
+
+\subsection{Входные и выходные данные пунктов меню}
+\subsubsection{Ввод матрицы}
+Выводит диалог, позволяющий ввести матрицу. В зависимости от источника ввода (стандартный ввод, файл, случайная генерация) пользователь вводит различный набор данных.
+
+В случае обычного ввода элементов матрицы, пользователь вводит просто все элементы матрицы, в случае же координатного ввода --- количество ненулевых элементов и элементы в формате координаты-значение.
+
+\paragraph{Входные данные для стандартного ввода}
+\begin{itemize}
+    \item[$*$] размер матрицы;
+    \item[$*$] элементы матрицы.
+\end{itemize}
+
+\paragraph{Входные данные для файлового ввода}
+\begin{itemize}
+    \item[$*$] имя файла;
+    \item[$*$] (в файле) размер матрицы;
+    \item[$*$] (в файле) элементы матрицы.
+\end{itemize}
+
+\paragraph{Входные данные для случайной генерации}
+\begin{itemize}
+    \item[$*$] размер матрицы;
+    \item[$*$] процент заполненности.
+\end{itemize}
+
+\paragraph{Выходные данные}
+\begin{itemize}
+    \item[$*$] сообщение об успешности выполнения операции.
+\end{itemize}
+
+\subsubsection{Вывод матрицы}
+Выводит диалог, позволяющий вывести матрицу. В зависимости от типа вывода (стандартная матрица, матрица в разреженном виде), пользователю выводится различный набор данных.
+
+\paragraph{Выходные данные для стандартной матрицы}
+\begin{itemize}
+    \item[$*$] элементы матрицы.
+\end{itemize}
+
+\paragraph{Выходные данные для разреженной матрицы}
+\begin{itemize}
+    \item[$*$] содержимое вектора A;
+    \item[$*$] содержимое вектора IA;
+    \item[$*$] содержимое списка JA.
+\end{itemize}
+
+\subsubsection{Ввод вектора}
+Выводит диалог, позволяющий ввести вектор. В зависимости от источника ввода (стандартный ввод, файл, случайная генерация) пользователь вводит различный набор данных.
+
+\paragraph{Входные данные для стандартного ввода}
+\begin{itemize}
+    \item[$*$] длина вектора;
+    \item[$*$] элементы вектора.
+\end{itemize}
+
+\paragraph{Входные данные для файлового ввода}
+\begin{itemize}
+    \item[$*$] имя файла;
+    \item[$*$] (в файле) длина вектора;
+    \item[$*$] (в файле) элементы вектора.
+\end{itemize}
+
+\paragraph{Входные данные для случайной генерации}
+\begin{itemize}
+    \item[$*$] длина вектора.
+\end{itemize}
+
+\paragraph{Выходные данные}
+\begin{itemize}
+    \item[$*$] сообщение об успешности выполнения операции.
+\end{itemize}
+
+\subsubsection{Вывод вектора}
+\paragraph{Выходные данные}
+\begin{itemize}
+    \item[$*$] элементы вектора.
+\end{itemize}
+
+\subsubsection{Умножение матрицы на вектор стандартным методом}
+\paragraph{Выходные данные}
+\begin{itemize}
+    \item[$*$] элементы матрицы-результата (вектора-результата).
+\end{itemize}
+
+\subsubsection{Умножение матрицы на вектор методом разреженной матрицы}
+\paragraph{Выходные данные}
+\begin{itemize}
+    \item[$*$] элементы матрицы-результата (вектора-результата) в разреженном формате.
+\end{itemize}
+
+\subsubsection{Сравнение эффективности по времени методов умножения}
+
+\paragraph{Выходные данные}
+\begin{itemize}
+    \item[$*$] количество запусков;
+    \item[$*$] суммарное время умножения заданных матрицы и вектора стандартным способом;
+    \item[$*$] суммарное время умножения заданных матрицы и вектора разреженным способом.
+\end{itemize}
+
+\subsubsection{Сравнение потребления памяти хранения матрицы в стандартной форме и в форме разреженной матрицы}
+
+\paragraph{Выходные данные}
+\begin{itemize}
+    \item[$*$] память, занимаемая матрицей, хранящейся в стандартном виде;
+    \item[$*$] память, занимаемая матрицей, хранящейся в разреженном виде.
+\end{itemize}
+
+\subsection{Действие программы}
+Программа осуществляет работу с матрицей в стандартном и разреженном форматах, и вектором-столбцом.
+
+\subsection{Обращение к программе}
+Программа может быть запущена из командных оболочек \texttt{sh/bash/zsh/fish}, а также от IDE, способных работать с языком Си. Программа не принимает никаких аргументов.
+
+\subsection{Аварийные ситуации}
+\subsubsection{Общие аварийные ситуации}
+\begin{enumerate}
+    \item строка имени файла с таблицей слишком длинная;
+    \item невалидный номер пункта меню (строка или пустая строка);
+    \item неверный номер пункта меню (такого пунта меню не существует);
+    \item ошибка считывания таблицы из файла: есть невалидные данные;
+    \item файл с таблицей не существует.
+\end{enumerate}
+
+\subsubsection{Пункт меню №1}
+\begin{enumerate}
+    \item невалидный выбор;
+    \item неправильное имя файла;
+    \item невалидные размеры;
+    \item в случайной генерации невалидный процент заполненности;
+    \item невалидные элементы;
+    \item количество элементов не соответствует заявляенному;
+    \item в координатном вводе повторяющиеся элементы;
+    \item в координатном вводе нулевое значение.
+\end{enumerate}
+
+\subsubsection{Пункт меню №2}
+\begin{enumerate}
+    \item пустая матрица;
+\end{enumerate}
+
+\subsubsection{Пункт меню №3}
+\begin{enumerate}
+    \item невалидный выбор;
+    \item неправильное имя файла;
+    \item невалидая длина;
+    \item невалидные элементы;
+    \item количество элементов не соответствует заявляенному.
+\end{enumerate}
+
+\subsubsection{Пункт меню №4}
+\begin{enumerate}
+    \item пустой вектор;
+\end{enumerate}
+
+\subsubsection{Пункт меню №5}
+\begin{enumerate}
+    \item пустая матрица;
+    \item пустой вектор;
+    \item размеры матрицы и вектора не соотвествуют друг другу.
+\end{enumerate}
+
+\subsubsection{Пункт меню №6}
+\begin{enumerate}
+    \item пустая матрица;
+    \item пустой вектор;
+    \item размеры матрицы и вектора не соотвествуют друг другу.
+\end{enumerate}
+
+\subsubsection{Пункт меню №7}
+\begin{enumerate}
+    \item пустая матрица;
+    \item пустой вектор;
+    \item размеры матрицы и вектора не соотвествуют друг другу.
+\end{enumerate}
+
+\subsubsection{Пункт меню №8}
+\begin{enumerate}
+    \item пустая матрица;
+    \item пустой вектор;
+    \item размеры матрицы и вектора не соотвествуют друг другу.
+\end{enumerate}
+
+\newpage
+
+\section{Структуры данных}
+В данной работе используется динамические массивы, динамические матрицы и односвязный список.
+
+\subsection{Модуль для работы с ошибками}
+\subsubsection{Типы данных}
+\begin{minted}{C}
+/*
+ * text - текст ошибки;
+ * code - код ошибки;
+ * func - функция, в которой случилась ошибка.
+ */
+typedef struct 
+{
+    const char *text;
+    int code;
+    const char *func;
+} error_t;
+\end{minted}
+
+
+
+
+\subsubsection{Функции}
+\begin{minted}{C}
+/*
+ * Создание новой ошибки.
+ * text - текст ошибки;
+ * code - код ошибки;
+ * func - функция, в которой случилась ошибка.
+ */
+error_t new_error(const char *text, int code, const char *func);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\begin{minted}{C}
+/*
+ * Создание ошибки-маркера успеха.
+ * func - функция, в которой был создан "успех".
+ */
+error_t new_success(const char *func);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Проверка, отображает ли ошибка ошибочную ситуацию.
+ * err - исходная ошибка.
+ */
+bool is_failure(error_t err);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\subsection{Модуль для работы со строками}
+\subsubsection{Основные константы}
+\begin{minted}{C}
+/*
+ * Тип строки длиной 256 символов + терминальный нуль.
+ */
+typedef char mystring_t[MYSTRING_SIZE];
+\end{minted}
+
+
+
+
+\subsubsection{Типы данных}
+\begin{minted}{C}
+/*
+ * Тип строки длиной 256 символов + терминальный нуль.
+ */
+typedef char mystring_t[MYSTRING_SIZE];
+\end{minted}
+
+
+
+
+\subsubsection{Функции}
+\begin{minted}{C}
+/*
+ * Чтение строки из файла.
+ * f - файл;
+ * str - строка, в которую считываем.
+ */
+error_t f_read_line(FILE *f, mystring_t str);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Преобразование строки в целое число.
+ * str - исходная строка;
+ * res - результат.
+ */
+error_t to_integer(char *str, int *res);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\subsection{Модуль для работы со списком}
+\subsubsection{Типы данных}
+\begin{minted}{C}
+/*
+ * Односвязный список.
+ * value - значение элемента списка;
+ * next - указатель на следующий элемент списка.
+ */
+typedef struct stl_list_t stl_list_t;
+struct stl_list_t
+{
+    size_t value;
+    stl_list_t *next;
+};
+\end{minted}
+
+
+
+
+\subsubsection{Функции}
+\begin{minted}{C}
+/*
+ * Добавление элемента к последнему элементу списка.
+ * element - последний элемент списка;
+ * n - значение нового элемента;
+ * added - указатель на добавленный элементю.
+ */
+error_t stl_append_to_element(stl_list_t **element, 
+size_t n, stl_list_t **added);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Добавление элемента в конец списка.
+ * head - указатель на голову списка;
+ * n - значение нового элемента;
+ * added - указатель на добавленный элементю.
+ */
+error_t stl_append_to_head(stl_list_t **head, size_t n,
+stl_list_t **added);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Очистка списка.
+ * list - указатель на голову списка.
+ */
+void stl_free(stl_list_t **list);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\subsection{Модуль для работы с пользовательским интерфейсом}
+\subsubsection{Функции}
+\begin{minted}{C}
+/*
+ * Запуск основного диалога программы.
+ */
+error_t main_scenario();
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\subsection{Модуль для работы с вектором}
+\subsubsection{Основные константы}
+\begin{minted}{C}
+/*
+ * Верхняя граница значения случайного элемента.
+ */
+#define V_RANDOM_ELEMENT_BORDER 10
+\end{minted}
+
+
+
+
+\subsubsection{Типы данных}
+\begin{minted}{C}
+/*
+ * Вектор-столбец.
+ * ptr - указатель на элементы;
+ * allocated - размер выделенной памяти;
+ * len - длина вектора.
+ */
+typedef struct v_vector_t
+{
+    double *ptr;
+    size_t allocated;
+    size_t len;
+} v_vector_t;
+\end{minted}
+
+
+
+
+\subsubsection{Функции}
+\begin{minted}{C}
+/*
+ * Выделена ли память под вектор.
+ * v - исходный вектор.
+ */
+bool v_allocated(v_vector_t *v);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Инициализирован ли вектор.
+ * v - исходный вектор.
+ */
+bool v_initialized(v_vector_t *v);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Получение пустого неаллоцированного "объекта" вектора.
+ */
+v_vector_t v_v();
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Выделение памяти под вектор.
+ * v - исходный вектор;
+ * len - длина вектора.
+ */
+error_t v_allocate(v_vector_t *v, size_t len);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Инициализация вектора.
+ * v - исходный вектор;
+ * len - длина вектора.
+ */
+error_t v_init(v_vector_t *v, size_t len);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Освобождение вектора.
+ */
+void v_free(v_vector_t *v);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Считывание длины вектора из файла.
+ * len - длина;
+ * f - файл.
+ */
+error_t v_read_len(size_t *len, FILE *f);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Считывание вектора.
+ * v - исходный вектор;
+ * f - файл.
+ */
+error_t v_read(v_vector_t *v, FILE *f);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Инициализация и считывание вектора с размерами.
+ * v - исходный вектор;
+ * f - файл.
+ */
+error_t v_from_file(v_vector_t *v, FILE *f);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Запись вектора в файл.
+ * v - исходный вектор;
+ * f - файл.
+ */
+error_t v_write(v_vector_t *v, FILE *f);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Случайной заполнение вектора.
+ * v - исходный вектор.
+ */
+error_t v_generate(v_vector_t *v);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\subsection{Модуль для работы. матрицей в стандартном формате}
+\subsubsection{Основные константы}
+\begin{minted}{C}
+/*
+ * Верхняя граница значения случайного элемента.
+ */
+#define UM_RANDOM_ELEMENT_BORDER 10
+\end{minted}
+
+
+
+
+\subsubsection{Типы данных}
+\begin{minted}{C}
+/*
+ * Матрица в стандартном виде.
+ * ptr - указатель на матрицу;
+ * cols - количество столбцов;
+ * rows - количество строк;
+ * allocated_cols - размер выделенной памяти под столбцы;
+ * allocated_rows - размер выделенной памяти под строки.
+ */
+typedef struct um_matrix_t
+{
+    double **ptr;
+    size_t cols;
+    size_t rows;
+    size_t allocated_cols;
+    size_t allocated_rows;
+} um_matrix_t;
+\end{minted}
+
+
+
+
+\subsubsection{Функции}
+\begin{minted}{C}
+/*
+ * Выделена ли под матрицу память.
+ * m - исходная матрица.
+ */
+bool um_allocated(um_matrix_t *m);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Инициализирована ли матрица.
+ * m - исходная матрица.
+ */
+bool um_initialized(um_matrix_t *m);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Создание пустого неаллоцированного "объекта" матрицы.
+ */
+um_matrix_t um_um();
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Выделение памяти под матрицу.
+ * m - исходная матрица;
+ * rows - количество строк матрицы;
+ * cols - количество столбцов матрицы.
+ */
+error_t um_allocate(um_matrix_t *m, size_t rows, size_t cols);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Инициалиация матрицы.
+ * m - исходная матрица;
+ * rows - количество столбцов матрицы;
+ * cols - количество столбцов матрицы.
+ */
+error_t um_init(um_matrix_t *m, size_t rows, size_t cols);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Освобождение матрицы.
+ */
+void um_free(um_matrix_t *m);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Чтение размеров матрицы в формате ROWSxCOLS.
+ * rows - количество строк;
+ * cols - количество столбцов;
+ * f - файл.
+ */
+error_t um_read_size(size_t *rows, size_t *cols, FILE *f);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Считывание матрицы из файла.
+ * m - исходная матрица;
+ * f - файл.
+ */
+error_t um_read(um_matrix_t *m, FILE *f);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Считывание матрицы в координатном виде.
+ * m - исходная матрица;
+ * f - файл;
+ * not_zero - количество ненулевых элементов.
+ */
+error_t um_read_coordinates(um_matrix_t *m, FILE *f, size_t not_zero);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Генерация случайно матрицы.
+ * m - исходная матрица;
+ * percent - процент заполненности матрицы.
+ */
+error_t um_generate(um_matrix_t *m, int percent);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Получение матрицы из вектора.
+ * m - матрица;
+ * v - преобразуемый вектор.
+ */
+error_t um_from_v(um_matrix_t *m, v_vector_t *v);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Запись матрицы в файл.
+ * m - исходная матрица;
+ * f - файл.
+ */
+error_t um_write(um_matrix_t *m, FILE *f);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Умножение матрциы на вектор.
+ * res - матрица-результат;
+ * a - первый операнд;
+ * b - второй операнд.
+ */
+error_t um_multiply_with_v(um_matrix_t *res, um_matrix_t *a, v_vector_t *b);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Подсчет количества ненулевых элементов в матрице.
+ * m - исходная матрица;
+ * non_zeros - количество ненулевых элементов.
+ */
+error_t um_count_non_zeros(um_matrix_t *m, size_t *non_zeros);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\subsection{Модуль для работы с матрице в сжатом столбцовом формате}
+
+
+\subsubsection{Типы данных}
+\begin{minted}{C}
+/*
+ * Матрица в разреженном виде.
+ * n - количество ненулевых элементов;
+ * num_of_cols - количество столбцов матрицы;
+ * num_of_rows - количество строк матрицы;
+ * allocated_n - количество выделенной памяти под ненулевые
+ *               элементы;
+ * allocated_cols - количество выделенной памяти под столбцы;
+ * values - массив с ненулевыми значениями;
+ * rows - массив с номерами строк, в которых содержатся
+ *        соответствующие значения;
+ * col_list - односвязный список с номерами элементов в values,
+ *            с которых нчинается новая строка.
+ */
+typedef struct csc_matrix_t
+{
+    size_t n;
+    size_t num_of_cols;
+    size_t num_of_rows;
+
+    size_t allocated_n;
+    size_t allocated_cols;
+
+    double *values;
+    size_t *rows;
+
+    stl_list_t *col_list;
+} csc_matrix_t;
+\end{minted}
+
+
+
+
+\subsubsection{Функции}
+\begin{minted}{C}
+/*
+ * Выделена ли под матрицу память.
+ * m - исходная матрица.
+ */
+bool csc_allocated(csc_matrix_t *m);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Инициализирована ли матрица.
+ * m - исходная матрица.
+ */
+bool csc_initialized(csc_matrix_t *m);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\begin{minted}{C}
+/*
+ * Создание пустого неаллоцированного "объекта" матрицы.
+ */
+csc_matrix_t csc_csc();
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\begin{minted}{C}
+/*
+ * Освобождение матрицы.
+ */
+void csc_free(csc_matrix_t *m);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\begin{minted}{C}
+/*
+ * Выделение памяти под матрицу.
+ * m - исходная матрица;
+ * n - количество ненулевых элементов;
+ * cols - количество столбцов матрицы.
+ */
+error_t csc_allocate(csc_matrix_t *m, size_t n, size_t cols);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\begin{minted}{C}
+/*
+ * Инициалиация матрицы.
+ * m - исходная матрица;
+ * n - количество ненулевых элементов;
+ * rows - количество столбцов матрицы;
+ * cols - количество столбцов матрицы.
+ */
+error_t csc_init(csc_matrix_t *m, size_t n, size_t rows, size_t cols);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\begin{minted}{C}
+/*
+ * Перевод матрицы в обычном виде в разреженную матрицу.
+ * m - исходная матрица;
+ * src - источник.
+ */
+error_t csc_from_um(csc_matrix_t *m, um_matrix_t *src);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\begin{minted}{C}
+/*
+ * Запись матрицы в разреженном виде в файл.
+ * m - исходная матрица;
+ * f - файл.
+ */
+error_t csc_write(csc_matrix_t *m, FILE *f);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\begin{minted}{C}
+/*
+ * Умножение матрицы в разреженном виде на вектор.
+ * res - результат;
+ * a - первый операнд;
+ * b - второй операнд.
+ */
+error_t csc_multiply_with_v(csc_matrix_t *res, csc_matrix_t *a, v_vector_t *b);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\subsection{Модуль для функций тестирования производительности}
+
+\subsubsection{Основные константы}
+\begin{minted}{C}
+/*
+ * Количество запусков тестов производительности
+ */
+#define BENCH_NUM_OF_RUNS 50
+\end{minted}
+
+
+
+
+\subsubsection{Функции}
+\begin{minted}{C}
+/*
+ * Потребление памяти матрицей в стандартном виде.
+ * m - исходная матрица;
+ * size - размер матрицы.
+ */
+error_t bench_um_memory_usage(um_matrix_t *m, size_t *size);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Потребление памяти матрицей в расширенном столбцовом формате.
+ * cm - исходная матрица;
+ * size - размер матрицы.
+ */
+error_t bench_csc_memory_usage(csc_matrix_t *cm, size_t *size);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Суммарное время работы стандартного умножения за BENCH_NUM_OF_RUNS
+ * запусков.
+ * m - исходная матрица;
+ * v - исходный вектор;
+ * sum_time - суммарное время.
+ */
+error_t bench_um_mul(um_matrix_t *m, v_vector_t *v, long long *sum_time);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+\begin{minted}{C}
+/*
+ * Суммарное время работы разреженного умножения за BENCH_NUM_OF_RUNS
+ * запусков.
+ * сm - исходная матрица;
+ * v - исходный вектор;
+ * sum_time - суммарное время.
+ */
+error_t bench_csc_mul(csc_matrix_t *cm, v_vector_t *v, long long *sum_time);
+\end{minted}
+
+
+ \vspace{0.5cm}
+
+
+\newpage
+\section{Описания алгоритмов}
+\textit{Ввод элементов матрицы может осуществляться как в обычном, так и в координатном виде.}
+
+\begin{enumerate}
+    \item вывод главного меню;
+    \item получение у пользователя номера пункта меню:
+\end{enumerate}
+
+\subsection{Пункт меню №1}
+\begin{enumerate}
+    \item предложить пользователю выбрать источник ввода;
+    \begin{enumerate}
+        \item если выбран файловый ввод, то запросить имя файла, из него ввести размер матрицы и элементы;
+        \item если выбран ввод с клавиатуры, то предложить пользователю ввести размеры матрицы и сами элементы;
+        \item если выбрано случайное заполнение, то предложить пользователю ввести размеры матрицы и заполненность, затем случайно сгенерировать матрицу.
+    \end{enumerate}
+    \item заполнить разреженную матрицу из введенной.
+\end{enumerate}
+
+\subsection{Пункт меню №2}
+\begin{enumerate}
+    \item предложить пользователю выбрать матрицу для вывода;
+    \begin{enumerate}
+        \item если выбран вывод стандартной матрицы, то вывести стандартную матрицу;
+        \item если выбран вывод разреженной матрицы (матрицы в сжатом столбцовом формате), то вывести разреженную матрицу.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Пункт меню №3}
+\begin{enumerate}
+    \item предложить пользователю выбрать источник ввода;
+    \begin{enumerate}
+        \item если выбран файловый ввод, то запросить имя файла, из него ввести длину вектора и элементы;
+        \item если выбран ввод с клавиатуры, то предложить пользователю ввести длину вектора и сами элементы;
+        \item если выбрано случайное заполнение, то предложить пользователю ввести длину, затем случайно сгенерировать вектор.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Пункт меню №4}
+\begin{enumerate}
+    \item вывести вектор.
+\end{enumerate}
+
+\subsection{Пункт меню №5}
+\begin{enumerate}
+    \item производится умножение матрицы на вектор-столбец стандартным алгоритмом умножения матриц:
+    \begin{enumerate}
+        \item умножается каждая строка первой матрицы на вектор-столбец;
+        \item суммы получившихся произведений помещаеется на соотвествующие позиции результирующего вектора.
+    \end{enumerate}
+    \item вектор преобразуется к матрице.
+\end{enumerate}
+
+\subsection{Пункт меню №6}
+\begin{enumerate}
+    \item производится умножение матрицы на вектор-столбец алгоритмом умножения разреженных матриц:
+    \begin{enumerate}
+        \item для каждого столбца матрицы находятся элементы, находящиеся в нем;
+        \item каждый элемент умножается с соответствующим элементом в векторе и прибавляется к сумме на соответствующую позицию резульирующего вектора.
+    \end{enumerate}
+    \item вектор преобразуется к разреженной матрице.
+\end{enumerate}
+
+\subsection{Пункт меню №7}
+\begin{enumerate}
+    \item измеряется суммарное время 50 запусков умножений стандартным методом;
+    \item измеряется суммарное время 50 запусков умножений методом разреженной матрицы;
+    \item на экран выводятся времена и их сравнение.
+\end{enumerate}
+
+\subsection{Пункт меню №8}
+\begin{enumerate}
+    \item подсчитывается объем памяти, занятый матрицей, хранящейся в стандартном виде;
+    \item подсчитывается объем памяти, занятый матрицей, хранящейся в разреженном виде;
+    \item на экран выводятся объемы и их сравнение.
+\end{enumerate}
+
+\newpage
+
+\section{Тестирование}
+Для проверко корректности работы программы было проведено функциональное тестирование. Таблица с тестовыми данными для <<позитивных>> и <<негативных>> случаев приведена ниже.
+
+Так как входных/выходных данных может быть очень много, то в соответствующих полях таблицы могут быть указаны наиболее значимые части.
+
+\subsection{<<Негативные>> тесты}
+\subsubsection{Ввод невалидного пункта меню}
+
+\textbf{Входные данные: }
+abc
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+104: Строка не является корректным числом (to\_integer)
+
+% ---
+
+\subsubsection{Ввод некорректного пункта меню}
+
+\textbf{Входные данные: }
+10
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+161: введен неверный пункт меню (main\_menu\_dialog)
+
+% ---
+\subsubsection{Попытка умножения матрицы на вектор, когда они оба не определены}
+
+
+\textbf{Входные данные: }
+5 или 6 или 7
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+101: переданы неверные операнды (um\_multiply\_with\_v)
+
+% ---
+\subsubsection{Попытка умножения матрицы на вектор, когда матрица не определена}
+
+\textbf{Входные данные: }
+5 или 6 или 7
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+20x1
+
+\textbf{Результат: }
+101: переданы неверные операнды (um\_multiply\_with\_v)
+
+% ---
+\subsubsection{Попытка умножения матрицы на вектор, когда вектор не определен}
+
+\textbf{Входные данные: }
+5 или 6 или 7
+
+\textbf{Матрица: }
+5x5
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+101: переданы неверные операнды (um\_multiply\_with\_v)
+
+% ---
+\subsubsection{Попытка вычислить объем памяти, когда матрица не определена}
+
+
+
+\textbf{Входные данные: }
+8
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+5x1
+
+\textbf{Результат: }
+201: неверная матрица (bench\_um\_memory\_usage)
+
+% ---
+\subsubsection{Размеры матрицы и вектора не соответсвуют}
+
+
+
+\textbf{Входные данные: }
+5 или 6 или 7
+
+\textbf{Матрица: }
+6x6
+
+\textbf{Вектор: }
+5x1
+
+\textbf{Результат: }
+106: неверные размеры (um\_multiply\_to\_v)
+
+% ---
+\subsubsection{Вывод вектора, который не определен}
+
+
+
+\textbf{Входные данные: }
+4
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+163: вектор не инициализирован (output\_vector\_scenario)
+
+% ---
+\subsubsection{Вывод матрицы, которая не определена}
+
+
+
+\textbf{Входные данные: }
+2 $\rightarrow$ 1 или 2 $\rightarrow$ 2
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+101: передана некорректная матрица (um\_write)
+
+% ---
+\subsubsection{Невалидный вариант источника ввода}
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ a или 3 $\rightarrow$ b
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+104: Строка не является корректным числом (to\_integer)
+
+% ---
+\subsubsection{Неверный вариант источника ввода}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 5 или 3 $\rightarrow$ 4
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+161: введен неверный вариант (input\_source\_dialog)
+
+% ---
+\subsubsection{Невалидный вариант координатный или обычный метод ввода матрицы}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ y
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+104: Строка не является корректным числом (to\_integer)
+
+% ---
+\subsubsection{Неверный вариант координатный или обычный метод ввода матрицы}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 4
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+161: введен неверный вариант (input\_type\_dialog)
+
+% ---
+\subsubsection{Файл не существует}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 1 $\rightarrow$ abcabc или 3 $\rightarrow$ 1 $\rightarrow$ abcabc
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+164: ошибка открытия файла (open\_file)
+
+% ---
+\subsubsection{Невалидный размер матрицы}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 1 $\rightarrow$ hello или 1 $\rightarrow$ 3 $\rightarrow$ hello
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+104: ошибка чтения размеров матрицы (input\_size\_dialog)
+
+% ---
+\subsubsection{Неверный размер матрицы}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 1 $\rightarrow$ 0x1 или 1 $\rightarrow$ 3 $\rightarrow$ 0x1
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+101: некорректные размеры (um\_allocate)
+
+% ---
+\subsubsection{Невалидный процент ненулевых элементов при генерации матрицы}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 3 $\rightarrow$ 10x10 $\rightarrow$ test
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+161: ошибка чтения процента ненулевых элементов (input\_non\_zero \_percent\_dialog)
+
+% ---
+\subsubsection{Некорректный процент ненулевых элементов}
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 3 $\rightarrow$ 10x10 $\rightarrow$ 120
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+161: неверный процент ненулевых элементов (input\_non\_zero\_percent \_dialog)
+
+% ---
+\subsubsection{Невалидная длина вектора}
+
+
+
+\textbf{Входные данные: }
+3 $\rightarrow$ 2 $\rightarrow$ hello или 3 $\rightarrow$ 3 $\rightarrow$ hello 
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+104: ошибка чтения длины вектора (input\_len\_dialog)
+
+% ---
+\subsubsection{Невалидный элемент матрицы}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 5x5 $\rightarrow$ 1 2 a
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+104: ошибка чтения матрицы (um\_read)
+
+% ---
+\subsubsection{Невалидный элемент вектора}
+
+
+
+\textbf{Входные данные: }
+3 $\rightarrow$ 2 $\rightarrow$ 5 $\rightarrow$ 1 2 a
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+124: ошибка чтения вектора (v\_read)
+
+% ---
+\subsubsection{Нулевой элемент в координатном методе}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 2 $\rightarrow$ 5x5 $\rightarrow$ 6 $\rightarrow$ 1 1 0
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+106: вводимый элемент не должен быть нулевым (um\_read\_coordinates)
+
+% ---
+\subsubsection{Повторяющийся элемент в координатном методе}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 2 $\rightarrow$ 5x5 $\rightarrow$ 6 $\rightarrow$ 1 1 2 4 4 5 1 1 3
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+107: элемент матрицы уже заполнен (um\_read\_coordinates)
+
+% ---
+\subsubsection{Невалидное количество ненулевых элементов}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 2 $\rightarrow$ 5x5 $\rightarrow$ hello
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+104: ошибка чтения количества ненулевых элементов (input\_coordinate \_not\_zero\_dialog)
+
+% ---
+\subsubsection{Неверное количество ненулевых элементов}
+
+
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 2 $\rightarrow$ 5x5 $\rightarrow$ 100
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+104: неверное количество ненулевых элементов (um\_read\_coordinates)
+
+% ---
+\subsubsection{Пустая строка вместо пункта меню}
+
+
+
+\textbf{Входные данные: }
+
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+101: Считанная строка пуста (f\_read\_line)
+
+\subsection{<<Позитивные>> тесты}
+
+% ---
+\subsubsection{Ввод матрицы в обычном виде из файла}
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 1 $\rightarrow$ 5x5\_40.txt $\rightarrow$ 1
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Матрица 5x5 введена успешно.
+
+% ---
+\subsubsection{Ввод матрицы в координатном виде из файла}
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 1 $\rightarrow$ 5x5\_40c.txt $\rightarrow$ 2
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Матрица 5x5 введена успешно.
+
+% ---
+\subsubsection{Ввод матрицы в обычном виде с клавиатуры}
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 1 $\rightarrow$ 3x3 $\rightarrow$ 1 2 3 4 5 6 7 8 9
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Матрица 3x3 введена успешно.
+
+% ---
+\subsubsection{Ввод матрицы в координатном виде с клавиатуры}
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 2 $\rightarrow$ 2 $\rightarrow$ 3x3 $\rightarrow$ 3 $\rightarrow$ 0 1 4 1 0 5 1 2 6
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Матрица 3x3 введена успешно.
+
+% ---
+\subsubsection{Ввод вектора из файла}
+
+\textbf{Входные данные: }
+3 $\rightarrow$ 1 $\rightarrow$ 5x1.txt
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Вектор введен успешно.
+
+% ---
+\subsubsection{Ввод вектора с клавиатуры}
+
+\textbf{Входные данные: }
+3 $\rightarrow$ 2 $\rightarrow$ 5 $\rightarrow$ 1 2 3 4 5
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Вектор введен успешно.
+% ---
+\subsubsection{Случайное заполнение матрицы}
+
+\textbf{Входные данные: }
+1 $\rightarrow$ 3 $\rightarrow$ 10x10 $\rightarrow$ 50
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Матрица 10x10 заполнена успешно.
+% ---
+\subsubsection{Случайное заполнение вектора}
+
+\textbf{Входные данные: }
+3 $\rightarrow$ 3 $\rightarrow$ 10
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Вектор заполнен успешно.
+
+% ---
+\subsubsection{Вывод матрицы в стандартном виде}
+
+\textbf{Входные данные: }
+2 $\rightarrow$ 1
+
+\textbf{Матрица: }
+5x5
+
+\begin{minted}{text}
+49.0   0.0    0.0    45.0   88.0 
+0.0    0.0    0.0    20.0   0.0   
+87.0   0.0    0.0    50.0   0.0  
+34.0   12.0   0.0    0.0    0.0 
+0.0    0.0    50.0   96.0   0.0
+\end{minted}
+
+
+\textbf{Вектор: }
+---
+
+
+\textbf{Результат: }
+Успешно выведенная матрица:
+
+\begin{minted}{text}
+49.0   0.0    0.0    45.0   88.0 
+0.0    0.0    0.0    20.0   0.0   
+87.0   0.0    0.0    50.0   0.0  
+34.0   12.0   0.0    0.0    0.0 
+0.0    0.0    50.0   96.0   0.0
+\end{minted}
+
+% ---
+\subsubsection{Вывод матрицы в разреженном виде}
+
+\textbf{Входные данные: }
+2 $\rightarrow$ 1
+
+\textbf{Матрица: }
+5x5
+
+\begin{minted}{text}
+49.0   0.0    0.0    45.0   88.0 
+0.0    0.0    0.0    20.0   0.0   
+87.0   0.0    0.0    50.0   0.0  
+34.0   12.0   0.0    0.0    0.0 
+0.0    0.0    50.0   96.0   0.0
+\end{minted}
+
+
+\textbf{Вектор: }
+---
+
+
+\textbf{Результат: }
+Успешно выведенная матрица:
+
+\begin{minted}{text}
+A: 49.0 87.0 34.0 12.0 50.0 45.0 20.0 50.0 96.0 88.0 
+IA: 0 2 3 3 4 0 1 2 4 0 
+JA: 0 3 4 5 9 10
+\end{minted}
+
+
+% ---
+\subsubsection{Вывод вектора-столбца}
+
+\textbf{Входные данные: }
+4
+
+\textbf{Матрица: }
+---
+
+\textbf{Вектор: }
+5x1
+
+\begin{minted}{text}
+2.0
+2.0
+7.0
+1.0
+4.0
+\end{minted}
+
+\textbf{Результат: }
+Успешно выведенный вектор:
+
+\begin{minted}{text}
+2.0
+2.0
+7.0
+1.0
+4.0
+\end{minted}
+
+% ---
+\subsubsection{Умножение матрицы на вектор стандартным способом}
+
+\textbf{Входные данные: }
+5
+
+\textbf{Матрица: }
+5x5
+
+\begin{minted}{text}
+49.0   0.0    0.0    45.0   88.0 
+0.0    0.0    0.0    20.0   0.0   
+87.0   0.0    0.0    50.0   0.0  
+34.0   12.0   0.0    0.0    0.0 
+0.0    0.0    50.0   96.0   0.0
+\end{minted}
+
+\textbf{Вектор: }
+5x1
+
+\begin{minted}{text}
+2.0
+2.0
+7.0
+1.0
+4.0
+\end{minted}
+
+\textbf{Результат: }
+Результат успешного умножения:
+
+\begin{minted}{text}
+495.0  
+20.0   
+224.0  
+92.0   
+446.0
+\end{minted}
+
+% ---
+\subsubsection{Умножение матрицы на вектор способом разреженных матриц}
+
+\textbf{Входные данные: }
+6
+
+\textbf{Матрица: }
+5x5
+
+\begin{minted}{text}
+49.0   0.0    0.0    45.0   88.0 
+0.0    0.0    0.0    20.0   0.0   
+87.0   0.0    0.0    50.0   0.0  
+34.0   12.0   0.0    0.0    0.0 
+0.0    0.0    50.0   96.0   0.0
+\end{minted}
+
+\textbf{Вектор: }
+5x1
+
+\begin{minted}{text}
+2.0
+2.0
+7.0
+1.0
+4.0
+\end{minted}
+
+\textbf{Результат: }
+Результат успешного умножения:
+
+\begin{minted}{text}
+A: 495.0 20.0 224.0 92.0 446.0 
+IA: 0 1 2 3 4 
+JA: 0 5
+\end{minted}
+
+
+% ---
+\subsubsection{Сравнение скорости умножений}
+
+\textbf{Входные данные: }
+7
+
+\textbf{Матрица: }
+5x5
+
+\begin{minted}{text}
+65.0   72.0   76.0   0.0    0.0    
+0.0    0.0    0.0    45.0   0.0    
+29.0   12.0   44.0   47.0   0.0    
+0.0    67.0   6.0    0.0    0.0    
+0.0    0.0    0.0    80.0   57.0
+\end{minted}
+
+\textbf{Вектор: }
+5x1
+
+\begin{minted}{text}
+1.0
+8.0
+4.0
+9.0
+0.0
+\end{minted}
+
+\textbf{Результат: }
+Результат успешного измерения скорости: 
+
+\begin{minted}{text}
+Суммарная статистика по времени для матрицы 5x5 для 50 запусков:
+Умножение обычной матрицы: 108 us
+Умножение разреженной матрицы: 91 us
+Умножение разреженной матрицы быстрее стандартного на 19 %
+\end{minted}
+
+% ---
+\subsubsection{Сравнение занимаемой памяти}
+
+\textbf{Входные данные: }
+7
+
+\textbf{Матрица: }
+10x10
+
+\begin{minted}{text}
+0.0    87.0   0.0    0.0    0.0    0.0    0.0    0.0    36.0   7.0    
+63.0   0.0    0.0    22.0   0.0    61.0   0.0    0.0    0.0    0.0    
+7.0    0.0    0.0    0.0    17.0   0.0    0.0    0.0    0.0    0.0    
+0.0    0.0    64.0   0.0    0.0    0.0    0.0    0.0    0.0    0.0    
+27.0   0.0    0.0    0.0    0.0    0.0    9.0    0.0    0.0    0.0    
+0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    36.0   0.0    
+0.0    66.0   0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    
+56.0   0.0    0.0    0.0    0.0    37.0   0.0    0.0    0.0    0.0    
+0.0    0.0    0.0    0.0    0.0    44.0   0.0    0.0    0.0    0.0    
+96.0   0.0    0.0    81.0   80.0   0.0    0.0    0.0    0.0    44.0
+\end{minted}
+
+\textbf{Вектор: }
+---
+
+\textbf{Результат: }
+Результат успешного измерения размера памяти: 
+
+\begin{minted}{text}
+Размер матрицы в обычном виде: 840 Б
+Размер матрицы в разреженном виде: 552 Б
+Размер матрицы в разреженном виде меньше на 52 %
+\end{minted}
+
+\newpage
+
+\section{Оценка эффективности}
+\subsection{Сокращения}
+Заполн. --- заполненность;
+
+Станд. --- стандартная матрица/стандартный алгоритм умножения матриц;
+
+Разр. --- разреженная матрица/разреженный алгоритм умножения матриц.
+
+\subsection{Объем занимаемой памяти}
+
+\begin{tabular}{ |l|l|r|r|l| }
+\hline
+\textbf{Размер} & \textbf{Заполн., \%} & \textbf{Станд., Б} & \textbf{Разр., Б} & \textbf{Преимущество, \%} \\ \hline
+
+100x100 & 5 & 80040 & 9592 & 734 \\ \hline
+100x100 & 10 & 80040 & 17560 & 356 \\ \hline
+100x100 & 25 & 80040 & 41320 & 94 \\ \hline
+\textbf{100x100} & \textbf{50} & \textbf{80040} & \textbf{80808} & \textbf{-1} \\ \hline
+100x100 & 75 & 80040 & 120344 & -33 \\ \hline
+100x100 & 100 & 80040 & 160040 & -50 \\ \hline
+500x500 & 5 & 2000040 & 205896 & 871 \\ \hline
+500x500 & 10 & 2000040 & 403592 & 396 \\ \hline
+500x500 & 25 & 2000040 & 997896 & 100 \\ \hline
+\textbf{500x500} & \textbf{50} & \textbf{2000040} & \textbf{1988088} & \textbf{1} \\ \hline
+500x500 & 75 & 2000040 & 2978440 & -33 \\ \hline
+500x500 & 100 & 2000040 & 3966232 & -50 \\ \hline
+1000x1000 & 5 & 8000040 & 807880 & 890 \\ \hline
+1000x1000 & 10 & 8000040 & 1600248 & 400 \\ \hline
+1000x1000 & 25 & 8000040 & 3976408 & 101 \\ \hline
+\textbf{1000x1000} & \textbf{50} & \textbf{8000040} & \textbf{7936808} & \textbf{1} \\ \hline
+1000x1000 & 75 & 8000040 & 11897368 & -33 \\ \hline
+1000x1000 & 100 & 8000040 & 15855272 & -50 \\ \hline
+
+\end{tabular}
+
+\subsection{Скорость работы умножения}
+
+В процессе сравнения скорости работы алгоритмов, был обнаружен очень нетипичный результат: при стопроцентной заполненности матрицы, алгоритм разреженного умножения работал ощутимо быстрее стандартного алгоритма, хотя в теории их скорость должна была быть, как минимум, равна.
+
+Так как тестирование изначально производилось на процессоре Apple M1, то подозрение пало сначала на него. Действительно, при запуске на другой платформе, были получены другие результаты. Ниже приведены таблицы со сравнением скорости работы для процессоров Apple M1 и AMD Ryzen 7 3700U.
+
+\subsubsection{Apple M1}
+
+\begin{tabular}{ |l|l|r|r|l| }
+\hline
+\textbf{Размер} & \textbf{Заполн., \%} & \textbf{Станд., мкс} & \textbf{Разр., мкс} & \textbf{Преимущество, \%} \\ \hline
+
+100x100 & 5 & 5715 & 889 & 543 \\ \hline
+100x100 & 10 & 5598 & 1087 & 415 \\ \hline
+100x100 & 25 & 5504 & 1741 & 216 \\ \hline
+100x100 & 50 & 5552 & 2775 & 100 \\ \hline
+100x100 & 75 & 5568 & 3777 & 47 \\ \hline
+100x100 & 100 & 5505 & 4421 & 25 \\ \hline
+500x500 & 5 & 77789 & 3306 & 2253 \\ \hline
+500x500 & 10 & 81244 & 5295 & 1434 \\ \hline
+500x500 & 25 & 76485 & 10655 & 618 \\ \hline
+500x500 & 50 & 76214 & 19234 & 296 \\ \hline
+500x500 & 75 & 78912 & 31790 & 148 \\ \hline
+500x500 & 100 & 79801 & 42966 & 86 \\ \hline
+1000x1000 & 5 & 210957 & 9061 & 2228 \\ \hline
+1000x1000 & 10 & 215525 & 15828 & 1262 \\ \hline
+1000x1000 & 25 & 181004 & 36904 & 390 \\ \hline
+1000x1000 & 50 & 184704 & 71429 & 159 \\ \hline
+1000x1000 & 75 & 244990 & 110760 & 121 \\ \hline
+1000x1000 & 100 & 181260 & 144869 & 25 \\ \hline
+\end{tabular}
+
+\subsubsection{AMD Ryzen 7}
+
+\begin{tabular}{ |l|l|r|r|l| }
+\hline
+\textbf{Размер} & \textbf{Заполн., \%} & \textbf{Станд., мкс} & \textbf{Разр., мкс} & \textbf{Преимущество, \%} \\ \hline
+100x100 & 5 & 6150 & 787 & 681 \\ \hline
+100x100 & 10 & 6096 & 1341 & 355 \\ \hline
+100x100 & 25 & 4684 & 1704 & 175 \\ \hline
+100x100 & 50 & 4740 & 2816 & 68 \\ \hline
+100x100 & 75 & 6225 & 5205 & 20 \\ \hline
+100x100 & 100 & 4782 & 5044 & -5 \\ \hline
+500x500 & 5 & 55459 & 3578 & 1450 \\ \hline
+500x500 & 10 & 52050 & 6522 & 698 \\ \hline
+500x500 & 25 & 58487 & 14704 & 298 \\ \hline
+500x500 & 50 & 51224 & 31562 & 62 \\ \hline
+500x500 & 75 & 56145 & 43737 & 28 \\ \hline
+\textbf{500x500} & \textbf{90} & \textbf{69987} & \textbf{70015} & \textbf{0} \\ \hline
+500x500 & 100 & 52585 & 52975 & -1 \\ \hline
+1000x1000 & 5 & 182717 & 12490 & 1363 \\ \hline
+1000x1000 & 10 & 185257 & 22522 & 723 \\ \hline
+1000x1000 & 25 & 187722 & 53225 & 253 \\ \hline
+1000x1000 & 50 & 187569 & 105263 & 78 \\ \hline
+1000x1000 & 75 & 196081 & 157045 & 25 \\ \hline
+\textbf{1000x1000} & \textbf{92} & \textbf{299720} & \textbf{299998} & \textbf{0} \\ \hline
+1000x1000 & 100 & 190339 & 206428 & -8 \\ \hline
+
+\end{tabular}
+
+% -------------------
+\subsection{Сравнение работы умножения на разных процессорах}
+
+Измерим скорости работы умножения в разреженном виде на разных процессорах. Возьмем везде заполненность матрицы в $75 \%$, размер --- $n x n\p$ элементов.
+
+Для каждого измерения посчитаем коэффициент $K = \log_{\frac{n_2}{n_1}} \left ({\frac{t_2}{t_1}}\right )$, показывающий зависимость скорости работы алгоритма от размера входных данных.
+
+Значения берутся для текущего и предыдущего измерений.
+
+\subsubsection{Apple M1}
+
+\begin{tabular}{ |l|r|l| }
+\hline
+\textbf{n} & \textbf{Разр., мкс} & \textbf{K} \\ \hline
+
+
+100x100 & 3720 & --- \\ \hline
+200x200 & 10046 & 1.43 \\ \hline
+400x400 & 21424 & 1.09 \\ \hline
+800x800 & 65219 & 1.60 \\ \hline
+1600x1600 & 256164 & 1.97 \\ \hline
+3200x3200 & 1016990 & 1.99 \\ \hline
+
+\end{tabular}
+
+\subsubsection{AMD Ryzen 7}
+
+\begin{tabular}{ |l|r|l| }
+\hline
+\textbf{n} & \textbf{Разр., мкс} & \textbf{K} \\ \hline
+
+
+100x100 & 0 & --- \\ \hline
+200x200 & 10000 & --- \\ \hline
+400x400 & 39999 & 1.99 \\ \hline
+800x800 & 150002 & 1.90 \\ \hline
+1600x1600 & 640008 & 2.09 \\ \hline
+3200x3200 & 2418131 & 1.92 \\ \hline
+
+\end{tabular}
+
+% -------------------
+
+\subsection{Выводы}
+
+\subsubsection{Сравнение алгоритмов обработки матриц}
+
+Матрице в разреженном столбцовом формате занимает на матрицах малой заполненности меньше места, так как по сути хранит только ненулевые элементы матрицы. При увеличении заполненности, более эффективной в плане памяти становится матрица в стандартном виде, так как в ней хранятся только элементы матрицы, а в РСФ хранятся еще и номера строк, а так же список с информацией о столбцах.
+
+Алгоритм умножения разреженной матрицы, очевидно, работает быстрее на матрицах с меньшим содержанием ненулевых элементов. На заполненности матрицы вплоть до 90-92 \% мы получаем более быструю обработку, чем стандартным способом. Это обусловлено тем, что данный алгоритм учитывает только ненулевые элементы матрицы, соответственно, при меньше заполненности матрицы проходит по меньшему числу элементов.
+
+Однако даже на заполненности матрицы, близкой к стопроцентной, алгоритм разреженной матрицы не показывает сильного отставания по скорости от стандартного, так как и там, и там по сути происходит проход по всем элементам матрицы, то есть сложность исходных алгоритмов одинакова.
+
+\subsubsection{Сравнение умножения разреженных матриц на разных процессорах}
+
+Время умножения и конечные значения скорости умножения разреженной матрицы на вектор заметно отличаются на процессорах разных архитектур. Но, проведенные измерения и расчеты коэффициента $K$, доказывают квадратичную скорость алгоритма и аналогичную динаминку изменения времени на разных процессорах в зависимости от размера матрицы (так как с увеличением размера матриц значение коэффициента стремится к двум).
+
+Разница в скорости обработки матриц, в том числе относительно обработки матриц стандартными алгоритмами, обусловлена накладными расходами.
+
+
+\newpage
+
+
+\section{Контрольные вопросы}
+\subsection{Что такое разреженная матрица, какие способы хранения вы знаете?}
+
+Разреженная матрица --- матрица, содержащая большое количество нулей.
+
+Способы хранения разреженных матриц:
+
+\begin{itemize}
+	\item[$*$] словарь по ключам (DOK --- Dictionary of Keys) строится как словарь, где ключ это пара (строка, столбец), а значение это соответствующий строке и столбцу элемент матрицы;
+	\item[$*$] список списков (LIL --- List of Lists) строится как список строк, где строка это список узлов вида (столбец, значение);
+	\item[$*$] список координат (COO --- Coordinate list) хранится список из элементов вида (строка, столбец, значение);
+	\item[$*$] сжатое хранение строкой (CSR --- compressed sparse row, CRS --- compressed row storage, Йельский формат);
+	\item[$*$] сжатое хранение столбцом(CSС --- compressed sparse column, CСS --- compressed column storage)
+		То же самое что и CRS, только строки и столбцы меняются ролями --- значения храним по столбцам, по второму массиву можем определить строку, после подсчётов с третьим массивом --- узнаём столбцы.
+\end{itemize}
+
+\subsection{Каким образом и сколько памяти выделяется под хранение разреженной и обычной матрицы?}
+
+Под хранение обычной матрицы выделяется $rows \times cols \times sizeof(double)$ памяти. Под хранение разреженной матрицы выделяется $k \times sizeof(double) + k \times sizeof(size\_t) + cols \times sizeof(size\_t)$ памяти, где k --- количество ненулевых элементов в матрице.
+
+
+\subsection{Каков принцип обработки разреженной матрицы?}
+
+Алгоритмы обработки разреженных матриц предусматривают действия только с ненулевыми элементами и, таким образом, количество операций будет пропорционально количеству ненулевых элементов.
+
+\subsection{В каком случае для матриц эффективнее применять стандартные алгоритмы? От чего это зависит?}
+
+Для разреженных матриц эффективнее по времени применять стандартные алгоритмы при проценте заполненности от 90 \%. По памяти эффективно применять стандартные алгоритмы при проценте заполненности от 50 \%. Чем выше заполненность матрицы, тем эффективнее становятся стандартные алгоримты. Однако умножение матрицы на вектор работает примерно с одинаковой скоростью в обоих алгоритмах, так как они имеют одинаковую сложность.
+
+\newpage
+
+\section{Вывод}
+
+С увеличением заполненности матрицы снижается преимущество по занимаемой памяти матрицы, хранящейся в сжатом столбцовом формате, по сравнению с стандартной. Так, при увеличении процента заполненности от 0 \% до 100 \% превосходство разреженной матрицы по памяти снижается с 890 \% до -50 \%. При 50 \% и меньше заполненности матрицы эффективнее обрабатывать матрицы в разреженном виде.
+
+При заполненности матрицы больше $90 \%$ умножение разреженной матрицы становится неэффекивным относительно стандартного умножения.
+
+До достижения стопроцентной заполненности матрицы снижается преимущество разреженной матрицы по времени обработки. Так, при увеличении процента заполненности матрицы размера $1000 \times 1000$ от 0 \% до 100 \% превосходство снижается от 1363 \% до -8 \%.
+
+\newpage
+\begin{thebibliography}{2}
+\addcontentsline{toc}{section}{Список литературы}
+\bibitem{method}
+Методические рекомендации по лабораторной работе №3 (\emph{http://wwwcdl.bmstu.ru/}) 
+
+\bibitem{method}
+Статьи по теме <<Хранение разреженных матриц>>
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,33 @@
+16
+Apples
+10
+Bananas
+20
+Oranges
+30
+Juice
+40
+Baltica 9
+50
+Oxota Krepkaya
+60
+Cake
+70
+Toilet paper
+80
+Pen
+90
+Milk
+100
+Smetanka
+110
+Pasta
+120
+Chicken
+130
+Pig
+140
+Govyadina
+150
+Fish
+160

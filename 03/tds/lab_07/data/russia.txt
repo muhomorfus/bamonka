@@ -1,0 +1,13 @@
+Moscow Piter 710
+Moscow Vladivostok 9100
+Moscow Yaroslavl 265
+Moscow Suzdal 220
+Moscow Ufa 1380
+Moscow Posad 74
+Posad Yaroslavl 189
+Moscow Yakutsk 8300
+Vladivostok Yakutsk 3100
+Yakutsk Surgut 6800
+Moscow Surgut 3000
+Surgut Piter 3400
+Yaroslavl Piter 870

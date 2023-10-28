@@ -1,0 +1,10 @@
+Apples
+10
+Bananas
+20
+Oranges
+30
+Juice
+40
+Baltica 9
+50

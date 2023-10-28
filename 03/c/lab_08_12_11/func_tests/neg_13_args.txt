@@ -1,0 +1,1 @@
+a shared/3x3.txt frkorkrik.txt result.txt

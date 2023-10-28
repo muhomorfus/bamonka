@@ -1,0 +1,1 @@
+func_tests/shared/reversed.txt out/out.txt

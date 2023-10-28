@@ -1,0 +1,1 @@
+a shared/invalid_size.txt shared/3x3.txt result.txt

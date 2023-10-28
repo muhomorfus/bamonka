@@ -1,0 +1,8 @@
+Apples
+10
+Bananas
+20
+Oranges
+30
+Juice
+40

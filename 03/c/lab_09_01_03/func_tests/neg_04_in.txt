@@ -1,0 +1,7 @@
+3
+First product
+10
+Second product
+0
+Third product
+100

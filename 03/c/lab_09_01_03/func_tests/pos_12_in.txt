@@ -1,0 +1,9 @@
+4
+First cake
+1000
+Second cake
+1500
+Third cake
+1240
+Fourth cake
+990

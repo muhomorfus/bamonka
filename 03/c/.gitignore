@@ -1,0 +1,14 @@
+*.exe
+*.out
+*.o
+*.pch
+*.gch
+.idea/
+*.gcov
+*.gcda
+*.gcno
+*.py
+*gen-*.txt
+*app
+func_tester/
+*tmp.txt

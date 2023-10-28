@@ -1,0 +1,5 @@
+2
+Some product
+-1
+Other product
+10

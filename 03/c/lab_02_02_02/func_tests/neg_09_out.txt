@@ -1,0 +1,1 @@
+[ERROR] array must have at least one element which starts and ends by one digit
