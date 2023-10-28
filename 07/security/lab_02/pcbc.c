@@ -63,31 +63,34 @@ void to_chars(block_t *blocks, unsigned char* buf, int len) {
     }
 }
 
-block_t* to_blocks_round(char* buf, int len, int *num_blocks) {
+block_t* to_blocks_round(unsigned char* buf, int len, int *num_blocks) {
     // Округляем строку до того, чтобы она целиком делилась на блоки.
-    int newlen = len - len % CHARS_IN_BLOCK;
+    int new_len = len - len % CHARS_IN_BLOCK;
     if (len % CHARS_IN_BLOCK > 0) {
-        newlen += CHARS_IN_BLOCK;
+        new_len += CHARS_IN_BLOCK;
     }
 
-    buf = realloc(buf, newlen * sizeof(char));
+    unsigned char* new_buf = realloc(buf, new_len * sizeof(char));
     if (buf == NULL) {
+        printf("Cannot realloc buf.\n");
         return NULL;
     }
+    buf = new_buf;
 
     // В последнем блоке храним то, на сколько мы увеличили размер строки, чтобы она стала кратна
     // размеру блока.
-    *num_blocks = newlen / CHARS_IN_BLOCK + 1;
+    *num_blocks = new_len / CHARS_IN_BLOCK + 1;
     block_t* blocks = calloc(*num_blocks, sizeof(block_t));
     if (blocks == NULL) {
+        printf("Cannot calloc buf.\n");
         return NULL;
     }
 
-    to_blocks(blocks, buf, newlen);
+    to_blocks(blocks, buf, new_len);
 
     // В последнем блоке храним то, на сколько мы увеличили размер строки, чтобы она стала кратна
     // размеру блока!!!
-    blocks[*num_blocks - 1] = newlen - len;
+    blocks[*num_blocks - 1] = new_len - len;
 
     return blocks;
 }
@@ -101,12 +104,15 @@ unsigned char* pcbc_encrypt(unsigned char* buf, int len, block_t key, block_t iv
 
     block_t* encrypted = pcbc_encrypt_blocks(blocks, num_blocks, key, iv);
     if (encrypted == NULL) {
+        free(blocks);
         return NULL;
     }
 
     *new_len = num_blocks * CHARS_IN_BLOCK;
     unsigned char* result = calloc(*new_len, sizeof(unsigned char));
     if (result == NULL) {
+        free(blocks);
+        free(encrypted);
         return NULL;
     }
 
@@ -125,6 +131,7 @@ unsigned char* pcbc_decrypt(unsigned char* buf, int len, block_t key, block_t iv
 
     block_t* decrypted = pcbc_decrypt_blocks(blocks, num_blocks, key, iv);
     if (decrypted == NULL) {
+        free(blocks);
         return NULL;
     }
 
@@ -137,6 +144,8 @@ unsigned char* pcbc_decrypt(unsigned char* buf, int len, block_t key, block_t iv
     *new_len = (num_blocks) * CHARS_IN_BLOCK;
     unsigned char* result = calloc(*new_len, sizeof(unsigned char));
     if (result == NULL) {
+        free(blocks);
+        free(decrypted);
         return NULL;
     }
 

@@ -51,19 +51,26 @@ int main() {
     } else if (mode == 'd') {
         result = pcbc_decrypt(buf, size, key, iv, &new_len);
     } else {
+        free(buf);
         printf("Unknown mode.\n");
         return EXIT_FAILURE;
     }
 
     if (result == NULL) {
+        free(buf);
         printf("Cannot make result.\n");
         return EXIT_FAILURE;
     }
 
     if (io_write(dst, result, new_len) != EXIT_SUCCESS) {
+        free(buf);
+        free(result);
         printf("Cannot write.\n");
         return EXIT_FAILURE;
     }
+
+    free(buf);
+    free(result);
 
     return 0;
 }
