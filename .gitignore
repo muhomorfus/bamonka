@@ -6,3 +6,5 @@
 **/.vscode/
 07/security/**/data/*enc*
 07/security/**/data/*dec*
+07/testing/
+07/web/
