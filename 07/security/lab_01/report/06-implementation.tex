@@ -1,0 +1,107 @@
+\chapter{Технологический раздел}
+
+\section{Реализация алгоритма шифрования}
+
+В листинге \ref{lst:l1} приведена реализация алгоритма шифрования машины <<ЭНИГМА>>.
+
+\begin{lstlisting}[language=C, label=lst:l1, caption={Реализация алгоритма шифрования}]
+void e_shift_right(int* rotor, int size) {
+    int last = rotor[size - 1];
+
+    for (int i = size - 1; i >= 1; i--) {
+        rotor[i] = rotor[i - 1];
+    }
+
+    rotor[0] = last;
+}
+
+int e_find_index(const int* rotor, int size, int val) {
+    for (int i = 0; i < size; i++) {
+        if (rotor[i] == val) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+void e_shift_rotors(enigma_t* e) {
+    e_shift_right(e->rotors[0], e->alphabet_count);
+    for (int j = 1; j < e->rotors_count; j++) {
+        if (e->counter % (e->alphabet_count * j) == 0) {
+            e_shift_right(e->rotors[j], e->alphabet_count);
+        }
+    }
+}
+
+unsigned char* e_encode(enigma_t* e, const unsigned char* data, size_t size) {
+    unsigned char* res = calloc(size, sizeof(unsigned char));
+
+    e->counter = 1;
+    for (int i = 0; i < size; i++, e->counter++) {
+        int code = data[i];
+
+        code = e->panel[code];
+
+        for (int j = 0; j < e->rotors_count; j++) {
+            code = e->rotors[j][code];
+        }
+
+        code = e->reflector[code];
+
+        for (int j = e->rotors_count - 1; j >= 0; j--) {
+            code = e_find_index(e->rotors[j], e->alphabet_count, code);
+        }
+
+        code = e->panel[code];
+        res[i] = code;
+        
+        e_shift_rotors(e);
+    }
+
+    return res;
+}
+\end{lstlisting}
+
+\section{Тестирование}
+Корректность алгоритма проверялось путем применения дешифрации на шифрованное сообщение.
+
+Тестирование было проведено на файлах с типами:
+
+\begin{enumerate}[label=\arabic*)]
+	\item текстовый (txt);
+	\item графический (jpg, png);
+	\item архив (zip).
+\end{enumerate}
+
+
+
+В таблице \ref{tbl:test} представлены тестовые данные.
+
+\begin{table}[H]
+	\begin{center}
+		\centering
+		\caption{Тестовые данные}
+		\label{tbl:test}
+		\begin{tabular}{|c|c|c|} 
+			
+			\hline
+			\multicolumn{1}{|c|}{Номер теста}
+			&  \multicolumn{1}{c|}{Тип файла} &  \multicolumn{1}{c|}{Содержимое файла}\\
+			\hline
+			
+			1& txt &  {\specialcell{Стоят два бобра в речке...}} \\ \hline
+			
+			2& txt &  {\specialcell{@alexodnodvorcev}} \\ \hline
+			
+			3& txt &  \\ \hline
+			
+			4& png & {\specialcell{\includegraphics[width=1in]{../data/4.png}}} \\ \hline
+			
+			5& jpg & {\specialcell{\includegraphics[width=1in]{../data/5.jpg}}} \\ \hline
+			
+			6& zip & Архив с файлами предыдущих тестов \\ \hline
+			
+		\end{tabular}
+	\end{center}
+\end{table}
