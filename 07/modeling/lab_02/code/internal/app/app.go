@@ -6,7 +6,10 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+	"lab_02/internal/model"
+	"log"
 	"strconv"
 	"sync"
 )
@@ -28,6 +31,8 @@ func (a *App) onValidationMatrixValueChanged(err error) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 
+	log.Println("changed validation state", err)
+
 	if err != nil {
 		a.invalidEntries++
 	} else {
@@ -36,10 +41,8 @@ func (a *App) onValidationMatrixValueChanged(err error) {
 
 	if a.invalidEntries == 0 {
 		a.computeButton.Enable()
-		a.plotButton.Enable()
 	} else {
 		a.computeButton.Disable()
-		a.plotButton.Disable()
 	}
 }
 
@@ -47,15 +50,23 @@ type App struct {
 	app    fyne.App
 	window fyne.Window
 
-	matrix *fyne.Container
+	matrix  *fyne.Container
+	entries []*widget.Entry
+
+	p        *fyne.Container
+	pEntries []*widget.Entry
+
+	t        *fyne.Container
+	tEntries []*widget.Entry
 
 	incrementButton *widget.Button
 	decrementButton *widget.Button
 	n               int
 	nLabel          *widget.Label
 
+	errorLabel *widget.Label
+
 	computeButton *widget.Button
-	plotButton    *widget.Button
 
 	mu             sync.Mutex
 	invalidEntries int
@@ -66,18 +77,44 @@ func (a *App) resizeMatrix(n int) {
 		return
 	}
 	a.n = n
+	a.entries = make([]*widget.Entry, 0, a.n*a.n)
 	a.nLabel.SetText(fmt.Sprint(a.n))
 
 	a.matrix.RemoveAll()
 	a.matrix = container.NewGridWithColumns(a.n)
 
+	a.p.RemoveAll()
+	a.p = container.NewGridWithColumns(a.n)
+	a.pEntries = make([]*widget.Entry, 0, a.n)
+
+	a.t.RemoveAll()
+	a.t = container.NewGridWithColumns(a.n)
+	a.tEntries = make([]*widget.Entry, 0, a.n)
+
 	for i := 0; i < a.n*a.n; i++ {
 		e := widget.NewEntry()
-		e.SetText("0.0")
+		e.SetText("1.0")
 		e.Validator = validateMatrixValue
 		e.SetOnValidationChanged(a.onValidationMatrixValueChanged)
 
 		a.matrix.Add(e)
+		a.entries = append(a.entries, e)
+	}
+
+	for i := 0; i < a.n; i++ {
+		e := widget.NewEntry()
+		e.SetText("")
+		e.Disable()
+		a.p.Add(e)
+		a.pEntries = append(a.pEntries, e)
+	}
+
+	for i := 0; i < a.n; i++ {
+		e := widget.NewEntry()
+		e.SetText("")
+		e.Disable()
+		a.t.Add(e)
+		a.tEntries = append(a.tEntries, e)
 	}
 }
 
@@ -85,87 +122,96 @@ func New() *App {
 	var a App
 
 	a.app = app.New()
+	a.app.Settings().SetTheme(theme.LightTheme())
 	a.window = a.app.NewWindow("lab_02")
-	a.window.SetFixedSize(true)
-	a.window.Resize(fyne.NewSize(1100, 700))
+	a.window.Resize(fyne.NewSize(600, 600))
 
 	a.matrix = container.NewGridWithColumns(0)
+	a.p = container.NewGridWithColumns(0)
+	a.t = container.NewGridWithColumns(0)
 	a.nLabel = widget.NewLabel("0")
 	a.n = 0
 
 	a.nLabel.Alignment = fyne.TextAlignCenter
 	a.incrementButton = widget.NewButton("+", func() {
+		log.Println("incrementing number of states")
 		a.resizeMatrix(a.n + 1)
 		a.show()
 	})
 	a.decrementButton = widget.NewButton("-", func() {
+		log.Println("decrementing number of states")
 		a.resizeMatrix(a.n - 1)
 		a.show()
 	})
 	a.resizeMatrix(3)
 
 	a.computeButton = widget.NewButton("Рассчитать", func() {
-		a.showResultWindow()
+		log.Println("start computing")
+		a.compute()
 	})
-	a.plotButton = widget.NewButton("Показать график", func() {
 
-	})
+	a.errorLabel = widget.NewLabel("")
+	a.errorLabel.Hidden = true
+	a.errorLabel.TextStyle.Bold = true
 
 	return &a
 }
 
 func (a *App) setContent() {
-	leftMenu := container.NewVBox(
-		widget.NewLabel("Размерность матрицы"),
+	bottom := container.NewVBox(
 		container.NewGridWithColumns(3, a.decrementButton, a.nLabel, a.incrementButton),
-		widget.NewSeparator(),
 		a.computeButton,
-		a.plotButton,
+		a.errorLabel,
+		widget.NewLabel("Вероятность"),
+		a.p,
+		widget.NewLabel("Время"),
+		a.t,
 	)
 
-	body := container.NewGridWithColumns(1, a.matrix)
-	a.window.SetContent(container.NewBorder(nil, nil, leftMenu, nil, body))
+	body := container.NewGridWithColumns(
+		1,
+		a.matrix,
+	)
+	a.window.SetContent(container.NewBorder(nil, bottom, nil, nil, body))
 }
 
-type minSizedCard struct {
-	*widget.Card
-	width, height float32
-}
+func (a *App) compute() {
+	a.errorLabel.Hide()
 
-func (m minSizedCard) MinSize() fyne.Size {
-	return fyne.NewSize(m.width, m.height)
-}
-
-func squareLabel(text string) fyne.CanvasObject {
-	return minSizedCard{
-		Card:   widget.NewCard("", "", widget.NewLabel(text)),
-		width:  120,
-		height: 60,
-	}
-}
-
-func (a *App) showResultWindow() {
-	window := a.app.NewWindow("Результат")
-	window.SetFixedSize(false)
-
-	grid := container.NewGridWithColumns(a.n + 1)
-
-	grid.Add(squareLabel("P"))
-	for i := 0; i < a.n; i++ {
-		grid.Add(squareLabel("1.0"))
+	elements := make([]float64, a.n*a.n)
+	for i, e := range a.entries {
+		elements[i], _ = strconv.ParseFloat(e.Text, 64)
 	}
 
-	grid.Add(squareLabel("t"))
-	for i := 0; i < a.n; i++ {
-		grid.Add(squareLabel("-2.21"))
+	m := model.New(elements, a.n)
+	probabilities, err := m.Probabilities()
+	if err != nil {
+		a.errorLabel.SetText("Не удается решить систему.")
+		a.errorLabel.Show()
+		log.Println(err)
+		return
 	}
 
-	window.SetContent(grid)
-	window.Show()
+	times, err := m.Times()
+	if err != nil {
+		a.errorLabel.SetText("Не удается решить систему.")
+		a.errorLabel.Show()
+		log.Println(err)
+		return
+	}
+
+	for i, p := range probabilities {
+		a.pEntries[i].SetText(fmt.Sprintf("%.4f", p))
+	}
+
+	for i, t := range times {
+		a.tEntries[i].SetText(fmt.Sprintf("%.4f", t))
+	}
 }
 
 func (a *App) Run() {
 	a.setContent()
+	log.Println("running application")
 	a.window.ShowAndRun()
 }
 
