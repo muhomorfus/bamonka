@@ -1,0 +1,19 @@
+@startuml
+kubelet -> "Kubernetes API": Запрос пода, который\nнеобходимо запустить\nна текущем узле
+"Kubernetes API" --> kubelet: Под
+
+loop Для каждого контейнера в поде
+    kubelet -> "Container Runtime Interface": Запуск контейнера
+    "Container Runtime Interface" -> "Файловая система /sys/fs/cgroup": Создание контрольной\nгруппы контейнера
+    "Container Runtime Interface" -> "Файловая система /sys/fs/cgroup": Установка ограничений\nдля контрольной группы
+    "Container Runtime Interface" -> "Ядро Linux": Порождение процесса (clone)
+    "Container Runtime Interface" -> "Ядро Linux": Создание пространства имен (unshare)
+end
+
+"Предлагаемое решение" -> "Kubernetes API": Запрос пода, для которого необходимо применить ограничения дискового ввода-вывода
+"Kubernetes API" --> "Предлагаемое решение": Под
+
+loop Для каждого контейнера в поде
+    "Предлагаемое решение" -> "Файловая система /sys/fs/cgroup": Установка ограничений дискового ввода-вывода\nдля контрольной группы контейнера
+end
+@enduml

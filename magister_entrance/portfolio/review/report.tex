@@ -1,0 +1,50 @@
+\documentclass[14pt]{extarticle}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{a4paper,
+total={170mm,257mm},left=3cm,right=1cm,
+top=3cm,bottom=2cm}
+
+\usepackage{tabularx}
+\usepackage{tikz}
+
+\newcommand{\podpis}[2]{
+    \parbox[b]{6cm}{#1}
+    \hspace{1cm}
+    \tikz[baseline=2pt]{\draw(0,0) to node[below=-2pt]{\scriptsize подпись}(5cm,0);}
+    \hspace{1cm}
+    \tikz[baseline=2pt]{
+        \def\familywidth{\textwidth-6cm-1cm-5cm-1cm-20pt}
+        \draw(0,0) to node[below=-2pt]{\scriptsize дата}(\familywidth,0);
+        \node[anchor=west](f) at (10pt,8pt){#2};
+    }
+}
+
+\linespread{1.3}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\begin{center}
+\section*{РЕКОМЕНДАТЕЛЬНОЕ ПИСЬМО}
+абитуриенту МИЭМ НИУ ВШЭ
+
+Княжеву Алексею Викторовичу
+\end{center}	
+
+Княжев Алексей Викторович работает со мной в команде разработки платформы DBaaS с октября 2023 года.
+
+Зарекомендовал себя как ответственный сотрудник, способный самостоятельно курировать отдельный технический трек работы команды. Дает точные оценки по своим задачам, и не нарушает этих оценок. Обладает неконфликтным характером, хорошо общается со всеми участниками команды.
+
+Рекомендую Княжева Алексея Викторовича к поступлению в МИЭМ НИУ ВШЭ на направление 09.01.04 «Информатика и вычислительная техника».
+\vspace{1.5cm}
+
+\setlength{\parindent}{0pt}
+
+\podpis{Старший инженер\\ООО <<Авито Тех>>\\Жига Никита Викторович\\nvzhiga@avito.ru}{25.07.2024}\\
+
+\end{document}

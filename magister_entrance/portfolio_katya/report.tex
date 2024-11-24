@@ -1,0 +1,179 @@
+\documentclass[14pt]{extarticle}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{a4paper,
+total={170mm,257mm},left=3cm,right=1cm,
+top=2cm,bottom=2cm}
+
+\usepackage{tabularx}
+\usepackage{tikz}
+
+\usepackage{pdfpages}
+
+\newcommand{\podpis}[2]{
+    \parbox[b]{6cm}{#1}
+    \hspace{1cm}
+    \tikz[baseline=2pt]{\draw(0,0) to node[below=-2pt]{\scriptsize подпись}(5cm,0);}
+    \hspace{1cm}
+    \tikz[baseline=2pt]{
+        \def\familywidth{\textwidth-6cm-1cm-5cm-1cm-20pt}
+        \draw(0,0) to node[below=-2pt]{\scriptsize дата}(\familywidth,0);
+        \node[anchor=west](f) at (25pt,8pt){#2};
+    }
+}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\begin{center}
+\section*{ПОРТФОЛИО}
+
+участвующей во вступительных испытаниях на образовательную программу
+«Компьютерные системы и сети», направления подготовки 09.04.01
+Информатика и вычислительная техника»
+
+Карповой Екатерины Олеговны
+\end{center}	
+
+\section{Базовое образование}
+
+Диплом бакалавра с отличием.
+
+\begin{itemize}
+	\item Получен в: МГТУ~им.~Н.~Э.~Баумана.
+	\item Специальность: 09.03.04~<<Программная инженерия>>. 
+	\item Средний балл: 4.90.
+\end{itemize}
+
+\section{Опыт научно-исследовательской деятельности}
+
+\subsection{Участие в конференциях}
+
+Участвовала во всероссийской научной конференции «Искусственный интеллект в автоматизированных системах управления и обработки данных» ИИАСУ'23, Москва, МГТУ имени Н.Э. Баумана, 27-28 апреля 2023 г.
+
+Программа конференции представлена в Приложении А.
+
+\subsection{Научные статьи}
+
+Являюсь одним из авторов статьи <<Поиск делителей полинома определенного над полем Галуа>>. Статья входит в РИНЦ.
+
+Страница статьи на E-library: \url{https://elibrary.ru/item.asp?id=59944154}.
+
+\section{Опыт практической работы}
+
+С июня 2024 года работаю в компании Купер на должности <<Разработчик ПО>>. Работаю по направлению подготовки, участвую в разработке \\ AB-платформы, которой пользуются разработчики, аналитики и продуктовые аналитики. В рамках работы принесла следующий вклад в проект:
+
+\begin{itemize}
+	\item доработала MVP системы ревью AB-тестов аналогичного процессу код-ревью;
+	\item увеличила тестовое покрытие всей платформы более, чем на 20\%;
+	\item дорабатывала функционал по работе с метриками.
+\end{itemize}
+
+С октября 2023 года по июнь 2024 работала в компании Wildberries на должности <<Разработчик>>. Работала по направлению подготовки, участвала в разработке ПО для складов. В рамках работы принесла следующий вклад в проект:
+
+\begin{itemize}
+	\item разрабатывала сервисы, обеспечивающих функционирование турникетов на КПП;
+	\item создала окружение для эмуляции работы железа турникета, обеспечив возможность локального тестирования кода;
+	\item оказывала техническую поддержку сотрудников по вопросам работы оборудования, создала утилиту для диагностики состояния оборудования;
+	\item внедрила практику E2E-тестирования на уровне всего отдела;
+	\item разрабатывала платформу Service Desk.
+
+\end{itemize}
+
+Выписка из электронной трудовой книжки представлена в приложении~Б.
+
+\section{Личные достижения}
+
+\subsection{Сертификаты}
+
+Имеется сертификат участника конференции Ozon Tech Community Go Meetup (от Ozon). Фотография сертификата представлена в приложении~В.
+
+Имеется сертификат участника конференции Podlodka Go Crew. Фотография сертификата представлена в приложении~Г.
+
+\section{Рекомендательное письмо}
+
+Фотография рекомендательного письма представлена в приложении~Д.
+
+\section{Владение иностранным языком}
+
+Владею иностранным языком на уровне B2. Есть подтверждение в формате сертификата о прохождении экзамена FCE. Сертификат представлен в приложении~Е.
+
+\newpage
+
+\begin{center}
+\section*{Приложение А}
+
+Программа конференции ИИАСУ'23
+\end{center}
+
+\includepdf[pages=-]{assets/iiasu.pdf}
+
+\newpage
+
+\begin{center}
+\section*{Приложение Б}
+
+Выписка из электронной трудовой книжки
+\end{center}
+
+\includepdf[pages=-]{assets/trud.pdf}
+
+\newpage
+
+\begin{center}
+\section*{Приложение В}
+
+Сертификат Ozon Tech Community Go Meetup
+\end{center}
+
+\begin{figure}[h!]
+    \begin{center}
+    \includegraphics[width=0.8\linewidth]{assets/ozon.pdf}
+    \caption{Сертификат Ozon Tech Community Go Meetup}
+    \label{fig:ozon}
+    \end{center}
+\end{figure}
+
+\newpage
+
+\begin{center}
+
+\section*{Приложение Г}
+
+Сертификат Podlodka Go Crew
+\end{center}
+
+\begin{figure}[h!]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/podlodka.png}
+    \caption{Сертификат Podlodka Go Crew}
+    \label{fig:podlodka}
+    \end{center}
+\end{figure}
+
+\newpage
+
+\begin{center}
+
+\section*{Приложение Д}
+
+Рекомендательное письмо
+\end{center}
+
+\includepdf[pages=-]{assets/katya.pdf}
+
+\newpage
+
+\begin{center}
+\section*{Приложение Е}
+
+Сертификат FCE
+\end{center}
+
+\includepdf[pages=-]{assets/engl.pdf}
+
+\end{document}

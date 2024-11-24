@@ -1,0 +1,24 @@
+\documentclass{bmstu}
+
+\usepackage{listingsutf8}
+\lstset{columns=fixed,basicstyle=\small,breaklines=true,inputencoding=utf8,keywordstyle=\bfseries\underbar,frame=single,tabsize=2,xleftmargin=20pt,xrightmargin=5pt}
+\lstset{language=sql}
+\lstset{numbers=left,numberstyle=\small}
+
+\lstset{extendedchars=\true}
+
+\usepackage[scientific-notation=false]{siunitx}
+\usepackage{pdfpages}
+\newcommand{\specialcell}[2][c]{
+	\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\begin{document}
+
+\makereporttitle{Информатика и системы управления}{Программное обеспечение ЭВМ и информационные технологии}{лабораторной работе №5}{Защита информации}{Алгоритмы сжатия}{Хаффман}{А.~В.~Княжев/ИУ7-72Б}{И.~С.~Чиж}
+
+\include{01-theoretical}
+\include{02-practical}
+
+\include{03-appendix}
+
+\end{document}

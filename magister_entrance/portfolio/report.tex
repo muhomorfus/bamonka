@@ -1,0 +1,134 @@
+\documentclass[14pt]{extarticle}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{a4paper,
+total={170mm,257mm},left=3cm,right=1cm,
+top=2cm,bottom=2cm}
+
+\usepackage{tabularx}
+\usepackage{tikz}
+
+\usepackage{pdfpages}
+
+\newcommand{\podpis}[2]{
+    \parbox[b]{6cm}{#1}
+    \hspace{1cm}
+    \tikz[baseline=2pt]{\draw(0,0) to node[below=-2pt]{\scriptsize подпись}(5cm,0);}
+    \hspace{1cm}
+    \tikz[baseline=2pt]{
+        \def\familywidth{\textwidth-6cm-1cm-5cm-1cm-20pt}
+        \draw(0,0) to node[below=-2pt]{\scriptsize дата}(\familywidth,0);
+        \node[anchor=west](f) at (25pt,8pt){#2};
+    }
+}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\begin{center}
+\section*{ПОРТФОЛИО}
+
+участвующего во вступительных испытаниях на образовательную программу
+«Компьютерные системы и сети», направления подготовки 09.04.01
+Информатика и вычислительная техника»
+
+Княжева Алексея Викторовича
+\end{center}	
+
+\section{Базовое образование}
+
+Диплом бакалавра.
+
+\begin{itemize}
+	\item Получен в: МГТУ~им.~Н.~Э.~Баумана.
+	\item Специальность: 09.03.04~<<Программная инженерия>>. 
+	\item Средний балл: 4.59.
+\end{itemize}
+
+\section{Опыт научно-исследовательской деятельности}
+
+\subsection{Участие в конференциях}
+
+Участвовал в всероссийской научной конференции «Искусственный интеллект в автоматизированных системах управления и обработки данных» ИИАСУ'23, Москва, МГТУ имени Н.Э. Баумана, 27-28 апреля 2023 г.
+
+Программа конференции представлена в Приложении А.
+
+\subsection{Научные статьи}
+
+Являюсь одним из авторов статьи <<Поиск делителей полинома определенного над полем Галуа>>. Статья входит в РИНЦ.
+
+Страница статьи на E-library: \url{https://elibrary.ru/item.asp?id=59944154}.
+
+\section{Опыт практической работы}
+
+С октября 2023 года работаю в компании Авито на должности <<Инженер>>. Работаю по направлению подготовки, участвую в разработки платформы DBaaS (Базы данных как услуга), которой пользуются продуктовые разработчики. В рамках работы принес следующий вклад в проект:
+
+\begin{itemize}
+	\item собрал требования, спроектировал и разработал механизм ограничения дискового ввода-вывода, продолжаю руководить этим направлением работы команды;
+	\item участвую в переезде платформы на новую версию Kubernetes;
+	\item улучшил процесс service discovery для баз данных.
+\end{itemize}
+
+Выписка из электронной трудовой книжки представлена в приложении~Б.
+
+\section{Личные достижения}
+
+\subsection{Сертификаты}
+
+Имеется сертификат участника конференции Positive Hack Days Fest 2 (от Positive Technologies). Фотография сертификата представлена в приложении~В.
+
+\section{Рекомендательное письмо}
+
+Фотография рекомендательного письма представлена в приложении~Г.
+
+\section{Владение иностранным языком}
+
+Владею иностранным языком на уровне B2.
+
+\newpage
+
+\begin{center}
+\section*{Приложение А}
+
+Программа конференции ИИАСУ'23
+\end{center}
+
+\includepdf[pages=-]{assets/iiasu.pdf}
+
+\newpage
+
+\begin{center}
+\section*{Приложение Б}
+
+Выписка из электронной трудовой книжки
+\end{center}
+
+\includepdf[pages=-]{assets/trud.pdf}
+
+\newpage
+
+\begin{center}
+\section*{Приложение В}
+
+Сертификат Positive Hack Days Fest 2
+\end{center}
+
+TODO
+
+\newpage
+
+\begin{center}
+
+\section*{Приложение Г}
+
+Рекомендательное письмо
+\end{center}
+
+\includepdf[pages=-]{assets/lexa.pdf}
+
+
+\end{document}

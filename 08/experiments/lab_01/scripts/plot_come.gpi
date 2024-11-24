@@ -1,0 +1,17 @@
+# gnuplot -persist plot_come.gpi
+reset
+
+set terminal pdf # size 1920, 1080 font "Helvetica,24"
+
+set output "plots/graph_come.pdf"
+
+set size ratio 0.5625
+
+set xlabel "Интенсивность поступления заявок, шт/с"
+
+set ylabel "Время ожидания, с"
+
+set grid
+
+# set key top left
+plot "data/wait_come_res.txt" with lp title 't_{wait}' lw 2

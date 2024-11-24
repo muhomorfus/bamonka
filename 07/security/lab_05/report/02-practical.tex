@@ -1,0 +1,126 @@
+\chapter{Практический раздел}
+
+\section{Листинг алгоритма Хаффмана}
+
+\begin{lstlisting}[language=C, label=lst:sha1, caption={Реализация алгоритма Хаффмана}]
+int HuffmanCompress(char *filenameIn, char *filenameOut) {
+    fclose(fopen(filenameOut, "wb"));
+
+    FILE *f = fopen(filenameIn, "rb");
+    if (f == NULL) {
+        return -1;
+    }
+    uint8_t character[maxCodeValue] = {0};
+    int freq[maxCodeValue] = {0};
+    uint8_t temp = '\0';
+    int empty = 1;
+    while (!feof(f)) {
+        if (fread(&temp, 1, 1, f)) {
+            character[temp] = temp;
+            freq[temp]++;
+            empty = 0;
+        }
+    }
+
+    if (empty) {
+        fclose(f);
+        return 0;
+    }
+
+    Tree *t = buildHuffmanTree(character, freq, maxCodeValue);
+
+    int arr[MaxCode] = {0}, top = 0;
+    HuffmanCode codes[maxCodeValue] = {0};
+    getCodes(t->nodes[0], arr, codes, top);
+
+    saveCodes(filenameOut, codes, freq, maxCodeValue);
+    encodeData(filenameIn, filenameOut, codes, maxCodeValue);
+
+    deleteTree(t);
+
+    fclose(f);
+
+    return 0;
+}
+
+int HuffmanDecompress(char *filenameIn, char *filenameOut) {
+    FILE *f;
+    f = fopen(filenameIn, "rb");
+    if (f == NULL) {
+        printf("fopen()\n");
+        return -1;
+    }
+    HuffmanCode codes[maxCodeValue] = {0};
+    int freq[maxCodeValue] = {0};
+    int lastUsedBits = 0;
+
+    if (readCodes(f, codes, freq, maxCodeValue, &lastUsedBits) != 0) {
+        printf("readCodes()\n");
+        return -1;
+    }
+
+    uint8_t character[maxCodeValue] = {0};
+    for (int i = 0; i < maxCodeValue; i++) {
+        character[i] = i;
+    }
+    Tree *t = buildHuffmanTree(character, freq, maxCodeValue);
+
+    decodeData(f, filenameOut, t, codes, maxCodeValue, lastUsedBits);
+
+    deleteTree(t);
+    fclose(f);
+
+    return 0;
+}
+\end{lstlisting}
+
+
+\section{Тестирование}
+
+Корректность алгоритма проверялось путем применения дешифрации на шифрованное сообщение.
+
+Тестирование было проведено на файлах с типами:
+
+\begin{enumerate}[label=\arabic*)]
+	\item текстовый (txt);
+	\item графический (jpg, png);
+	\item архив (zip).
+\end{enumerate}
+
+
+
+В таблице \ref{tbl:test} представлены тестовые данные.
+
+\begin{table}[H]
+	\begin{center}
+		\centering
+		\caption{Тестовые данные}
+		\label{tbl:test}
+		\begin{tabular}{|c|c|c|} 
+			
+			\hline
+			\multicolumn{1}{|c|}{Номер теста}
+			&  \multicolumn{1}{c|}{Тип файла} &  \multicolumn{1}{c|}{Содержимое файла}\\
+			\hline
+			
+			1& txt &  {\specialcell{Стоят два бобра в речке...}} \\ \hline
+			
+			2& txt &  {\specialcell{@alexodnodvorcev}} \\ \hline
+			
+			3& txt &  \\ \hline
+			
+			4& png & {\specialcell{\includegraphics[width=1in]{../data/4.png}}} \\ \hline
+			
+			5& jpg & {\specialcell{\includegraphics[width=1in]{../data/5.jpg}}} \\ \hline
+			
+			6& zip & Архив с файлами предыдущих тестов \\ \hline
+			
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\newpage
+
+\chapter*{Заключение}
+
+В результате выполнения данной лабораторной работы был реализован в виде программы на языке Си алгоритм сжатия Хаффмана.

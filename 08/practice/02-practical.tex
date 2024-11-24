@@ -1,0 +1,403 @@
+\chapter{Основная часть}
+
+\section{Выбор средств реализации}
+
+В качестве языка программирования для реализации разработанного метода был выбран Go, так как с помощью него можно решить поставленную задачу, а также он имеет достаточный набор библиотек для взаимодействия с Kubernetes. Наличие библиотек также вызвано официальной поддержкой языка Go авторами оркестратора, так как сама система оркестрации реализована с использованием этого языка.
+
+Для реализации разрабатываемого ПО был использован паттерн <<Оператор>>, так как он является рекомендуемым для разработки расширений для Kubernetes.
+
+Для реализации Kubernetes-оператора использовался Operator SDK, так как он предоставляет достаточный набор функций для создания операторов, в том числе:
+
+\begin{itemize}
+	\item генерация шаблона проекта;
+	\item генерация обработчиков обновления Custom Resources;
+	\item генерация средств развертывания приложения в Kubernetes;
+	\item набор библиотек для взаимодействия с Kubernetes.
+\end{itemize}
+
+Таким образом, Kubernetes-оператор представляет собой единое приложение, запускающее в себе набор циклов-контроллеров, реагирующих на изменение Custom Resource.
+
+\section{Реализация программного обеспечения метода}
+
+\subsection{Входные данные}
+
+Входными данными являются сущности Kubernetes. При этом используются три возможных варианта сущностей: Pod, IOLimit, PodIOLimit. При этом Pod является стандартным ресурсом Kubernetes, а IOLimit и PodIOLimit~---~Custom Resource.
+
+\subsubsection{IOLimit}
+
+Сущность IOLimit хранит информацию об ограничениях дискового ввода-вывода на уровне группы реплик приложения. Описание этого ресурса в формате YAML имеет вид, представленный в листинге~\ref{lst:iolimit}.
+
+\begin{lstlisting}[label=lst:iolimit, caption={Пример описания сущности IOLimit в формате YAML}]
+apiVersion: ioba.dbaas.avito.ru/v1alpha1
+kind: IOLimit
+metadata:
+  name: test-limit
+spec:
+  storageName: db1
+  replicaSetName: rs001
+  containers:
+    - name: postgresql
+      volumes:
+        - name: data
+          reads:
+            iops: 300
+            bandwidth: 100MBps
+          writes:
+            iops: 300
+            bandwidth: 20MBps
+\end{lstlisting}
+
+При создании или изменении сущности IOLimit, оператор дозаполнит необходимую низкоуровневую информацию и создаст ресурсы PodIOLimit для каждого экземпляра Pod.      
+
+\subsubsection{Pod}
+
+Так как может быть такая ситуация, что некоторые поды, относящиеся к приложению будут созданы после применения ограничений на существующие поды хранилища, то необходимо отслеживать создание новых подов, и в случае несуществования для них подходящих ресурсов PodIOLimit создавать их.
+
+\subsubsection{PodIOLimit}
+
+Сущность PodIOLimit хранит информацию об ограничениях дискового ввода-вывода на уровне одной реплики приложения. Описание этого ресурса в формате YAML имеет вид, представленный в листинге~\ref{lst:podiolimit}.
+
+\begin{lstlisting}[label=lst:podiolimit, caption={Пример описания сущности PodIOLimit в формате YAML}]
+apiVersion: ioba.dbaas.avito.ru/v1alpha1
+kind: PodIOLimit
+metadata:
+  name: test-limit-ioba-test-0
+spec:
+  limits:
+    - containerID: bb6deeaa978e99a
+      containerName: postgresql
+      deviceNumbers: "254:1"
+      readBandwidth: "100000000"
+      readIOPS: "300"
+      volumeName: data
+      writeBandwidth: "20000000"
+      writeIOPS: "300"
+  nodeName: worker2
+  podName: test-0
+  podUID: 9b06e0ab-fd1f-49b9-8581-d4eed47b282a
+  replicaSetName: rs001
+  storageName: db1
+\end{lstlisting}
+
+\subsection{Создание PodIOLimit на основе IOLimit}
+
+Кроме информации непосредственно из IOLimit, PodIOLimit для каждого контейнера имеет набор более низкоуровневой информации, такой как идентификатора пода и контейнера, и номера примонтированного устройства. Соответственно, для генерации PodIOLimit необходимо получить эту низкоуровневую информацию.
+
+Идентификатор пода содержится в его метаданных. Листинг~\ref{lst:pod_uid} содержит фрагмент кода, получающий идентификатор пода.
+
+\begin{lstlisting}[language=Go,label=lst:pod_uid, caption={Получение идентификатора пода}]
+podLimit := &dbaasv1alpha1.PodIOLimit{
+	ObjectMeta: metav1.ObjectMeta{
+		Name:       fmt.Sprintf("%s-%s", iolimit.Name, pod.Name),
+		Namespace:  pod.Namespace,
+		Finalizers: []string{dbaasv1alpha1.CleanupFinalizer},
+		Labels: map[string]string{
+			dbaasv1alpha1.NodeNameLabel: g.nodeName,
+		},
+	},
+	Spec: dbaasv1alpha1.PodIOLimitSpec{
+		StorageName:    iolimit.Spec.StorageName,
+		ReplicaSetName: iolimit.Spec.ReplicaSetName,
+		Limits:         limits,
+		NodeName:       g.nodeName,
+		PodName:        pod.Name,
+		PodUID:         string(pod.UID),
+		},
+}
+\end{lstlisting}
+
+Идентификатор контейнера получается из информации о состоянии пода. Листинг~\ref{lst:container_id} содержит фрагмент кода получения идентификатора контейнера.
+
+\begin{lstlisting}[language=Go,label=lst:container_id, caption={Получение идентификатора контейнера}]
+func (g *Generator) prepareLimits(pod *v1.Pod, iolimit *dbaasv1alpha1.IOLimit) ([]models.LimitBase, error) {
+	volumeToPVC := make(map[string]string, len(pod.Spec.Volumes))
+	for _, volume := range pod.Spec.Volumes {
+		if volume.PersistentVolumeClaim == nil {
+			continue
+		}
+
+		volumeToPVC[volume.Name] = volume.PersistentVolumeClaim.ClaimName
+	}
+
+	containerNameToID := make(map[string]string, len(pod.Spec.Containers))
+	for _, status := range pod.Status.ContainerStatuses {
+		containerNameToID[status.Name] = g.trimCRIPrefix(status.ContainerID)
+	}
+
+	limits := make([]models.LimitBase, 0, len(iolimit.Spec.Containers))
+	for _, container := range iolimit.Spec.Containers {
+		for _, volume := range container.Volumes {
+			pvc, ok := volumeToPVC[volume.Name]
+			if !ok {
+				return nil, fmt.Errorf("get pvc by volume: %w", models.ErrPVCNotFound)
+			}
+
+			containerID, ok := containerNameToID[container.Name]
+			if !ok || containerID == "" {
+				return nil, fmt.Errorf("get container id by name: %w", models.ErrContainerNotFound)
+			}
+
+			limits = append(limits, models.LimitBase{
+				Namespace:     iolimit.Namespace,
+				PodUID:        string(pod.UID),
+				ContainerName: container.Name,
+				ContainerID:   containerID,
+				VolumeName:    volume.Name,
+				PVCName:       pvc,
+				Reads:         volume.Reads,
+				Writes:        volume.Writes,
+			})
+		}
+	}
+
+	return limits, nil
+}
+\end{lstlisting}
+
+Номера устройств не содержатся в каких-либо абстракциях Kubernetes, поэтому они получаются из файловой системы proc~\cite{proc}. В файловой системе для заданного процесса, есть файл \texttt{/proc/PID/mountinfo}, где PID~---~идентификатор основного процесса контейнера. Фрагмент получения номеров устройства из файловой системы proc представлен в листинге~\ref{lst:proc_parse}.
+
+\begin{lstlisting}[language=Go,label=lst:proc_parse, caption={Получение номеров устройства}]
+func (e *Extractor) DeviceNumbers(ctx context.Context, containerPID int, volumeHandle string) (string, error) {
+	file, err := e.reader.Read(filepath.Join(strconv.Itoa(containerPID), "mountinfo"))
+	if err != nil {
+		return "", fmt.Errorf("read proc file: %w", err)
+	}
+
+	deviceNumbers, err := e.deviceNumberFromMountInfo(file, volumeHandle)
+	if err != nil {
+		return "", fmt.Errorf("extract device numbers: %w", err)
+	}
+
+	return deviceNumbers, nil
+}
+
+func (e *Extractor) deviceNumberFromMountInfo(mountInfo, volumeHandle string) (string, error) {
+	for _, line := range strings.Split(mountInfo, "\n") {
+		if !strings.Contains(line, volumeHandle) {
+			continue
+		}
+
+		splitted := strings.Split(line, " ")
+		if len(splitted) < deviceNumbersColumn {
+			return "", fmt.Errorf("line must contain more than 3 columns: %w (%q)", models.ErrInvalidProcFile, line)
+		}
+
+		return splitted[deviceNumbersColumn-1], nil
+	}
+
+	return "", fmt.Errorf("mount not found for volumehandle %s: %w", volumeHandle, models.ErrNoVolumeEntry)
+}
+\end{lstlisting}
+
+PID процесса также нельзя узнать, используя средства Kubernetes, поэтому для его получения используется Container Runtime Interface~\cite{cri}. Интерфейс представляет собой спецификацию в формате GRPC API, которую могут реализовать сторонние разработчики и Kubernetes использует ее для запуска контейнеров. С использованием запроса в API CRI можно узнать такую информацию в контейнере, как PID основного процесса. Фрагмент кода получения PID основного процесса контейнера представлен в листинге~\ref{lst:pid}.
+
+\begin{lstlisting}[language=Go,label=lst:pid, caption={Получение PID основного процесса контейнера}]
+func (e *Extractor) ContainerPID(ctx context.Context, containerID string) (int, error) {
+	resp, err := e.cri.ContainerStatus(ctx, containerID, true)
+	if err != nil {
+		return 0, fmt.Errorf("call containerStatus: %w", err)
+	}
+
+	infoMarshalled, ok := resp.Info["info"]
+	if !ok {
+		return 0, fmt.Errorf("container info response must contain info block: %w", models.ErrInvalidContainerInfo)
+	}
+
+	var info containerInfo
+	if err := json.Unmarshal([]byte(infoMarshalled), &info); err != nil {
+		return 0, fmt.Errorf("unmarshal container info: %w", err)
+	}
+
+	if info.PID == 0 {
+		return 0, fmt.Errorf("extract container pid: %w", models.ErrInvalidContainerInfo)
+	}
+
+	return info.PID, nil
+}
+
+type containerInfo struct {
+	PID int `json:"pid"`
+}
+\end{lstlisting}
+
+На основе всех полученных данных может быть сгенерирован PodIOLimit. Фрагмент кода по генерации PodIOLimit представлен в листинге~\ref{lst:podiolimit_gen}.
+
+\begin{lstlisting}[language=Go,label=lst:podiolimit_gen, caption={Генерация PodIOLimit}]
+func (g *Generator) Generate(
+	ctx context.Context,
+	pod *v1.Pod,
+	iolimit *dbaasv1alpha1.IOLimit,
+) (*dbaasv1alpha1.PodIOLimit, error) {
+	if !g.isPodReady(pod) {
+		return nil, fmt.Errorf("pod contains empty fields: %w", models.ErrPodIsNotReady)
+	}
+
+	baseLimits, err := g.prepareLimits(pod, iolimit)
+	if err != nil {
+		return nil, fmt.Errorf("extract base limits: %w", err)
+	}
+
+	limits := make([]dbaasv1alpha1.Limit, len(baseLimits))
+	for i, baseLimit := range baseLimits {
+		constructed, err := g.limitConstructor.Construct(ctx, baseLimit)
+		if err != nil {
+			return nil, fmt.Errorf("construct limit: %w", err)
+		}
+
+		limits[i] = *constructed
+	}
+
+	podLimit := &dbaasv1alpha1.PodIOLimit{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:       fmt.Sprintf("%s-%s", iolimit.Name, pod.Name),
+			Namespace:  pod.Namespace,
+			Finalizers: []string{dbaasv1alpha1.CleanupFinalizer},
+			Labels: map[string]string{
+				dbaasv1alpha1.NodeNameLabel: g.nodeName,
+			},
+		},
+		Spec: dbaasv1alpha1.PodIOLimitSpec{
+			StorageName:    iolimit.Spec.StorageName,
+			ReplicaSetName: iolimit.Spec.ReplicaSetName,
+			Limits:         limits,
+			NodeName:       g.nodeName,
+			PodName:        pod.Name,
+			PodUID:         string(pod.UID),
+		},
+	}
+
+	if err := g.ownerReferencer.SetOwnerReference(iolimit, podLimit); err != nil {
+		return nil, fmt.Errorf("set controller reference for podiolimit from iolimit: %w", err)
+	}
+
+	return podLimit, nil
+}
+
+func (d *Constructor) Construct(ctx context.Context, base models.LimitBase) (*dbaasv1alpha1.Limit, error) {
+	pv, provisioner, err := d.persistentVolume.PersistentVolume(ctx, base.Namespace, base.PVCName)
+	if err != nil {
+		return nil, fmt.Errorf("enrich persistent volume: %w", err)
+	}
+
+	if !slices.Contains(d.allowedProvisioners, provisioner) {
+		return nil, fmt.Errorf("provisioner %s is not allowed: %w", provisioner, models.ErrUnsupportedProvisioner)
+	}
+
+	volumeHandle, err := d.volumeHandle.VolumeHandle(ctx, base.Namespace, pv)
+	if err != nil {
+		return nil, fmt.Errorf("enrich volume handle: %w", err)
+	}
+
+	containerPID, err := d.container.ContainerPID(ctx, base.ContainerID)
+	if err != nil {
+		return nil, fmt.Errorf("enrich container: %w", err)
+	}
+
+	deviceNumbers, err := d.deviceNumbers.DeviceNumbers(ctx, containerPID, volumeHandle)
+	if err != nil {
+		return nil, fmt.Errorf("enrich device numbers: %w", err)
+	}
+
+	return &dbaasv1alpha1.Limit{
+		ContainerName:  base.ContainerName,
+		ContainerID:    base.ContainerID,
+		VolumeName:     base.VolumeName,
+		DeviceNumbers:  deviceNumbers,
+		ReadIOPS:       base.Reads.GetIOPS(),
+		ReadBandwidth:  base.Reads.GetBandwidthBytesPerSecond(),
+		WriteIOPS:      base.Writes.GetIOPS(),
+		WriteBandwidth: base.Writes.GetBandwidthBytesPerSecond(),
+	}, nil
+}
+\end{lstlisting}
+
+\subsection{Применение ограничений дискового ввода-вывода с использованием cgroup v2}
+
+Применение ограничений дискового ввода-вывода представляет собой запись в интерфейсный файл io.max контрольной группы контейнера. Фрагмент кода по записи ограничений в файл представлен в листинге~\ref{lst:write_limit}.
+
+\begin{lstlisting}[language=Go,label=lst:write_limit, caption={Запись ограничений в cgroup v2}]
+func (w *LimitWriter) WriteLimit(ctx context.Context, podUID string, limit dbaasv1alpha1.Limit) error {
+	fileName := w.path.Format(podUID, limit, ioMaxFileName)
+	line := w.toCGroupLine(limit)
+
+	if err := w.writer.Write(fileName, line); err != nil {
+		return fmt.Errorf("write limit to file: %w", err)
+	}
+
+	return nil
+}
+
+func (w *LimitWriter) toCGroupLine(limit dbaasv1alpha1.Limit) string {
+	return fmt.Sprintf("%s rbps=%s wbps=%s riops=%s wiops=%s",
+		w.deviceNumbersGenerator.Generate(limit.DeviceNumbers),
+		limit.ReadBandwidth,
+		limit.WriteBandwidth,
+		limit.ReadIOPS,
+		limit.WriteIOPS,
+	)
+}
+\end{lstlisting}
+
+\section{Исследование характеристик разработанного программного обеспечения}
+
+Был проведен бенчмарк базы PostgreSQL с различными ограничениями дискового ввода-вывода. 
+
+Характеристики контейнера, на котором производилось тестирование следующие.
+
+\begin{itemize}
+	\item Процессорное время: 1000 единиц.
+	\item Память: 4Гб.
+\end{itemize}
+
+Для теста производительности использовался pgbench. Для тестирования вызывался pgbench с параметрами, показанными в листинге~\ref{lst:pgbench}.
+
+\begin{lstlisting}[language=Go,label=lst:pgbench, caption={Параметры pgbench}]
+POOL=10
+DURATION=120
+SIZE_GB=4
+SCALE_FACTOR=$(($SIZE_GB * 67))
+
+pgbench -s ${SCALE_FACTOR}
+pgbench  -c ${POOL} -j 2 -T ${DURATION}
+\end{lstlisting}
+
+Изначально было измерена производительность базы данных в стандартном тесте без каких-либо ограничений дискового ввода-вывода. Затем было выделено три группы ограничений по IOPS и Bandwidth, отличающиеся между собой в 2 раза.
+
+Группы по IOPS:
+
+\begin{enumerate}
+	\item IOPS на чтение: 500 операций в секунду, IOPS на запись: 250 операций в секунду;
+	\item IOPS на чтение: 1000 операций в секунду, IOPS на запись: 500 операций в секунду;
+	\item IOPS на чтение: 2000 операций в секунду, IOPS на запись: 1000 операций в секунду.
+\end{enumerate}
+
+Группы по Bandwidth:
+
+\begin{enumerate}
+	\item полоса пропускания на чтение: 50 мегабайт в секунду, полоса пропускания на запись: 25 мегабайт в секунду;
+	\item полоса пропускания на чтение: 100 мегабайт в секунду, полоса пропускания на запись: 50 мегабайт в секунду;
+	\item полоса пропускания на чтение: 200 мегабайт в секунду, полоса пропускания на запись: 100 мегабайт в секунду.
+\end{enumerate}
+
+Для каждой комбинации групп по IOPS и Bandwidth было проведено исследование производительности базы данных PostgreSQL.
+
+\subsection{Результаты}
+
+Без каких-либо ограничений дискового ввода-вывода результат теста производительности равен 3782 транзакций в секунду.
+
+Результаты теста для комбинаций групп представлены в таблице~\ref{tab:results}. Строки~---~группы по полосе пропускания, столбцы~---~по количеству операций в секунду. Единица измерения~---~количество транзакций в секунду.
+
+\begin{table}[H]
+\caption{Результаты теста pgbench}
+\label{tab:results}
+\begin{tabular}{|l|l|l|l|}
+\hline
+  & 1   & 2    & 3    \\ \hline
+1 & 796 & 1227 & 1686 \\ \hline
+2 & 823 & 1759 & 2162 \\ \hline
+3 & 940 & 1926 & 2546 \\ \hline
+\end{tabular}
+\end{table}
+
+На основании проведенного теста можно сказать, что ограничения работают и влияют на производительности СУБД PostgreSQL.
+    При этом, результаты бенчмарков коррелируют с примененными ограничениями, что может говорить о том, что ограничения применяются правильно. 

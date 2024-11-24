@@ -1,0 +1,747 @@
+\begin{appendices}
+
+\chapter{Интерфейсные файлы контрольной группы}
+
+Пример содержания каталога для контрольной группы представлен в листингах~\ref{lst:cgroup_catalog1}--\ref{lst:cgroup_catalog2}.
+
+\begin{lstlisting}[label=lst:cgroup_catalog1, caption={Интерфейсные файлы для контрольной группы}]
+-r--r--r--  1 root root 0 Mar 27 21:40 cgroup.controllers
+-r--r--r--  1 root root 0 Mar 27 21:40 cgroup.events
+-rw-r--r--  1 root root 0 Mar 27 21:40 cgroup.freeze
+--w-------  1 root root 0 Mar 27 21:40 cgroup.kill
+-rw-r--r--  1 root root 0 Mar 27 21:40 cgroup.max.depth
+-rw-r--r--  1 root root 0 Mar 27 21:40 cgroup.max.descendants
+-rw-r--r--  1 root root 0 Mar 27 21:40 cgroup.procs
+-r--r--r--  1 root root 0 Mar 27 21:40 cgroup.stat
+-rw-r--r--  1 root root 0 May 26 16:54 cgroup.subtree_control
+-rw-r--r--  1 root root 0 Mar 27 21:40 cgroup.threads
+-rw-r--r--  1 root root 0 Mar 27 21:40 cgroup.type
+-rw-r--r--  1 root root 0 Mar 28 18:10 cpu.idle
+-rw-r--r--  1 root root 0 Mar 27 21:46 cpu.max
+-rw-r--r--  1 root root 0 Mar 28 18:10 cpu.max.burst
+-rw-r--r--  1 root root 0 Mar 27 21:40 cpu.pressure
+-r--r--r--  1 root root 0 Mar 27 21:40 cpu.stat
+-rw-r--r--  1 root root 0 Mar 28 18:10 cpu.uclamp.max
+-rw-r--r--  1 root root 0 Mar 28 18:10 cpu.uclamp.min
+-rw-r--r--  1 root root 0 Mar 27 21:46 cpu.weight
+-rw-r--r--  1 root root 0 Mar 28 18:10 cpu.weight.nice
+-rw-r--r--  1 root root 0 Mar 27 21:46 cpuset.cpus
+-r--r--r--  1 root root 0 Mar 28 18:10 cpuset.cpus.effective
+-rw-r--r--  1 root root 0 Mar 28 18:10 cpuset.cpus.partition
+-rw-r--r--  1 root root 0 Mar 27 21:46 cpuset.mems
+-r--r--r--  1 root root 0 Mar 28 18:10 cpuset.mems.effective
+-r--r--r--  1 root root 0 Mar 28 18:10 hugetlb.1GB.current
+-r--r--r--  1 root root 0 Mar 28 18:10 hugetlb.1GB.events
+-r--r--r--  1 root root 0 Mar 28 18:10 hugetlb.1GB.events.local
+-rw-r--r--  1 root root 0 Mar 28 18:10 hugetlb.1GB.max
+-r--r--r--  1 root root 0 Mar 28 18:10 hugetlb.1GB.rsvd.current
+-rw-r--r--  1 root root 0 Mar 28 18:10 hugetlb.1GB.rsvd.max
+\end{lstlisting}
+
+\begin{lstlisting}[label=lst:cgroup_catalog2, caption={Интерфейсные файлы для контрольной группы (продолжение листинга~\ref{lst:cgroup_catalog1})}]
+-r--r--r--  1 root root 0 Mar 28 18:10 hugetlb.2MB.current
+-r--r--r--  1 root root 0 Mar 28 18:10 hugetlb.2MB.events
+-r--r--r--  1 root root 0 Mar 28 18:10 hugetlb.2MB.events.local
+-rw-r--r--  1 root root 0 Mar 28 18:10 hugetlb.2MB.max
+-r--r--r--  1 root root 0 Mar 28 18:10 hugetlb.2MB.rsvd.current
+-rw-r--r--  1 root root 0 Mar 28 18:10 hugetlb.2MB.rsvd.max
+-rw-r--r--  1 root root 0 Mar 28 18:10 io.max
+-rw-r--r--  1 root root 0 Mar 27 21:40 io.pressure
+-rw-r--r--  1 root root 0 Mar 28 18:10 io.prio.class
+-r--r--r--  1 root root 0 Mar 28 18:10 io.stat
+-rw-r--r--  1 root root 0 Mar 27 21:46 io.weight
+-r--r--r--  1 root root 0 Mar 27 21:40 memory.current
+-r--r--r--  1 root root 0 Mar 27 21:40 memory.events
+-r--r--r--  1 root root 0 Mar 27 21:40 memory.events.local
+-rw-r--r--  1 root root 0 Mar 27 21:40 memory.high
+-rw-r--r--  1 root root 0 Mar 27 21:40 memory.low
+-rw-r--r--  1 root root 0 Mar 27 21:40 memory.max
+-rw-r--r--  1 root root 0 Mar 27 21:40 memory.min
+-r--r--r--  1 root root 0 Mar 27 21:40 memory.numa_stat
+-rw-r--r--  1 root root 0 Mar 27 21:40 memory.oom.group
+-rw-r--r--  1 root root 0 Mar 27 21:40 memory.pressure
+-r--r--r--  1 root root 0 Mar 27 21:40 memory.stat
+-r--r--r--  1 root root 0 Mar 27 21:40 memory.swap.current
+-r--r--r--  1 root root 0 Mar 27 21:40 memory.swap.events
+-rw-r--r--  1 root root 0 Mar 27 21:40 memory.swap.high
+-rw-r--r--  1 root root 0 Mar 27 21:40 memory.swap.max
+-r--r--r--  1 root root 0 Mar 28 18:10 misc.current
+-rw-r--r--  1 root root 0 Mar 28 18:10 misc.max
+-r--r--r--  1 root root 0 Mar 27 21:40 pids.current
+-r--r--r--  1 root root 0 Mar 27 21:40 pids.events
+-rw-r--r--  1 root root 0 Mar 27 21:40 pids.max
+-r--r--r--  1 root root 0 Mar 28 18:10 rdma.current
+-rw-r--r--  1 root root 0 Mar 28 18:10 rdma.max
+\end{lstlisting}
+
+\chapter{Генерация PodIOLimit}
+
+Фрагмент кода генерации PodIOLimit представлен в листингах~\ref{lst:podiolimit_gen1}--\ref{lst:podiolimit_gen7}.
+
+\begin{lstlisting}[language=Go,label=lst:podiolimit_gen1, caption={Генерация PodIOLimit}]
+type Generator struct {
+	ownerReferencer  ownerReferencer
+	limitConstructor limitConstructor
+
+	nodeName string
+}
+
+func NewGenerator(ownerReferencer ownerReferencer, limitConstructor limitConstructor, nodeName string) *Generator {
+	return &Generator{
+		ownerReferencer:  ownerReferencer,
+		limitConstructor: limitConstructor,
+		nodeName:         nodeName,
+	}
+}
+
+func (g *Generator) Generate(
+	ctx context.Context,
+	pod *v1.Pod,
+	iolimit *dbaasv1alpha1.IOLimit,
+) (*dbaasv1alpha1.PodIOLimit, error) {
+	if !g.isPodReady(pod) {
+		return nil, fmt.Errorf("pod contains empty fields: %w", models.ErrPodIsNotReady)
+	}
+
+	baseLimits, err := g.prepareLimits(pod, iolimit)
+	if err != nil {
+		return nil, fmt.Errorf("extract base limits: %w", err)
+	}
+
+	limits := make([]dbaasv1alpha1.Limit, len(baseLimits))
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:podiolimit_gen2, caption={Генерация PodIOLimit (продолжение листинга~\ref{lst:podiolimit_gen1})}]
+	for i, baseLimit := range baseLimits {
+		constructed, err := g.limitConstructor.Construct(ctx, baseLimit)
+		if err != nil {
+			return nil, fmt.Errorf("construct limit: %w", err)
+		}
+
+		limits[i] = *constructed
+	}
+
+	podLimit := &dbaasv1alpha1.PodIOLimit{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:       fmt.Sprintf("%s-%s", iolimit.Name, pod.Name),
+			Namespace:  pod.Namespace,
+			Finalizers: []string{dbaasv1alpha1.CleanupFinalizer},
+			Labels: map[string]string{
+				dbaasv1alpha1.NodeNameLabel: g.nodeName,
+			},
+		},
+		Spec: dbaasv1alpha1.PodIOLimitSpec{
+			StorageName:    iolimit.Spec.StorageName,
+			ReplicaSetName: iolimit.Spec.ReplicaSetName,
+			Limits:         limits,
+			NodeName:       g.nodeName,
+			PodName:        pod.Name,
+			PodUID:         string(pod.UID),
+		},
+	}
+
+	if err := g.ownerReferencer.SetOwnerReference(iolimit, podLimit); err != nil {
+		return nil, fmt.Errorf("set controller reference for podiolimit from iolimit: %w", err)
+	}
+
+	return podLimit, nil
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:podiolimit_gen3, caption={Генерация PodIOLimit (продолжение листинга~\ref{lst:podiolimit_gen2})}]
+
+func (g *Generator) prepareLimits(pod *v1.Pod, iolimit *dbaasv1alpha1.IOLimit) ([]models.LimitBase, error) {
+	volumeToPVC := make(map[string]string, len(pod.Spec.Volumes))
+	for _, volume := range pod.Spec.Volumes {
+		if volume.PersistentVolumeClaim == nil {
+			continue
+		}
+
+		volumeToPVC[volume.Name] = volume.PersistentVolumeClaim.ClaimName
+	}
+
+	containerNameToID := make(map[string]string, len(pod.Spec.Containers))
+	for _, status := range pod.Status.ContainerStatuses {
+		containerNameToID[status.Name] = g.trimCRIPrefix(status.ContainerID)
+	}
+
+	limits := make([]models.LimitBase, 0, len(iolimit.Spec.Containers))
+	for _, container := range iolimit.Spec.Containers {
+		for _, volume := range container.Volumes {
+			pvc, ok := volumeToPVC[volume.Name]
+			if !ok {
+				return nil, fmt.Errorf("get pvc by volume: %w", models.ErrPVCNotFound)
+			}
+
+			containerID, ok := containerNameToID[container.Name]
+			if !ok || containerID == "" {
+				return nil, fmt.Errorf("get container id by name: %w", models.ErrContainerNotFound)
+			}
+
+			limits = append(limits, models.LimitBase{
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:podiolimit_gen4, caption={Генерация PodIOLimit (продолжение листинга~\ref{lst:podiolimit_gen3})}]
+				Namespace:     iolimit.Namespace,
+				PodUID:        string(pod.UID),
+				ContainerName: container.Name,
+				ContainerID:   containerID,
+				VolumeName:    volume.Name,
+				PVCName:       pvc,
+				Reads:         volume.Reads,
+				Writes:        volume.Writes,
+			})
+		}
+	}
+
+	return limits, nil
+}
+
+func (g *Generator) trimCRIPrefix(containerID string) string {
+	u, _ := url.Parse(containerID)
+	return u.Host
+}
+
+func (g *Generator) isPodReady(pod *v1.Pod) bool {
+	return len(pod.Status.ContainerStatuses) > 0 && pod.UID != ""
+}
+
+type ownerReferencer interface {
+	SetOwnerReference(owned, controlled metav1.Object) error
+}
+
+type limitConstructor interface {
+	Construct(ctx context.Context, base models.LimitBase) (*dbaasv1alpha1.Limit, error)
+}
+
+type Constructor struct {
+	persistentVolume persistentVolumeExtractor
+	volumeHandle     volumeHandleExtractor
+	container        containerExtractor
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:podiolimit_gen5, caption={Генерация PodIOLimit (продолжение листинга~\ref{lst:podiolimit_gen4})}]
+	deviceNumbers    deviceNumbersExtractor
+
+	allowedProvisioners []string
+}
+
+func New(
+	persistentVolume persistentVolumeExtractor,
+	volumeHandle volumeHandleExtractor,
+	container containerExtractor,
+	deviceNumbers deviceNumbersExtractor,
+) *Constructor {
+	return &Constructor{
+		persistentVolume:    persistentVolume,
+		volumeHandle:        volumeHandle,
+		container:           container,
+		deviceNumbers:       deviceNumbers,
+		allowedProvisioners: []string{"topolvm.cybozu.com", "hostpath.csi.k8s.io", "topolvm.io"},
+	}
+}
+
+func (d *Constructor) Construct(ctx context.Context, base models.LimitBase) (*dbaasv1alpha1.Limit, error) {
+	pv, provisioner, err := d.persistentVolume.PersistentVolume(ctx, base.Namespace, base.PVCName)
+	if err != nil {
+		return nil, fmt.Errorf("enrich persistent volume: %w", err)
+	}
+
+	if !slices.Contains(d.allowedProvisioners, provisioner) {
+		return nil, fmt.Errorf("provisioner %s is not allowed: %w", provisioner, models.ErrUnsupportedProvisioner)
+	}
+
+	volumeHandle, err := d.volumeHandle.VolumeHandle(ctx, base.Namespace, pv)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:podiolimit_gen6, caption={Генерация PodIOLimit (продолжение листинга~\ref{lst:podiolimit_gen5})}]
+	if err != nil {
+		return nil, fmt.Errorf("enrich volume handle: %w", err)
+	}
+
+	containerPID, err := d.container.ContainerPID(ctx, base.ContainerID)
+	if err != nil {
+		return nil, fmt.Errorf("enrich container: %w", err)
+	}
+
+	deviceNumbers, err := d.deviceNumbers.DeviceNumbers(ctx, containerPID, volumeHandle)
+	if err != nil {
+		return nil, fmt.Errorf("enrich device numbers: %w", err)
+	}
+
+	return &dbaasv1alpha1.Limit{
+		ContainerName:  base.ContainerName,
+		ContainerID:    base.ContainerID,
+		VolumeName:     base.VolumeName,
+		DeviceNumbers:  deviceNumbers,
+		ReadIOPS:       base.Reads.GetIOPS(),
+		ReadBandwidth:  base.Reads.GetBandwidthBytesPerSecond(),
+		WriteIOPS:      base.Writes.GetIOPS(),
+		WriteBandwidth: base.Writes.GetBandwidthBytesPerSecond(),
+	}, nil
+}
+
+type containerExtractor interface {
+	ContainerPID(ctx context.Context, containerID string) (int, error)
+}
+
+type deviceNumbersExtractor interface {
+	DeviceNumbers(ctx context.Context, containerPID int, volumeHandle string) (string, error)
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:podiolimit_gen7, caption={Генерация PodIOLimit (продолжение листинга~\ref{lst:podiolimit_gen6})}]
+type persistentVolumeExtractor interface {
+	PersistentVolume(ctx context.Context, namespace, pvcName string) (pvName, provisioner string, err error)
+}
+
+type volumeHandleExtractor interface {
+	VolumeHandle(ctx context.Context, namespace, pvName string) (string, error)
+}
+\end{lstlisting}
+
+\chapter{Модульное тестирование}
+
+Пример модульного теста представлен в листингах~\ref{lst:unit1}--\ref{lst:unit3}.
+
+\begin{lstlisting}[language=Go,label=lst:unit1, caption={Модульный тест}]
+func TestExtractor_ContainerPID(t *testing.T) {
+	t.Run("positive: successful extracted", func(t *testing.T) {
+		ctx := context.Background()
+
+		cri := mocks.NewCriAPI(t)
+		cri.EXPECT().ContainerStatus(ctx, "9cf7af7", true).Return(&cri_api.ContainerStatusResponse{
+			Info: map[string]string{
+				"info": "{\"pid\": 228}",
+			},
+		}, nil)
+
+		e := New(cri)
+		pid, err := e.ContainerPID(ctx, "9cf7af7")
+		require.NoError(t, err)
+		assert.Equal(t, 228, pid)
+	})
+
+	t.Run("negative: there are no info field in response", func(t *testing.T) {
+		ctx := context.Background()
+
+		cri := mocks.NewCriAPI(t)
+		cri.EXPECT().ContainerStatus(ctx, "9cf7af7", true).Return(&cri_api.ContainerStatusResponse{
+			Info: map[string]string{},
+		}, nil)
+
+		e := New(cri)
+		pid, err := e.ContainerPID(ctx, "9cf7af7")
+		require.Error(t, err)
+		require.ErrorIs(t, err, models.ErrInvalidContainerInfo)
+		assert.Equal(t, 0, pid)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:unit2, caption={Модульный тест (продолжение листинга~\ref{lst:unit1})}]
+	})
+
+	t.Run("negative: invalid json in cri response", func(t *testing.T) {
+		ctx := context.Background()
+
+		cri := mocks.NewCriAPI(t)
+		cri.EXPECT().ContainerStatus(ctx, "9cf7af7", true).Return(&cri_api.ContainerStatusResponse{
+			Info: map[string]string{
+				"info": "{{{",
+			},
+		}, nil)
+
+		e := New(cri)
+		pid, err := e.ContainerPID(ctx, "9cf7af7")
+		require.Error(t, err)
+		require.ErrorContains(t, err, "unmarshal container info")
+		assert.Equal(t, 0, pid)
+	})
+
+	t.Run("negative: cri returned error", func(t *testing.T) {
+		ctx := context.Background()
+
+		cri := mocks.NewCriAPI(t)
+		cri.EXPECT().ContainerStatus(ctx, "9cf7af7", true).Return(&cri_api.ContainerStatusResponse{}, errors.New("some error"))
+
+		e := New(cri)
+		pid, err := e.ContainerPID(ctx, "9cf7af7")
+		require.Error(t, err)
+		require.ErrorContains(t, err, "call containerStatus")
+		assert.Equal(t, 0, pid)
+	})
+
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[language=Go,label=lst:unit3, caption={Модульный тест (продолжение листинга~\ref{lst:unit2})}]
+	t.Run("negative: there are no pid in cri response", func(t *testing.T) {
+		ctx := context.Background()
+
+		cri := mocks.NewCriAPI(t)
+		cri.EXPECT().ContainerStatus(ctx, "9cf7af7", true).Return(&cri_api.ContainerStatusResponse{
+			Info: map[string]string{
+				"info": "{}",
+			},
+		}, nil)
+
+		e := New(cri)
+		pid, err := e.ContainerPID(ctx, "9cf7af7")
+		require.Error(t, err)
+		require.ErrorContains(t, err, "extract container pid")
+		assert.Equal(t, 0, pid)
+	})
+}
+\end{lstlisting}
+
+
+
+	\chapter{Интеграционное тестирование}
+	
+	Пример интеграционного теста представлен в листингах~\ref{lst:int1}--\ref{lst:int8}.
+
+\begin{lstlisting}[language=Go,label=lst:int1, caption={Интеграционный тест}]
+var (
+	cfg           *rest.Config
+	testK8sClient client.Client
+	testEnv       *envtest.Environment
+	ctx           context.Context
+	cancel        func()
+	timeout       = time.Second * 5
+	interval      = time.Millisecond * 250
+)
+
+var (
+	dbNamespace = testNamespace("db", "rs001")
+	testLimit   = testPodIOLimit("test-limit-db-rs001", "db", "rs001", 0)
+	dbPod       = testDBPod("db", "rs001", 0)
+)
+
+var (
+	applier          = &mocks.LimitsApplier{}
+	dropper          = &mocks.LimitsDropper{}
+	limitsMetricMock = &mocks.LimitsMetric{}
+	errorMetricMock  = &mocks.ErrorMetric{}
+)
+
+func TestControllers(t *testing.T) {
+	RegisterFailHandler(Fail)
+
+	RunSpecs(t, "Controller Suite")
+}
+
+var _ = BeforeSuite(func() {
+	logf.SetLogger(zap.New(zap.WriteTo(GinkgoWriter), zap.UseDevMode(true)))
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:int2, caption={Интеграционный тест (продолжение листинга~\ref{lst:int1})}]
+	ctx, cancel = context.WithCancel(context.Background())
+
+	By("bootstrapping test environment")
+	testEnv = &envtest.Environment{
+		CRDDirectoryPaths:     []string{filepath.Join("..", "..", "..", "config", "crd", "bases")},
+		ErrorIfCRDPathMissing: true,
+	}
+
+	var err error
+	// cfg is defined in this file globally.
+	cfg, err = testEnv.Start()
+	Expect(err).NotTo(HaveOccurred())
+	Expect(cfg).NotTo(BeNil())
+
+	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
+		Scheme: scheme.Scheme,
+	})
+	Expect(err).NotTo(HaveOccurred())
+	Expect(mgr).NotTo(BeNil())
+
+	err = dbaasv1alpha1.AddToScheme(scheme.Scheme)
+	Expect(err).NotTo(HaveOccurred())
+
+	//+kubebuilder:scaffold:scheme
+
+	err = indexes.Setup(mgr)
+	Expect(err).NotTo(HaveOccurred())
+
+	testK8sClient, err = client.New(cfg, client.Options{Scheme: scheme.Scheme})
+	Expect(err).NotTo(HaveOccurred())
+	Expect(testK8sClient).NotTo(BeNil())
+
+	err = testK8sClient.Create(context.Background(), dbNamespace)
+	Expect(err).NotTo(HaveOccurred())
+	err = testK8sClient.Create(context.Background(), dbPod)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:int3, caption={Интеграционный тест (продолжение листинга~\ref{lst:int2})}]
+	Expect(err).NotTo(HaveOccurred())
+
+	err = New(applier, dropper, Metrics{Limits: limitsMetricMock, ReconcileErrors: errorMetricMock}).SetupWithManager(mgr)
+	Expect(err).NotTo(HaveOccurred())
+
+	go func() {
+		defer GinkgoRecover()
+		err = mgr.Start(ctx)
+		Expect(err).ToNot(HaveOccurred())
+	}()
+})
+
+var _ = AfterSuite(func() {
+	By("tearing down the test environment")
+	cancel()
+	err := testEnv.Stop()
+	Expect(err).NotTo(HaveOccurred())
+})
+
+var _ = Describe("podiolimit reconciler", func() {
+	It("positive: applied limits", func() {
+		ctx := context.Background()
+
+		limitsMetricMock.EXPECT().Set(mock.Anything).Once()
+
+		applier.EXPECT().Apply(mock.Anything, mock.Anything).Return(nil).Once()
+
+		err := testK8sClient.Create(ctx, testLimit)
+		Expect(err).NotTo(HaveOccurred())
+
+		Eventually(func() []mock.Call {
+			return applier.Calls
+		}, timeout, interval).Should(HaveLen(1))
+	})
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:int4, caption={Интеграционный тест (продолжение листинга~\ref{lst:int3})}]
+	It("positive: dropped limits", func() {
+		ctx := context.Background()
+
+		dropper.EXPECT().Drop(mock.Anything, mock.Anything).Return(nil).Once()
+
+		err := testK8sClient.Delete(ctx, testLimit)
+		Expect(err).NotTo(HaveOccurred())
+
+		var podIOLimitList dbaasv1alpha1.PodIOLimitList
+		Eventually(func() ([]dbaasv1alpha1.PodIOLimit, error) {
+			if err := testK8sClient.List(ctx, &podIOLimitList); err != nil {
+				return nil, err
+			}
+
+			return podIOLimitList.Items, nil
+		}, timeout, interval).Should(BeEmpty())
+
+		Eventually(func() []mock.Call {
+			return dropper.Calls
+		}, timeout, interval).Should(HaveLen(1))
+	})
+
+	It("positive: pod not found for given limit", func() {
+		ctx := context.Background()
+
+		err := testK8sClient.Create(context.Background(), testNamespace("db2", "rs003"))
+		Expect(err).NotTo(HaveOccurred())
+
+		err = testK8sClient.Create(ctx, testPodIOLimit("test-limit-db-rs002", "db2", "rs003", 0))
+		Expect(err).NotTo(HaveOccurred())
+	})
+
+	It("positive: apply with retry", func() {
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:int5, caption={Интеграционный тест (продолжение листинга~\ref{lst:int4})}]
+		ctx := context.Background()
+
+		errorMetricMock.EXPECT().Inc(mock.Anything).Twice()
+		limitsMetricMock.EXPECT().Set(mock.Anything).Once()
+
+		testLimit := testPodIOLimit("test-limit-db-rs001", "db", "rs001", 0)
+
+		applier.EXPECT().Apply(mock.Anything, mock.Anything).Return(errors.New("some error")).Once()
+		applier.EXPECT().Apply(mock.Anything, mock.Anything).Return(errors.New("some error")).Once()
+		applier.EXPECT().Apply(mock.Anything, mock.Anything).Return(nil).Once()
+
+		err := testK8sClient.Create(ctx, testLimit)
+		Expect(err).NotTo(HaveOccurred())
+
+		Eventually(func() []mock.Call {
+			return applier.Calls
+		}, timeout, interval).Should(HaveLen(4))
+	})
+
+	It("negative: cannot drop limits, dont retry", func() {
+		ctx := context.Background()
+
+		errorMetricMock.EXPECT().Inc(mock.Anything).Once()
+
+		dropper.EXPECT().Drop(mock.Anything, mock.Anything).Return(errors.New("some error")).Once()
+
+		testLimit := testPodIOLimit("test-limit-db-rs001", "db", "rs001", 0)
+		err := testK8sClient.Delete(ctx, testLimit)
+		Expect(err).NotTo(HaveOccurred())
+
+		var podIOLimitList dbaasv1alpha1.PodIOLimitList
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:int6, caption={Интеграционный тест (продолжение листинга~\ref{lst:int5})}]
+		Eventually(func() ([]dbaasv1alpha1.PodIOLimit, error) {
+			if err := testK8sClient.List(ctx, &podIOLimitList); err != nil {
+				return nil, err
+			}
+
+			return podIOLimitList.Items, nil
+		}, timeout, interval).Should(HaveLen(1)) // Only limit without pod.
+
+		Consistently(func() []mock.Call {
+			return dropper.Calls
+		}, timeout, interval).Should(HaveLen(2))
+	})
+})
+
+func testNamespace(storageName, replicaSetName string) *v1.Namespace {
+	return &v1.Namespace{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: fmt.Sprintf("%s-rs-%s", storageName, replicaSetName),
+		},
+	}
+}
+
+func testDBPod(storageName, replicaSetName string, number int) *v1.Pod {
+	return &v1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      fmt.Sprintf("%s-rs-%s-%d", storageName, replicaSetName, number),
+			Namespace: fmt.Sprintf("%s-rs-%s", storageName, replicaSetName),
+			Labels: map[string]string{
+				"storage_name":     storageName,
+				"replica_set_name": replicaSetName,
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:int7, caption={Интеграционный тест (продолжение листинга~\ref{lst:int6})}]
+			},
+		},
+		Spec: v1.PodSpec{
+			Containers: []v1.Container{
+				{Name: "db", Image: "debian:bullseye"},
+				{Name: "agent", Image: "debian:bullseye"},
+			},
+		},
+	}
+}
+
+func testPodIOLimit(limitName, storageName, replicaSetName string, number int) *dbaasv1alpha1.PodIOLimit {
+	return &dbaasv1alpha1.PodIOLimit{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:       fmt.Sprintf("%s-%s-rs-%s-%d", limitName, storageName, replicaSetName, number),
+			Namespace:  fmt.Sprintf("%s-rs-%s", storageName, replicaSetName),
+			Finalizers: []string{dbaasv1alpha1.CleanupFinalizer},
+		},
+		Spec: dbaasv1alpha1.PodIOLimitSpec{
+			StorageName:    storageName,
+			ReplicaSetName: replicaSetName,
+			Limits: []dbaasv1alpha1.Limit{
+				{
+					ContainerName:  "agent",
+					ContainerID:    "12516eadc",
+					VolumeName:     "config",
+					DeviceNumbers:  "252:1",
+					ReadIOPS:       40,
+					ReadBandwidth:  40000000,
+					WriteIOPS:      30,
+					WriteBandwidth: 30000000,
+				},
+			},
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:int8, caption={Интеграционный тест (продолжение листинга~\ref{lst:int7})}]
+			PodName: fmt.Sprintf("%s-rs-%s-%d", storageName, replicaSetName, number),
+			PodUID:  "1eaff438-0e2e-48c1-9bbe-a7e3ff8c51e9",
+		},
+	}
+}
+\end{lstlisting}
+
+
+	\chapter{Манифест для запуска PostgreSQL}
+	
+Манифест для запуска PostgreSQL в Kubernetes представлен в листингах~\ref{lst:sts_pg1}--\ref{lst:sts_pg2}.
+
+\begin{lstlisting}[language=Go,label=lst:sts_pg1, caption={Манифест для запуска PostgreSQL в Kubernetes}]
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+spec:
+  selector:
+    matchLabels:
+      storage_name: postgresql
+      replica_set_name: rs001
+  serviceName: "postgresql-service"
+  replicas: 2
+  minReadySeconds: 10
+  template:
+    metadata:
+      name: postgresql
+      labels:
+        storage_name: postgresql
+        replica_set_name: rs001
+    spec:
+      containers:
+        - name: postgresql
+          image: postgres:latest
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          env:
+            - name: "POSTGRES_USER"
+              value: "user"
+            - name: "POSTGRES_PASSWORD"
+              value: "password"
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:sts_pg2, caption={Манифест для запуска PostgreSQL в Kubernetes (продолжение листинга~\ref{lst:sts_pg1})}]
+            - name: "PGDATA"
+              value: "/var/lib/postgresql/data/pgdata"
+          resources:
+            requests:
+              cpu: "10m"
+            limits:
+              cpu: "2000m"
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "hostpath-storageclass"
+        resources:
+          requests:
+            storage: 10Gi
+\end{lstlisting}
+
+	\chapter{Манифест для применения ограничений дискового ввода-вывода}
+	
+Манифест для применения ограничений ввода-вывода для первых двух экземпляров представлен в листинге~\ref{lst:lim_pg}.
+
+\begin{lstlisting}[language=Go,label=lst:lim_pg, caption={Манифест для применения ограничений ввода-вывода для первых двух экземпляров}]
+apiVersion: dbaas.dbaas.avito.ru/v1alpha1
+kind: IOLimit
+metadata:
+  name: postgresql
+spec:
+  storageName: postgresql
+  replicaSetName: rs001
+  containers:
+    - name: postgresql
+      volumes:
+        - name: data
+          reads:
+            iops: 5000
+            bandwidth: 2000MBps
+          writes:
+            iops: 5000
+            bandwidth: 2000MBps
+\end{lstlisting}
+
+\chapter{Презентация}
+
+Презентация к выпускной квалификационной работе бакалавра. 22~страницы.
+
+
+
+\end{appendices}

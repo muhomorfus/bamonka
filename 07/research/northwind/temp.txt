@@ -1,0 +1,2 @@
+shippers(ShipperID, Company, _),
+orders(10253, _, _, _, _, _, ShipperID, _, _, _, _, _, _, _, _).

@@ -1,0 +1,202 @@
+\chapter{Тренировочное задание}
+
+\section{Задание (вариант 1)}
+
+Осуществить планирование проекта со следующими характеристиками:
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=0.5\linewidth]{assets/train_task.png}
+    \caption{Тренировочное задание}
+    \label{fig:1}
+    \end{center}
+\end{figure}
+
+Задачи:
+
+\begin{enumerate}
+	\item Дополнить временной план проекта, подготовленный на предыдущем этапе (лабораторная работа № 1), информацией о ресурсах и определить стоимость проекта.
+	\item Для этого заполнить ресурсный лист в программе MS Project, принимая во внимание, что к реализации проекта привлекается не более 11 исполнителей.
+	\item Предусмотреть, что стандартная ставка ресурса составляет 120 руб./день.
+	\item Произвести назначение ресурсов на задачи в соответствии с таблицей. С учетом того, что квалификация ресурсов одинаковая, при назначении ресурсов использовать процент загрузки.
+	\item На 3-й день реализации работы В арендуется оборудование по ставке 5 тыс. руб. в неделю. На его установку и наладку необходимо выделить 2 тыс. рублей.
+\end{enumerate}
+
+\section{Выполнение задания}
+
+Получившийся лист ресурсов.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/src_test.png}
+    \caption{Лист ресурсов}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+Получившийся лист задач. Квалификация трудового ресурса одинаковая, поэтому задействован процент загрузки.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/res_test.png}
+    \caption{Лист задач}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+Наблюдается несколько перегрузок по ресурсу~---~когда он одновременно задействуется в нескольких задачах. 
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/opt_test.png}
+    \caption{Перегрузка ресурсов}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+При задачах C, E, F использование ресурсов составляет 1200\% при доступных 1100\%.
+
+\textbf{Затраты на проект:} 60600 рублей.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Основное задание}
+
+\section{Содержание проекта}
+
+Команда разработчиков из 16 человек занимается созданием карты города на основе собственного модуля отображения. Проект должен быть завершен в течение 6 месяцев. Бюджет проекта: 50 000 рублей.
+
+\section{Задание 1: Создание списка ресурсов}
+
+Заполнен ресурсный лист в соответствии с заданием. 
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/src_list.png}
+    \caption{Лист ресурсов}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+\newpage
+
+\section{Задание 2: Назначение ресурсов задачам}
+
+Ресурсы назначены на задачи. 
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/tasks_req.png}
+    \caption{Назначение ресурсов на задачи~---~лист задач}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+После назначения ресурсов на задачи появились перегрузки~---~когда ресурс одновременно задействуется в нескольких задачах. Визуальный оптимизатор показал перегрузки для: 
+
+\begin{enumerate}
+
+\item Системного аналитика~---~он одновременно задействован на <<Анализ и построение структуры базы объектов>> и <<Анализ и проектирование ядра>>.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/load_sys.png}
+    \caption{Перегрузка системного аналитика}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+\item Художника-дизайнера~---~он одновременно задействован на <<Разработка дизайна руководства>> и <<Разработка дизайна сайта>>.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/load_des.png}
+    \caption{Перегрузка дизайнера}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+\item Технического писателя~---~он одновременно задействован на <<Написание руководства пользователя>> и <<Создание справочной системы>>.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/load_wrt.png}
+    \caption{Перегрузка технического писателя}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+\end{enumerate}
+
+Были добавлены фиксированные затраты в размере 1000 рублей для задач 2, 8, 12. Был добавлен ресурс «Аренда сервера» с календарем <<24 часа>> и назначен на задачу 8.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/server.png}
+    \caption{Создание ресурса~---~сервера}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+В результате лист задач выглядит так:
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=1\linewidth]{assets/res.png}
+    \caption{Результат}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+\newpage
+
+\section{Задание 3: Анализ затрат по группам ресурсов}
+
+Проведена структуризация затрат по группам ресурсов.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=0.85\linewidth]{assets/struct.png}
+    \caption{Структурирование по группам ресурсов}
+    \label{fig:2}
+    \end{center}
+\end{figure}
+
+Информацию о затратах и трудозатратах по структурным группам ресурсов представлена в графическом виде. По данным графика можно сравнить стоимость труда различных специалистов.
+
+\newpage
+
+На рисунке \ref{fig:zatraty} представлена круговая диаграмма затрат по группам ресурсов.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=0.5\linewidth]{assets/zatr.png}
+    \caption{График затрат}
+    \label{fig:zatraty}
+    \end{center}
+\end{figure}
+
+На рисунке \ref{fig:trud} представлена круговая диаграмма трудозатрат по группам ресурсов.
+
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=0.5\linewidth]{assets/trud.png}
+    \caption{График трудозатрат}
+    \label{fig:trud}
+    \end{center}
+\end{figure}
+

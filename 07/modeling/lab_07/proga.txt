@@ -1,0 +1,36 @@
+GENERATE 10,2
+
+Beginning TRANSFER ALL,Op1,Decline,4
+Op1 SEIZE Operator1
+ADVANCE 20,5
+RELEASE Operator1
+TRANSFER  ,LabelPC1
+SEIZE Operator2
+ADVANCE 40,10
+RELEASE Operator2
+TRANSFER  ,LabelPC1
+SEIZE Operator3
+ADVANCE 40,20
+RELEASE Operator3
+TRANSFER  ,LabelPC2
+Decline TERMINATE 1
+
+LabelPC1 QUEUE ComputerQueue1
+SEIZE PC1
+DEPART ComputerQueue1
+ADVANCE 15
+RELEASE PC1
+TRANSFER  ,Finish
+
+LabelPC2 QUEUE ComputerQueue2
+SEIZE PC2
+DEPART ComputerQueue2
+ADVANCE 30
+RELEASE PC2
+TRANSFER  ,Finish
+
+Finish SAVEVALUE DeclineProbability,((N$Decline/N$Beginning)#100)
+TERMINATE 1
+
+START 300
+

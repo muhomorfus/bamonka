@@ -1,0 +1,96 @@
+\chapter{Конструкторский раздел}
+
+\section{IDEF0-диаграмма нулевого уровня}
+
+На рисунке~\ref{img:idef0} представлена диаграмма IDEF0 нулевого уровня разрабатываемого ПО.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.8]{assets/idef0}
+    \caption{IDEF0-диаграмма нулевого уровня}
+    \label{img:idef0}
+\end{figure}
+
+\section{Структура, хранящая информацию о текущем системном вызове}
+
+Для сбора информации о времени исполнения текущего системного вызова необходимо хранить следующую информацию:
+
+\begin{itemize}
+	\item время вызова функции;
+	\item системный вызов;
+	\item PID вызывающего.
+\end{itemize}
+
+\newpage
+
+\section{Структура, хранящая статистику о времени исполнения системного вызова}
+
+Для статистики времени исполнения системного вызова необходимо хранить следующую информацию:
+
+\begin{itemize}
+	\item количество вызовов;
+	\item суммарную длительность;
+	\item максимальную длительность.
+\end{itemize}
+
+\section{Алгоритм установки перехватчиков системных вызовов}
+
+На рисунке \ref{img:set_interceptor} представлена схема алгоритма установки перехватчиков системных вызовов.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{assets/set_interceptor.pdf}
+    \caption{Схема алгоритма установки перехватчиков системных вызовов}
+    \label{img:set_interceptor}
+\end{figure}
+
+\newpage
+
+\section{Алгоритм обработчика, выполняемого при вызове функции}
+
+На рисунке \ref{img:start_handler} представлена схема алгоритма обработчика, выполняемого при вызове функции.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{assets/start_handler.pdf}
+    \caption{Схема алгоритма обработчика, выполняемого при вызове функции}
+    \label{img:start_handler}
+\end{figure}
+
+\newpage
+
+\section{Алгоритм обработчика, выполняемого после возврата из функции}
+
+На рисунке \ref{img:return_handler} представлена схема алгоритма обработчика, выполняемого после возврата из функции.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/return_handler.pdf}
+    \caption{Схема алгоритма обработчика, выполняемого после возврата из функции}
+    \label{img:return_handler}
+\end{figure}
+
+\newpage
+
+\section{Структура программного обеспечения}
+
+На рисунке \ref{img:structure} представлена структура программного обеспечения.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{assets/structure.pdf}
+    \caption{Структура ПО}
+    \label{img:structure}
+\end{figure}
+
+ПО можно разделить на следующие логические части:
+
+\begin{itemize}
+	\item \texttt{handlers}~---~обрабатывает вход и выход из перехватываемых системных вызовов и собирает статистику;
+	\item \texttt{store}~---~хранит статистику;
+	\item \texttt{view}~---~предоставляет статистику пользователю.
+\end{itemize}
+
+Из-за небольшого размера, все компоненты будут размещены в одном модуле.
+
+

@@ -1,0 +1,285 @@
+\chapter{Технологический раздел}
+
+В качестве языка программирования для реализации разработанного метода был выбран Go~\cite{donovan2015go}, так как с помощью него можно решить поставленную задачу, а также он имеет достаточный набор библиотек для взаимодействия с Kubernetes. Наличие библиотек также вызвано официальной поддержкой языка Go авторами оркестратора, так как сама система оркестрации реализована с использованием этого языка~\cite{kubernetes}.
+
+Для реализации разрабатываемого ПО был использован паттерн <<Оператор>>, так как он является рекомендуемым для разработки расширений для Kubernetes~\cite{operator}.
+
+Для реализации Kubernetes-оператора использовался Operator SDK, так как он предоставляет достаточный набор функций для создания операторов, в том числе~\cite{operator_sdk}:
+
+\begin{itemize}
+	\item генерация шаблона проекта;
+	\item генерация обработчиков обновления Custom Resources;
+	\item генерация средств развертывания приложения в Kubernetes;
+	\item набор библиотек для взаимодействия с Kubernetes.
+\end{itemize}
+
+Таким образом, Kubernetes-оператор представляет собой единое приложение, запускающее в себе набор циклов-контроллеров, реагирующих на изменение Custom Resource.
+
+\newpage
+
+На рисунке~\ref{img:po} представлена схема взаимодействия оператора с компонентами Kubernetes и ядра операционной системы Linux.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{assets/po}
+    \caption{Схема взаимодействия оператора с компонентами Kubernetes и ядра операционной системы Linux}
+    \label{img:po}
+\end{figure}
+
+\section{Входные данные}
+
+Входными данными являются сущности Kubernetes. При этом используются три возможных варианта сущностей: Pod, IOLimit, PodIOLimit. При этом Pod является стандартным ресурсом Kubernetes, а IOLimit и PodIOLimit~---~Custom Resource.
+
+\textbf{IOLimit}
+
+Сущность IOLimit хранит информацию об ограничениях дискового ввода-вывода на уровне группы реплик приложения. Манифест этого ресурса имеет вид, представленный в листингах~\ref{lst:iolimit1}--\ref{lst:iolimit2}.
+
+\begin{lstlisting}[label=lst:iolimit1, caption={Пример манифеста IOLimit}]
+apiVersion: ioba.dbaas.avito.ru/v1alpha1
+\end{lstlisting}
+
+\begin{lstlisting}[label=lst:iolimit2, caption={Пример манифеста IOLimit (продолжение листинга~\ref{lst:iolimit1})}]
+kind: IOLimit
+metadata:
+  name: test-limit
+spec:
+  storageName: db1
+  replicaSetName: rs001
+  containers:
+    - name: postgresql
+      volumes:
+        - name: data
+          reads:
+            iops: 300
+            bandwidth: 100MBps
+          writes:
+            iops: 300
+            bandwidth: 20MBps
+\end{lstlisting}
+
+При создании или изменении сущности IOLimit, оператор дозаполнит необходимую низкоуровневую информацию и создаст ресурсы PodIOLimit для каждого экземпляра Pod.      
+
+\textbf{Pod}
+
+Так как может быть такая ситуация, что некоторые поды, относящиеся к приложению будут созданы после применения ограничений на существующие поды хранилища, то необходимо отслеживать создание новых подов, и в случае несуществования для них подходящих ресурсов PodIOLimit создавать их.
+
+\textbf{PodIOLimit}
+
+Сущность PodIOLimit хранит информацию об ограничениях дискового ввода-вывода на уровне одной реплики приложения. Манифест этого ресурса имеет вид, представленный в листингах~\ref{lst:podiolimit1}--\ref{lst:podiolimit2}.
+
+\begin{lstlisting}[label=lst:podiolimit1, caption={Пример манифеста PodIOLimit}]
+apiVersion: ioba.dbaas.avito.ru/v1alpha1
+kind: PodIOLimit
+metadata:
+  name: test-limit-ioba-test-0
+spec:
+\end{lstlisting}
+
+\begin{lstlisting}[label=lst:podiolimit2, caption={Пример манифеста PodIOLimit (продолжение листинга~\ref{lst:podiolimit1})}]
+  limits:
+    - containerID: bb6deeaa978e99a
+      containerName: postgresql
+      deviceNumbers: "254:1"
+      readBandwidth: "100000000"
+      readIOPS: "300"
+      volumeName: data
+      writeBandwidth: "20000000"
+      writeIOPS: "300"
+  nodeName: worker2
+  podName: test-0
+  podUID: 9b06e0ab-fd1f-49b9-8581-d4eed47b282a
+  replicaSetName: rs001
+  storageName: db1
+\end{lstlisting}
+
+\section{Создание PodIOLimit на основе IOLimit}
+
+Кроме информации непосредственно из IOLimit, PodIOLimit для каждого контейнера имеет набор системной информации, такой как идентификатора пода и контейнера, и номера примонтированного устройства. Соответственно, для генерации PodIOLimit необходимо получить эту низкоуровневую информацию.
+
+Идентификатор пода содержится в его метаданных. Листинги~\ref{lst:pod_uid1}--\ref{lst:pod_uid2} содержат фрагмент кода, получающий идентификатор пода.
+
+\begin{lstlisting}[language=Go,label=lst:pod_uid1, caption={Получение идентификатора пода}]
+podLimit := &dbaasv1alpha1.PodIOLimit{
+	ObjectMeta: metav1.ObjectMeta{
+		Name:       fmt.Sprintf("%s-%s", iolimit.Name, pod.Name),
+		Namespace:  pod.Namespace,
+		Finalizers: []string{dbaasv1alpha1.CleanupFinalizer},
+		Labels: map[string]string{
+			dbaasv1alpha1.NodeNameLabel: g.nodeName,
+		},
+	},
+	Spec: dbaasv1alpha1.PodIOLimitSpec{
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:pod_uid2, caption={Получение идентификатора пода (продолжение листинга~\ref{lst:pod_uid1})}]
+		StorageName:    iolimit.Spec.StorageName,
+		ReplicaSetName: iolimit.Spec.ReplicaSetName,
+		Limits:         limits,
+		NodeName:       g.nodeName,
+		PodName:        pod.Name,
+		PodUID:         string(pod.UID),
+		},
+}
+\end{lstlisting}
+
+Идентификатор контейнера получается из информации о состоянии пода. Листинги~\ref{lst:container_id1}--\ref{lst:container_id2} содержат фрагмент кода получения идентификатора контейнера.
+
+\begin{lstlisting}[language=Go,label=lst:container_id1, caption={Получение идентификатора контейнера}]
+func (g *Generator) prepareLimits(pod *v1.Pod, iolimit *dbaasv1alpha1.IOLimit) ([]models.LimitBase, error) {
+	volumeToPVC := make(map[string]string, len(pod.Spec.Volumes))
+	for _, volume := range pod.Spec.Volumes {
+		if volume.PersistentVolumeClaim == nil {
+			continue
+		}
+
+		volumeToPVC[volume.Name] = volume.PersistentVolumeClaim.ClaimName
+	}
+
+	containerNameToID := make(map[string]string, len(pod.Spec.Containers))
+	for _, status := range pod.Status.ContainerStatuses {
+		containerNameToID[status.Name] = g.trimCRIPrefix(status.ContainerID)
+	}
+
+	limits := make([]models.LimitBase, 0, len(iolimit.Spec.Containers))
+	for _, container := range iolimit.Spec.Containers {
+		for _, volume := range container.Volumes {
+\end{lstlisting}
+
+\begin{lstlisting}[language=Go,label=lst:container_id2, caption={Получение идентификатора контейнера (продолжение листинга~\ref{lst:container_id1})}]
+			pvc, ok := volumeToPVC[volume.Name]
+			if !ok {
+				return nil, fmt.Errorf("get pvc by volume: %w", models.ErrPVCNotFound)
+			}
+
+			containerID, ok := containerNameToID[container.Name]
+			if !ok || containerID == "" {
+				return nil, fmt.Errorf("get container id by name: %w", models.ErrContainerNotFound)
+			}
+
+			limits = append(limits, models.LimitBase{
+				Namespace:     iolimit.Namespace,
+				PodUID:        string(pod.UID),
+				ContainerName: container.Name,
+				ContainerID:   containerID,
+				VolumeName:    volume.Name,
+				PVCName:       pvc,
+				Reads:         volume.Reads,
+				Writes:        volume.Writes,
+			})
+		}
+	}
+
+	return limits, nil
+}
+\end{lstlisting}
+
+
+Фрагмент получения номеров устройства из файловой системы proc представлен в листингах~\ref{lst:proc_parse1}--\ref{lst:proc_parse2}.
+
+\begin{lstlisting}[language=Go,label=lst:proc_parse1, caption={Получение номеров устройства}]
+func (e *Extractor) DeviceNumbers(
+    ctx context.Context, 
+    containerPID int, 
+    volumeHandle string,
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[language=Go,label=lst:proc_parse2, caption={Получение номеров устройства (продолжение листинга~\ref{lst:proc_parse1})}]
+) (string, error) {
+	file, err := e.reader.Read(filepath.Join(strconv.Itoa(containerPID), "mountinfo"))
+	if err != nil {
+		return "", fmt.Errorf("read proc file: %w", err)
+	}
+	deviceNumbers, err := e.deviceNumberFromMountInfo(file, volumeHandle)
+	if err != nil {
+		return "", fmt.Errorf("extract device numbers: %w", err)
+	}
+	
+	return deviceNumbers, nil
+}
+
+func (e *Extractor) deviceNumberFromMountInfo(mountInfo, volumeHandle string) (string, error) {
+	for _, line := range strings.Split(mountInfo, "\n") {
+		if !strings.Contains(line, volumeHandle) {
+			continue
+		}
+		splitted := strings.Split(line, " ")
+		if len(splitted) < deviceNumbersColumn {
+			return "", fmt.Errorf("line must contain more than 3 columns: %w (%q)", models.ErrInvalidProcFile, line)
+		}
+		return splitted[deviceNumbersColumn-1], nil
+	}
+
+	return "", fmt.Errorf("mount not found for volumehandle %s: %w", volumeHandle, models.ErrNoVolumeEntry)
+}
+\end{lstlisting}
+
+Фрагмент кода получения PID основного процесса контейнера представлен в листинге~\ref{lst:pid}.
+
+\newpage
+
+\begin{lstlisting}[language=Go,label=lst:pid, caption={Получение PID основного процесса контейнера}]
+func (e *Extractor) ContainerPID(ctx context.Context, containerID string) (int, error) {
+	resp, err := e.cri.ContainerStatus(ctx, containerID, true)
+	if err != nil {
+		return 0, fmt.Errorf("call containerStatus: %w", err)
+	}
+	infoMarshalled, ok := resp.Info["info"]
+	if !ok {
+		return 0, fmt.Errorf("container info response must contain info block: %w", models.ErrInvalidContainerInfo)
+	}
+
+	var info containerInfo
+	if err := json.Unmarshal([]byte(infoMarshalled), &info); err != nil {
+		return 0, fmt.Errorf("unmarshal container info: %w", err)
+	}
+
+	if info.PID == 0 {
+		return 0, fmt.Errorf("extract container pid: %w", models.ErrInvalidContainerInfo)
+	}
+
+	return info.PID, nil
+}
+
+type containerInfo struct {
+	PID int `json:"pid"`
+}
+\end{lstlisting}
+
+На основе всех полученных данных может быть сгенерирован PodIOLimit. Фрагмент кода по генерации PodIOLimit представлен в Приложении~Б.
+
+\section{Применение ограничений дискового ввода-вывода с использованием cgroup v2}
+
+Применение ограничений дискового ввода-вывода представляет собой запись в интерфейсный файл \texttt{io.max} контрольной группы контейнера. Фрагмент кода с записью ограничений в файл представлен в листинге~\ref{lst:write_limit}.
+
+\begin{lstlisting}[language=Go,label=lst:write_limit, caption={Запись ограничений в cgroup v2}]
+func (w *LimitWriter) WriteLimit(ctx context.Context, podUID string, limit dbaasv1alpha1.Limit) error {
+	fileName := w.path.Format(podUID, limit, ioMaxFileName)
+	line := w.toCGroupLine(limit)
+
+	if err := w.writer.Write(fileName, line); err != nil {
+		return fmt.Errorf("write limit to file: %w", err)
+	}
+
+	return nil
+}
+
+func (w *LimitWriter) toCGroupLine(limit dbaasv1alpha1.Limit) string {
+	return fmt.Sprintf("%s rbps=%s wbps=%s riops=%s wiops=%s",
+		w.deviceNumbersGenerator.Generate(limit.DeviceNumbers),
+		limit.ReadBandwidth,
+		limit.WriteBandwidth,
+		limit.ReadIOPS,
+		limit.WriteIOPS,
+	)
+}
+\end{lstlisting}
+
+\section{Тестирование}
+
+Для тестирования ПО были реализованы полностью автоматизированные модульные и интеграционные тесты, и частично автоматизированные функциональные тесты. Суммарное тестовое покрытие составляет 89\%. Кроме того, была измерена оценка по мутационному тестированию с использованием утилиты \texttt{go-mutesting}~\cite{mutesting}, полученная оценка равна 86\%.
+
+Пример модульного теста представлен в Приложении~В.
+
+Пример интеграционного теста представлен в приложении~Г.

@@ -1,0 +1,15 @@
+set terminal png
+
+set output "ab.png"
+
+set title "Зависимость времени выполнения запроса от количества запросов"
+
+set grid y
+
+set key left top
+
+set xlabel "Количество запросов, шт."
+
+set ylabel "Время выполнения запроса, мс."
+
+plot "ab.data" using 9 smooth sbezier lw 2 with lp title "static server", "ab_nginx.data" using 9 smooth sbezier lw 2 with lp title "Nginx"

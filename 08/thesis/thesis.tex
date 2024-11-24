@@ -1,0 +1,94 @@
+\documentclass{bmstu}
+
+\bibliography{biblio}
+
+\setenumerate[1]{label=\arabic*.}
+\usepackage{listingsutf8}
+\lstset{columns=fixed,basicstyle=\small,breaklines=true,inputencoding=utf8,keywordstyle=\bfseries\underbar,frame=single,tabsize=2,xleftmargin=20pt,xrightmargin=5pt}
+\lstset{language=sql}
+\lstset{numbers=left,numberstyle=\small}
+\lstset{xleftmargin=10mm}
+\lstset{xrightmargin=-1mm}
+\usepackage{mathtools}
+
+\renewcommand\labelitemi{---}
+\renewcommand\labelitemii{*}
+\renewcommand\labelitemiii{-}
+
+\usepackage{caption}
+
+\lstset{extendedchars=\true}
+
+\usepackage[fontsize=14pt]{fontsize}
+
+\usepackage{pdfpages}
+
+%\usepackage{framed}
+
+%\geometry{
+% a4paper,
+% left=30mm,
+% top=20mm,
+% bottom=22mm,
+% right=15mm,
+% bindingoffset=0cm
+% }
+
+\geometry{a4paper,left=3cm,right=1cm,
+    top=2cm,bottom=2cm,bindingoffset=0cm}
+    
+\setlength{\parindent}{1.25cm}
+ 
+ \usepackage{tocloft}
+
+\setlength{\cftbeforetoctitleskip}{0pt}
+\renewcommand{\contentsname}{СОДЕРЖАНИЕ}
+\renewcommand{\cfttoctitlefont}{\hfill\normalsize\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill\mbox{}}
+
+
+% Remove padding for TOC entries
+\renewcommand{\cftsecindent}{0em}
+\renewcommand{\cftsubsecindent}{0em}
+\renewcommand{\cftsubsubsecindent}{0em}
+
+% Customizing TOC entries font and alignment
+\renewcommand{\cftsecfont}{\normalsize}
+\renewcommand{\cftsubsecfont}{\normalsize}
+\renewcommand{\cftsubsubsecfont}{\normalsize}
+
+\setlength{\cftbeforetoctitleskip}{-20pt}
+
+\usepackage{indentfirst}
+
+\usepackage{caption} %заголовки плавающих объектов
+\captionsetup[table]{justification=centering}
+
+\begin{document}
+
+\includepdf[pages=-]{title.pdf}
+
+%\makethesistitle{Информатика и системы управления}{Программное обеспечение ЭВМ и информационные технологии}{Метод ограничения пропускной способности дискового ввода-вывода в
+%системе оркестрации приложений Kubernetes}{А. В. Княжев/ИУ7-82Б}{Ю. В. Строганов}{}{ }
+
+\setcounter{page}{5}
+
+\include{00-essay}
+
+\maketableofcontents
+
+\include{01-definitions}
+\include{02-abbreviations}
+
+\include{03-introduction}
+\include{04-analysis}
+\include{05-design}
+\include{06-implementation}
+\include{07-research}
+\include{08-conclusion}
+
+\makebibliography
+
+\include{09-appendix}
+
+\end{document}

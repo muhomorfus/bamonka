@@ -1,0 +1,16 @@
+GENERATE (UNIFORM(1,2,8))
+
+Beginning QUEUE WorkQueue
+SEIZE Device
+DEPART WorkQueue
+ADVANCE (EXPONENTIAL(1,0,4))
+RELEASE Device
+TRANSFER .80,Finish,Reenter
+Reenter TRANSFER  ,Beginning
+
+Finish SAVEVALUE Reentered,N$Reenter 
+SAVEVALUE Processed,N$Finish
+SAVEVALUE QueueLen,QM$WorkQueue
+TERMINATE 1
+
+START 1000

@@ -1,0 +1,273 @@
+\chapter{Сравнение способов составления запросов к базам данных}
+
+В данной части производится сравнение способов составления запросов к базам данных.
+
+\begin{enumerate}
+	\item SQL.
+	\item Prolog/Datalog.
+	\item ORM.
+\end{enumerate}
+
+Для способов составления запросов может быть выявлен критерий «понятности». В данном случае, в качестве критерия «понятности» можно использовать процент ошибок, совершенный человеком при распознавании запроса и время, затраченное на распознавание. Чем процент ошибок и время меньше~---~тем более «понятным» можно считать способ.
+
+Для получения значения количества ошибок и времени ответа проведен опрос, в котором участники могут выбрать вариант ответа базы данных на указанный запрос. В качестве базы данных для опроса используется тестовая база данных Northwind~\cite{dyer2015adapting}.
+
+\section{Проведение опроса}
+
+Для оценки количества ошибок составляется тест, состоящий из 21 вопросов, по 7 вопросов на каждый из способов. Вопрос представляет собой запрос с использованием одного из способов к базе данных и 8 вариантов ответа. Вопросы и варианты ответа на них приведены в Приложении~А.
+
+Для оценки времени ответа на вопрос, используется среднее значение 75-ых перцентилей времени ответа на каждый запрос, заданный с помощью одного из способов составления запроса. Результаты опроса сгруппированы по связи респондентов со сферой информационных технологий и по виду использования связей: запросы одной или нескольких сущностей.
+
+Результаты времени ответа на запросы одной сущности респондентов, работа или учеба которых связана с информационными технологиями, следующие:
+
+\begin{itemize}
+	\item \textbf{SQL}~---~63 секунды;
+	\item \textbf{Prolog/Datalog}~---~46 секунд;
+	\item \textbf{ORM}~---~63 секунды.
+\end{itemize}
+
+Результаты времени ответа на запросы нескольких сущностей респондентов, работа или учеба которых связана с информационными технологиями, следующие:
+
+\begin{itemize}
+	\item \textbf{SQL}~---~141 секунда;
+	\item \textbf{Prolog/Datalog}~---~134 секунды;
+	\item \textbf{ORM}~---~158 секунд.
+\end{itemize}
+
+Результаты времени ответа на запросы одной сущности респондентов, работа или учеба которых не связана с информационными технологиями, следующие:
+
+\begin{itemize}
+	\item \textbf{SQL}~---~73 секунды;
+	\item \textbf{Prolog/Datalog}~---~38 секунд;
+	\item \textbf{ORM}~---~76 секунд.
+\end{itemize}
+
+Результаты времени ответа на запросы нескольких сущностей респондентов, работа или учеба которых не связана с информационными технологиями, следующие:
+
+\begin{itemize}
+	\item \textbf{SQL}~---~154 секунды;
+	\item \textbf{Prolog/Datalog}~---~126 секунд;
+	\item \textbf{ORM}~---~191 секунд.
+\end{itemize}
+
+Для оценки правильности ответа используется процент ошибок на вопросы, составленные с помощью одного из способа составления запроса. 
+
+Результаты процента ошибок на запросы одной сущности респондентов, работа или учеба которых связана с информационными технологиями, следующие:
+
+\begin{itemize}
+	\item \textbf{SQL}~---~22\%;
+	\item \textbf{Prolog/Datalog}~---~25\%;
+	\item \textbf{ORM}~---~23\%.
+\end{itemize}
+
+Результаты процента ошибок на запросы нескольких сущностей респондентов, работа или учеба которых связана с информационными технологиями, следующие:
+
+\begin{itemize}
+	\item \textbf{SQL}~---~52\%;
+	\item \textbf{Prolog/Datalog}~---~46\%;
+	\item \textbf{ORM}~---~45\%.
+\end{itemize}
+
+Результаты процента ошибок на запросы одной сущности респондентов, работа или учеба которых не связана с информационными технологиями, следующие:
+
+\begin{itemize}
+	\item \textbf{SQL}~---~64\%;
+	\item \textbf{Prolog/Datalog}~---~60\%;
+	\item \textbf{ORM}~---~60\%.
+\end{itemize}
+
+Результаты процента ошибок на запросы нескольких сущностей респондентов, работа или учеба которых не связана с информационными технологиями, следующие:
+
+\begin{itemize}
+	\item \textbf{SQL}~---~59\%;
+	\item \textbf{Prolog/Datalog}~---~67\%;
+	\item \textbf{ORM}~---~75\%.
+\end{itemize}
+
+%\section{Определение предметной области}
+%
+%В качестве примера будет использоваться предметная область исследования времяпрепровождения клиентов некоторого концерна по производству пива и закусок к нему.
+%
+%Составленная база данных будет использована для хранения ответов аудитории на социальный опрос, целью которого будет выяснить, какое сочетания пива, закуски и фильма клиент считает наилучшим времяпрепровождением для себя.
+%
+%Рассматриваемая база данных состоит из следующих сущностей.
+%
+%\begin{itemize}
+%	\item \textbf{Пиво}~---~конкретная серия пива некоторого производителя.
+%	\item \textbf{Производитель пива}~---~пивоваренная компания.
+%	\item \textbf{Описание пива}~---~описание основных характеристик пива. Включает в себя описание, состав и крепость в процентах.
+%	\item \textbf{Фильм}~---~конкретный фильм, который предпочитает смотреть аудитория.
+%	\item \textbf{Модель чипсов}~---~серия чипсов без привязки ко вкусу.
+%	\item \textbf{Вкус чипсов}~---~вкус чипсов без привязки к серии.
+%\end{itemize}
+%
+%База данных составлена таким образом, чтобы она содержала все вышеуказанные виды отношений между сущностями.
+%
+%\begin{enumerate}
+%	\item \textbf{Один-к-одному:} связь между пивом и его описанием
+%	\item \textbf{Один-ко-многим:} связь между производителем пива и непосредственно пивом.
+%	\item \textbf{Многие-ко-многим:} связь между моделью чипсов и вкусом.
+%	\item \textbf{n-арная связь:} связь между фильмом, чипсами (включая модель и вкус) и пивом.
+%\end{enumerate}
+%
+%\newpage
+%
+%На рисунке \ref{img:chen} представлена диаграмма базы данных в нотации Чена.
+%
+%\begin{figure}[h!]
+%\centering
+%    \includegraphics[width=1\linewidth]{assets/chen.pdf}
+%    \caption{ER-диаграмма сущностей в нотации Чена}
+%    \label{img:chen}	
+%\end{figure}
+%
+%\section{Запросы к предметной области}
+%
+%В данном разделе предложены примеры запросов к предметной области для разных видов отношений и использования связей при работе с БД. Каждый пример в данном случае будет описан на естественном языке, SQL, ORM, Prolog и Datalog. В качестве ORM в данной работе будет рассмотрен GORM.
+%
+%\subsection{Запрос одной сущности}
+%
+%Запрос на естественном языке: «Какие фильмы вышли после 2000 года?».
+%
+%В листинге \ref{lst:1::sql} приведен пример указанного запроса на языке SQL.
+%
+%\begin{lstlisting}[label=lst:1::sql,caption=Пример листинга на языке SQL]
+%select name from film where year > 2000;
+%\end{lstlisting}
+%
+%В листинге \ref{lst:1::orm} приведен пример указанного запроса на ORM.
+%
+%\begin{lstlisting}[label=lst:1::orm,caption=Пример листинга на ORM]
+%db.Table("film").Select("name").Where("year > ?", 2000).Take(&name).Error
+%\end{lstlisting}
+%
+%В листинге \ref{lst:1::prolog} приведен пример указанного запроса на Prolog.
+%
+%\begin{lstlisting}[label=lst:1::prolog,caption=Пример листинга на языке Prolog]
+%film(_,Name,Year), Year > 2000.
+%\end{lstlisting}
+%
+%В листинге \ref{lst:1::datalog} приведен пример указанного запроса на Datalog.
+%
+%\begin{lstlisting}[label=lst:1::datalog,caption=Пример листинга на языке Datalog]
+%TODO!!!
+%\end{lstlisting}
+%
+%\subsection{Запрос нескольких сущностей}
+%
+%\subsubsection{Отношение один-к-одному}
+%
+%Запрос на естественном языке: «У какого пива крепость выше 8\%?».
+%
+%В листинге \ref{lst:some:1-1:sql} приведен пример указанного запроса на языке SQL.
+%
+%\begin{lstlisting}[label=lst:some:1-1:sql,caption=Пример листинга на языке SQL]
+%select name from beer b join beerDescription bd on b.descriptionID = bd.id where bd.alcohol > 8.0;
+%\end{lstlisting}
+%
+%В листинге \ref{lst:some:1-1:orm} приведен пример указанного запроса на ORM.
+%
+%\begin{lstlisting}[label=lst:some:1-1:orm,caption=Пример листинга на ORM]
+%db.Table("beer").Select("beer.name").Join("beerDescription bd on beer.descriptionID = bd.id").Where("bd.alcohol > ?", 8.0).Take(&name).Error
+%\end{lstlisting}
+%
+%В листинге \ref{lst:some:1-1:prolog} приведен пример указанного запроса на Prolog.
+%
+%\begin{lstlisting}[label=lst:some:1-1:prolog,caption=Пример листинга на языке Prolog]
+%beer(_,Name,_,DescriptionID), beerDescription(DescriptionID,_,_,Alcohol), Alcohol > 8.
+%\end{lstlisting} 
+%
+%В листинге \ref{lst:some:1-1:datalog} приведен пример указанного запроса на Datalog.
+%
+%\begin{lstlisting}[label=lst:some:1-1:datalog,caption=Пример листинга на языке Datalog]
+%TODO!!!
+%\end{lstlisting}
+%
+%\subsubsection{Отношение один-ко-многим}
+%
+%Запрос на естественном языке: «Какие виды пива выпускает компания Балтика?».
+%
+%В листинге \ref{lst:some:1-n:sql} приведен пример указанного запроса на языке SQL.
+%
+%\begin{lstlisting}[label=lst:some:1-n:sql,caption=Пример листинга на языке SQL]
+%select name from beer b join beerProducer bp on b.producerID = bp.id where bp.name = 'Балтика';
+%\end{lstlisting}
+%
+%В листинге \ref{lst:some:1-n:orm} приведен пример указанного запроса на ORM.
+%
+%\begin{lstlisting}[label=lst:some:1-n:orm,caption=Пример листинга на ORM]
+%db.Table("beer").Select("beer.name").Join("beerProducer bp on beer.producerID = bp.id").Where("bp.name = ?", "Балтика").Take(&name).Error
+%\end{lstlisting}
+%
+%В листинге \ref{lst:some:1-n:prolog} приведен пример указанного запроса на Prolog.
+%
+%\begin{lstlisting}[label=lst:some:1-n:prolog,caption=Пример листинга на языке Prolog]
+%beer(_,Name,ProducerID,_), beerProducer(ProducerID,"Балтика").
+%\end{lstlisting} 
+%
+%В листинге \ref{lst:some:1-n:datalog} приведен пример указанного запроса на Datalog.
+%
+%\begin{lstlisting}[label=lst:some:1-n:datalog,caption=Пример листинга на языке Datalog]
+%TODO!!!
+%\end{lstlisting}
+%
+%\subsubsection{Отношение многие-ко-многим}
+%
+%Запрос на естественном языке: «Какие есть серии чипсов со вкусом соленых огурцов».
+%
+%В листинге \ref{lst:some:m-n:sql} приведен пример указанного запроса на языке SQL.
+%
+%\begin{lstlisting}[label=lst:some:m-n:sql,caption=Пример листинга на языке SQL]
+%select c.name from chips c join chipsWithTaste cwt on c.id = cwt.chipsID join chipsTaste on cwt.tasteID = ct.id where ct.name = 'Соленые огурцы';
+%\end{lstlisting}
+%
+%В листинге \ref{lst:some:m-n:orm} приведен пример указанного запроса на ORM.
+%
+%\begin{lstlisting}[label=lst:some:m-n:orm,caption=Пример листинга на ORM]
+%db.Table("chips").Select("chips.name").Join("chipsWithTaste cwt on c.id = cwt.chipsID").Join("chipsTaste on cwt.tasteID = ct.id").Where("ct.name = ?", "Соленые огурцы").Take(&name).Error
+%\end{lstlisting}
+%
+%В листинге \ref{lst:some:m-n:prolog} приведен пример указанного запроса на Prolog.
+%
+%\begin{lstlisting}[label=lst:some:m-n:prolog,caption=Пример листинга на языке Prolog]
+%chips(ChipsID,Name), chipsWithTaste(_,ChipsID,TasteID), chipsTaste(TasteID,"Соленые огурцы").
+%\end{lstlisting} 
+%
+%В листинге \ref{lst:some:m-n:datalog} приведен пример указанного запроса на Datalog.
+%
+%\begin{lstlisting}[label=lst:some:m-n:datalog,caption=Пример листинга на языке Datalog]
+%TODO!!!
+%\end{lstlisting}
+%
+%\subsection{Запрос большого количества сущностей}
+%
+%\subsubsection{n-арное отношение}
+%
+%Запрос на естественном языке: «Какие фильмы сочетаются с чипсами Русская картошка со вкусом соленых огурцов и пивом крепостью выше 8\%?».
+%
+%В листинге \ref{lst:many:n:sql} приведен пример указанного запроса на языке SQL.
+%
+%\begin{lstlisting}[label=lst:many:n:sql,caption=Пример листинга на языке SQL]
+%select f.name from film f join match m on f.id = m.filmID join chipsWithTaste cwt on cwt.id = m.chipsID join chips c on c.id = cwt.chipsID join chipsTaste ct on ct.id = cwt.tasteID join beer b on b.id = m.beerID join beerDescription bd on b.descriptionID = bd.id where c.name = 'Русская картошка' and ct.name = 'Соленые огурцы' and bd.alcohol > 8.0;
+%\end{lstlisting}
+%
+%В листинге \ref{lst:many:n:orm} приведен пример указанного запроса на ORM.
+%
+%\begin{lstlisting}[label=lst:many:n:orm,caption=Пример листинга на ORM]
+%db.Table("film").Select("film.name").Join("match m on f.id = m.filmID").Join("chipsWithTaste cwt on cwt.id = m.chipsID").Join("chips c on c.id = cwt.chipsID").Join("chipsTaste ct on ct.id = cwt.tasteID").Join("beer b on b.id = m.beerID").Join("beerDescription bd on b.descriptionID = bd.id").Where("c.name = ?", "Русская картошка").Where("ct.name = ?", "Соленые огурцы").Where("bd.alcohol > ?", 8.0).Take(&name).Error
+%\end{lstlisting}
+%
+%В листинге \ref{lst:many:n:prolog} приведен пример указанного запроса на Prolog.
+%
+%\begin{lstlisting}[label=lst:many:n:prolog,caption=Пример листинга на языке Prolog]
+%match(_,FilmID,ChipsWithTasteID,BeerID), film(FilmID,FilmName,_), chips(ChipsID, "Русская картошка"), chipsTaste(TasteID, "Соленые огурцы"), chipsWithTaste(ChipsWithTasteID,ChipsID,TasteID), beer(BeerID,_,_,DescriptionID), beerDescription(DescriptionID,_,_,Alcohol), Alcohol > 8.
+%\end{lstlisting} 
+%
+%В листинге \ref{lst:many:n:datalog} приведен пример указанного запроса на Datalog.
+%
+%\begin{lstlisting}[label=lst:many:n:datalog,caption=Пример листинга на языке Datalog]
+%TODO!!!
+%\end{lstlisting}
+
+
+

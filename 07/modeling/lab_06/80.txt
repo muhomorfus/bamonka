@@ -1,0 +1,57 @@
+
+
+              GPSS World Simulation Report - model.3.1
+
+
+                   Monday, December 11, 2023 02:23:50  
+
+           START TIME           END TIME  BLOCKS  FACILITIES  STORAGES
+                0.000          19569.137    12        1          0
+
+
+              NAME                       VALUE  
+          BEGINNING                       2.000
+          DEVICE                      10001.000
+          FINISH                          9.000
+          PROCESSED                   10003.000
+          QUEUELEN                    10004.000
+          REENTER                         8.000
+          REENTERED                   10002.000
+          WORKQUEUE                   10000.000
+
+
+ LABEL              LOC  BLOCK TYPE     ENTRY COUNT CURRENT COUNT RETRY
+                    1    GENERATE          3968             0       0
+BEGINNING           2    QUEUE             7847          2967       0
+                    3    SEIZE             4880             1       0
+                    4    DEPART            4879             0       0
+                    5    ADVANCE           4879             0       0
+                    6    RELEASE           4879             0       0
+                    7    TRANSFER          4879             0       0
+REENTER             8    TRANSFER          3879             0       0
+FINISH              9    SAVEVALUE         1000             0       0
+                   10    SAVEVALUE         1000             0       0
+                   11    SAVEVALUE         1000             0       0
+                   12    TERMINATE         1000             0       0
+
+
+FACILITY         ENTRIES  UTIL.   AVE. TIME AVAIL. OWNER PEND INTER RETRY DELAY
+ DEVICE            4880    1.000       4.009  1     1556    0    0     0   2967
+
+
+QUEUE              MAX CONT. ENTRY ENTRY(0) AVE.CONT. AVE.TIME   AVE.(-0) RETRY
+ WORKQUEUE        2968 2968   7847      2  1473.253   3674.053   3674.989   0
+
+
+SAVEVALUE               RETRY       VALUE
+ REENTERED                0       3879.000                            
+ PROCESSED                0       1000.000                            
+ QUEUELEN                 0       2968.000                            
+
+
+CEC XN   PRI          M1      ASSEM  CURRENT  NEXT  PARAMETER    VALUE
+  1556    0        7636.630   1556      3      4
+
+
+FEC XN   PRI         BDT      ASSEM  CURRENT  NEXT  PARAMETER    VALUE
+  3969    0       19571.840   3969      0      1

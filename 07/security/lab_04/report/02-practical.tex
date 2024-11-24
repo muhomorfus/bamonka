@@ -1,0 +1,287 @@
+\chapter{Практический раздел}
+
+\section{Листинг алгоритма SHA1}
+
+\begin{lstlisting}[language=C, label=lst:sha1, caption={Реализация алгоритма SHA1}]
+int sha1(Byte *filename, Byte *result) {
+    int size;
+    Byte *data;
+    if (ReadFile((char *) filename, &data, &size)) {
+        Errorln("cant ReadFile()");
+        return -1;
+    }
+
+    Block digest[5];
+    Block w[80];
+    Block a, b, c, d, e, f;
+
+    unsigned int i, j;
+    Byte *buffer;
+    Block bits;
+    Block temp, k;
+    Block lb = size * 8;
+
+    bits = padding(size);
+    buffer = (Byte *) malloc((bits / 8) + 8);
+    memcpy(buffer, data, size);
+
+    *(buffer + size) = 0x80;
+    for (i = size + 1; i < (bits / 8); i++) {
+        *(buffer + i) = 0x00;
+    }
+
+    *(buffer + (bits / 8) + 4 + 0) = (lb >> 24) & 0xFF;
+    *(buffer + (bits / 8) + 4 + 1) = (lb >> 16) & 0xFF;
+    *(buffer + (bits / 8) + 4 + 2) = (lb >> 8) & 0xFF;
+    *(buffer + (bits / 8) + 4 + 3) = (lb >> 0) & 0xFF;
+
+    digest[0] = 0x67452301;
+    digest[1] = 0xEFCDAB89;
+    digest[2] = 0x98BADCFE;
+    digest[3] = 0x10325476;
+    digest[4] = 0xC3D2E1F0;
+
+    for (i = 0; i < ((bits + 64) / 512); i++) {
+        for (j = 0; j < 80; j++) {
+            w[j] = 0x00;
+        }
+
+        for (j = 0; j < 16; j++) {
+            w[j] = buffer[j * 4 + 0];
+            w[j] = w[j] << 8;
+            w[j] |= buffer[j * 4 + 1];
+            w[j] = w[j] << 8;
+            w[j] |= buffer[j * 4 + 2];
+            w[j] = w[j] << 8;
+            w[j] |= buffer[j * 4 + 3];
+        }
+
+        for (j = 16; j < 80; j++) {
+            w[j] = (rotateLeft(1, (w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16])));
+        }
+
+        a = digest[0];
+        b = digest[1];
+        c = digest[2];
+        d = digest[3];
+        e = digest[4];
+
+        for (j = 0; j < 80; j++) {
+            if (j < 20) {
+                f = ((b) & (c)) | ((~(b)) & (d));
+                k = 0x5A827999;
+
+            } else if (j < 40) {
+                f = (b) ^ (c) ^ (d);
+                k = 0x6ED9EBA1;
+            } else if (j < 60) {
+                f = ((b) & (c)) | ((b) & (d)) | ((c) & (d));
+                k = 0x8F1BBCDC;
+            } else {
+                f = (b) ^ (c) ^ (d);
+                k = 0xCA62C1D6;
+            }
+
+            temp = rotateLeft(5, (a)) + (f) + (e) + k + w[j];
+            e = (d);
+            d = (c);
+            c = rotateLeft(30, (b));
+            b = (a);
+            a = temp;
+        }
+
+        digest[0] += a;
+        digest[1] += b;
+        digest[2] += c;
+        digest[3] += d;
+        digest[4] += e;
+
+        buffer = buffer + 64;
+    }
+
+    memcpy(result, digest, 20);
+    return 0;
+}
+\end{lstlisting}
+
+
+\section{Листинг алгоритма RSA}
+
+\begin{lstlisting}[language=C, label=lst:rsa, caption={Реализация алгоритма RSA}]
+int MakeKeyPair(Byte *fileName) {
+    Byte *privateFileName = fileName;
+    Byte publicFileName[100];
+    sprintf((char *) publicFileName, "%s.pub", fileName);
+
+    bignum *p = bignum_alloc();
+    bignum *q = bignum_alloc();
+    bignum *n = bignum_alloc();
+    bignum *d = bignum_alloc();
+    bignum *e = bignum_alloc();
+    bignum *phi = bignum_alloc();
+
+    randPrime(32, p);
+    randPrime(32, q);
+
+    bignum_multiply(n, p, q);
+    bignum_isubtract(p, &NUMS[1]);
+    bignum_isubtract(q, &NUMS[1]);
+    bignum_multiply(phi, p, q);
+
+    getE(phi, e);
+    getD(e, phi, d);
+
+    rsaKey private = {
+        .exp = e,
+        .mod = n,
+    };
+
+    rsaKey public = {
+        .exp = d,
+        .mod = n,
+    };
+
+    if (writeRSAKey(privateFileName, &private)) {
+        return -1;
+    }
+
+    if (writeRSAKey(publicFileName, &public)) {
+        return -1;
+    }
+
+    return 0;
+}
+
+int rsaInFile(const Byte *buf, int size, rsaKey *key, Byte *result) {
+    bignum *res, *plain;
+    int resSize;
+
+    plain = bignum_from_buf(buf, size);
+    res = bignum_alloc();
+    bignum_pow_mod(res, plain, key->exp, key->mod);
+
+    resSize = res->length * sizeof(Block);
+
+    for (int i = 0; i < resSize; i++)
+        result[i] = ((Byte *) res->data)[i];
+
+    return resSize;
+}
+\end{lstlisting}
+
+
+\section{Листинг алгоритма цифровой подписи}
+
+\begin{lstlisting}[language=C, label=lst:rsa, caption={Реализация алгоритма цифровой подписи на основе SHA1 и RSA}]
+int Sign(Byte *filename, Byte *keyFileName) {
+    char signFileName[512];
+    sprintf(signFileName, "%s.signed", filename);
+
+    Byte hash[512] = {0};
+    if (sha1(filename, hash)) {
+        Errorln("cant sha1()");
+        return -1;
+    }
+
+    Byte sign_content[512] = {0};
+    int size;
+    if ((size = rsa(hash, 20, keyFileName, sign_content)) < 0) {
+        Errorln("cant rsa()");
+        return -1;
+    }
+
+    if (WriteFile(signFileName, sign_content, size)) {
+        Errorln("cant WriteFile()");
+        return -1;
+    }
+
+    return 0;
+}
+
+int Check(Byte *filename, Byte *keyFileName) {
+    char signFileName[512];
+    sprintf(signFileName, "%s.signed", filename);
+
+    Byte hash[512] = {0};
+    if (sha1(filename, hash) != 0) {
+        Errorln("cant sha1()");
+        return -1;
+    }
+    InfoSHA1ln("SHA1 of file", hash);
+
+    Byte *signData;
+    int signSize;
+    if (ReadFile(signFileName, &signData, &signSize)) {
+        Errorln("cant ReadFile()");
+        return -1;
+    }
+
+    Byte toCompare[512] = {0};
+    if (rsa(signData, signSize, keyFileName, toCompare) < 0) {
+        Errorln("cant rsa()");
+        return -1;
+    }
+    InfoSHA1ln("SHA1 from signature", toCompare);
+
+    for (int i = 0; i < 20; i++) {
+        if (toCompare[i] != hash[i]) {
+            Errorln("file is broken");
+            return -1;
+        }
+    }
+
+    Infoln("file is valid");
+    return 0;
+}
+\end{lstlisting}
+
+
+\section{Тестирование}
+
+Корректность алгоритма проверялось путем применения дешифрации на шифрованное сообщение.
+
+Тестирование было проведено на файлах с типами:
+
+\begin{enumerate}[label=\arabic*)]
+	\item текстовый (txt);
+	\item графический (jpg, png);
+	\item архив (zip).
+\end{enumerate}
+
+
+
+В таблице \ref{tbl:test} представлены тестовые данные.
+
+\begin{table}[H]
+	\begin{center}
+		\centering
+		\caption{Тестовые данные}
+		\label{tbl:test}
+		\begin{tabular}{|c|c|c|} 
+			
+			\hline
+			\multicolumn{1}{|c|}{Номер теста}
+			&  \multicolumn{1}{c|}{Тип файла} &  \multicolumn{1}{c|}{Содержимое файла}\\
+			\hline
+			
+			1& txt &  {\specialcell{Стоят два бобра в речке...}} \\ \hline
+			
+			2& txt &  {\specialcell{@alexodnodvorcev}} \\ \hline
+			
+			3& txt &  \\ \hline
+			
+			4& png & {\specialcell{\includegraphics[width=1in]{../data/4.png}}} \\ \hline
+			
+			5& jpg & {\specialcell{\includegraphics[width=1in]{../data/5.jpg}}} \\ \hline
+			
+			6& zip & Архив с файлами предыдущих тестов \\ \hline
+			
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\newpage
+
+\chapter*{Заключение}
+
+В результате выполнения данной лабораторной работы был реализован в виде программы на языке Си алгоритм шифрования RSA и механизм цифровой подписи на основе алгоритма хеширования SHA1.

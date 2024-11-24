@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  govnx:
+    build: .
+    container_name: govnx
+    volumes:
+      - ./static:/static
+    ports:
+      - "3100:80"
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '4G'
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./static:/usr/share/nginx/html
+    ports:
+      - "3200:80"
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '4G'

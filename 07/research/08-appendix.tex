@@ -1,0 +1,707 @@
+\begin{appendices}
+
+\chapter{Этапы опроса определения «понятности» способов составления запросов}
+
+\section{Вопрос 1}
+
+В листинге \ref{1:q} приведен запрос из вопроса 1, составленный с помощью SQL.
+
+\begin{lstlisting}[label=1:q,caption=Вопрос 1]
+select contact_name from customers where customer_id = 'ANTON';
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Antonio Moreno;}
+	\item Pirkko Koskitalo;
+	\item Stas Baluev;
+	\item Palle Ibsen;
+	\item Thomas Hardy;
+	\item bebebe;
+	\item Papa Johns;
+	\item Thomas Parvs.
+\end{enumerate}
+
+\section{Вопрос 2}
+
+В листинге \ref{2:q} приведен запрос из вопроса 2, составленный с помощью Prolog/Datalog.
+
+\begin{lstlisting}[label=2:q,caption=Вопрос 2]
+-- select product_name from products where product_id = 1;
+
+products(1, ProductName, _, _, _, _, _, _, _, _).
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Chai;}
+	\item Daet;
+	\item Mozzarella di Giovanni;
+	\item Pivo;
+	\item Outback Lager;
+	\item Chocolade;
+	\item Papa Johns;
+	\item Liqueour.
+\end{enumerate}
+
+%\section{Вопрос 3}
+%
+%В листинге \ref{3:q} приведен запрос из вопроса 3, составленный с помощью Datalog.
+%
+%\begin{lstlisting}[label=3:q,caption=Вопрос 3]
+%-- select unit_price from products where product_name = 'Tofu';
+%
+%??
+%\end{lstlisting}
+%
+%Варианты ответа:
+%
+%\begin{enumerate}
+%	\item \textbf{23.25;}
+%	\item 11;
+%	\item 20;
+%	\item 678;
+%	\item 1000;
+%	\item 20;
+%	\item 13;
+%	\item 14.
+%\end{enumerate}
+
+\section{Вопрос 3}
+
+В листинге \ref{3:q} приведен запрос из вопроса 3, составленный с помощью ORM.
+
+\begin{lstlisting}[label=3:q,caption=Вопрос 3]
+-- select employee_id from employees where last_name = 'King';
+
+type Employee struct {
+	EmployeeID int `gorm:"employee_id"`
+}
+var employee Employee
+db.Table("employees e").Select("e.employee_id").Where("e.last_name = ?", "King").First(&employee)
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{7;}
+	\item 0;
+	\item 1;
+	\item 2;
+	\item 3;
+	\item 10;
+	\item 11;
+	\item 6.
+\end{enumerate}
+
+\section{Вопрос 4}
+
+В листинге \ref{4:q} приведен запрос из вопроса 4, составленный с помощью SQL.
+
+\begin{lstlisting}[label=4:q,caption=Вопрос 4]
+select last_name from employees where title = 'Sales Representative' and title_of_courtesy = 'Mrs.';
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Peacock;}
+	\item Ivan;
+	\item Stas;
+	\item Hanks;
+	\item Davolio;
+	\item Fuller;
+	\item Henry;
+	\item King.
+\end{enumerate}
+
+\section{Вопрос 5}
+
+В листинге \ref{5:q} приведен запрос из вопроса 5, составленный с помощью Prolog/Datalog.
+
+\begin{lstlisting}[label=5:q,caption=Вопрос 5]
+-- select quantity from order_details where order_id = 10248 and product_id = 11;
+
+order_details(10248, 11, _, Quantity, _).
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{12;}
+	\item 4;
+	\item 8;
+	\item 100;
+	\item 13;
+	\item 10;
+	\item 7;
+	\item 3.
+\end{enumerate}
+
+%\section{Вопрос 7}
+%
+%В листинге \ref{7:q} приведен запрос из вопроса 7, составленный с помощью Datalog.
+%
+%\begin{lstlisting}[label=7:q,caption=Вопрос 7]
+%-- select company_name from suppliers where city = 'Melbourne' and contact_title = 'Marketing Manager';
+%
+%??
+%\end{lstlisting}
+%
+%Варианты ответа:
+%
+%\begin{enumerate}
+%	\item \textbf{Pavlova, Ltd.;}
+%	\item Mayumi's;
+%	\item Tokyo Traders;
+%	\item Plutzer Lebensmittelgroßmärkte AG;
+%	\item Karkki Oy;
+%	\item PoelPospal inc.;
+%	\item Gai pâturage;
+%	\item Sockets.
+%\end{enumerate}
+
+\section{Вопрос 6}
+
+В листинге \ref{6:q} приведен запрос из вопроса 6, составленный с помощью ORM.
+
+\begin{lstlisting}[label=6:q,caption=Вопрос 6]
+-- select order_id from orders where customer_id = 'QUEEN' and order_date = '1997-10-14';
+
+type Order struct {
+	OrderID int `gorm:"order_id"`
+}
+var order Order
+db.Table("orders o").Select("o.order_id").Where("o.customer_id = ?", "QUEEN").Where("o.order_date = ?", "1997-10-14").First(&order)
+
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{10704;}
+	\item 9123;
+	\item 12103;
+	\item 10000;
+	\item 9192;
+	\item 13012;
+	\item 11111;
+	\item 12280.
+\end{enumerate}
+
+\section{Вопрос 7}
+
+В листинге \ref{7:q} приведен запрос из вопроса 7, составленный с помощью SQL.
+
+\begin{lstlisting}[label=7:q,caption=Вопрос 7]
+select c.contact_title from orders o join customers c on o.customer_id = c.customer_id where o.order_id = 10274;
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Accounting Manager;}
+	\item Sales Manager;
+	\item Marketologist;
+	\item Beer Somelier;
+	\item Owner;
+	\item Sales Agent;
+	\item Representative Manager;
+	\item Marketing Assistant.
+\end{enumerate}
+
+\section{Вопрос 8}
+
+В листинге \ref{8:q} приведен запрос из вопроса 8, составленный с помощью Prolog/Datalog.
+
+\begin{lstlisting}[label=8:q,caption=Вопрос 8]
+-- select u.state_name from customers c join us_states u on c.region = u.state_abbr where customer_id = 'LONEP';
+
+us_states(_, StateName, StateAbbr, _), customers("LONEP", _, _, _, _, StateAbbr, _, _, _, _).
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Oregon;}
+	\item New Orlean;
+	\item Wyoming;
+	\item Idaho;
+	\item Alabama;
+	\item New Mexico;
+	\item Alaska;
+	\item Africa.
+\end{enumerate}
+
+%\section{Вопрос 11}
+%
+%В листинге \ref{11:q} приведен запрос из вопроса 11, составленный с помощью Datalog.
+%
+%\begin{lstlisting}[label=11:q,caption=Вопрос 11]
+%-- select p.product_name from order_details o join products p on o.product_id = p.product_id where o.order_id = 10248 and quantity = 5;
+%
+%??
+%\end{lstlisting}
+%
+%Варианты ответа:
+%
+%\begin{enumerate}
+%	\item \textbf{Mozzarella di Giovanni;}
+%	\item Cheese;
+%	\item Pizza;
+%	\item Olives;
+%	\item Singaporean Hokkien Fried Mee;
+%	\item Fried Cheese;
+%	\item Queso Cabrales;
+%	\item Röd Kaviar.
+%\end{enumerate}
+
+\section{Вопрос 9}
+
+В листинге \ref{9:q} приведен запрос из вопроса 9, составленный с помощью ORM.
+
+\begin{lstlisting}[label=9:q,caption=Вопрос 9]
+-- select o.quantity from order_details o join products p on o.product_id = p.product_id where o.order_id = 10250 and p.product_id = 51;
+
+type Order struct {
+	Quantity int `gorm:"quantity"`
+}
+var order Order
+db.Table("order_details o").Select("o.quantity").Joins("join products p on o.product_id = p.product_id").Where("o.order_id = ?", 10250).Where("p.product_id = ?", 51).First(&order)
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{35;}
+	\item 21;
+	\item 19;
+	\item 10;
+	\item 30;
+	\item 167;
+	\item 9;
+	\item 0.
+\end{enumerate}
+
+\section{Вопрос 10}
+
+В листинге \ref{10:q} приведен запрос из вопроса 10, составленный с помощью SQL.
+
+\begin{lstlisting}[label=10:q,caption=Вопрос 10]
+select t.territory_description from employees e join employee_territories et on e.employee_id = et.employee_id join territories t on t.territory_id = et.territory_id where e.first_name = 'Robert' and t.territory_id = '95060';
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Santa Cruz;}
+	\item Hoffman Estates;
+	\item Chicago;
+	\item Denver;
+	\item Colorado Springs;
+	\item Santa Monica;
+	\item Menlo Park;
+	\item Campbell.
+\end{enumerate}
+
+\section{Вопрос 11}
+
+В листинге \ref{11:q} приведен запрос из вопроса 11, составленный с помощью Prolog/Datalog.
+
+\begin{lstlisting}[label=11:q,caption=Вопрос 11]
+--- select c.category_name from categories c join products p on p.category_id = c.category_id join order_details od on p.product_id = od.product_id where od.order_id = 10248 and od.quantity = 10;
+
+categories(CategoryID, Name, _, _), products(ProductID, _, _, CategoryID, _, _, _, _, _, _), order_details(10248, ProductID, _, 10, _).
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Grains/Cereals;}
+	\item Beer;
+	\item Confections;
+	\item Denver;
+	\item Produce;
+	\item Seafood;
+	\item Dairy Products;
+	\item Delisious.
+\end{enumerate}
+
+%\section{Вопрос 15}
+%
+%В листинге \ref{15:q} приведен запрос из вопроса 15, составленный с помощью Datalog.
+%
+%\begin{lstlisting}[label=15:q,caption=Вопрос 15]
+%--- select r.region_description from territories t join region r on r.region_id = t.region_id join employee_territories et on t.territory_id = et.territory_id where et.employee_id = 2
+%
+%???
+%\end{lstlisting}
+%
+%Варианты ответа:
+%
+%\begin{enumerate}
+%	\item \textbf{Eastern;}
+%	\item Beer;
+%	\item Confections;
+%	\item Denver;
+%	\item Southern;
+%	\item Northern;
+%	\item Western;
+%	\item Delisious.
+%\end{enumerate}
+
+\section{Вопрос 12}
+
+В листинге \ref{12:q} приведен запрос из вопроса 12, составленный с помощью ORM.
+
+\begin{lstlisting}[label=12:q,caption=Вопрос 12]
+--- select s.phone from customers c join orders o on c.customer_id = o.customer_id join shippers s on s.shipper_id = o.ship_via where c.customer_id = 'VICTE' and o.order_id = 10450
+
+type Shipper struct {
+	Phone string `gorm:"phone"`
+}
+var shipper Shipper
+db.Table("customers c").Select("s.phone").Joins("join orders o on c.customer_id = o.customer_id").Joins("join shippers s on s.shipper_id = o.ship_via").Where("c.customer_id = ?", "VICTE").Where("o.order_id = ?", 10450).First(&shipper)
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{(503) 555-3199;}
+	\item Localhost;
+	\item 4;
+	\item (503) 111-9931;
+	\item (503) 222-9831;
+	\item (999) 333-9831;
+	\item (891) 112-1566;
+	\item Eleven.
+\end{enumerate}
+
+\section{Вопрос 13}
+
+В листинге \ref{13:q} приведен запрос из вопроса 13, составленный с помощью SQL.
+
+\begin{lstlisting}[label=13:q,caption=Вопрос 13]
+select e.employee_id from employees e join employee_territories et on e.employee_id = et.employee_id where et.territory_id = '03801'
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{9;}
+	\item 1;
+	\item 4;
+	\item 5;
+	\item 15;
+	\item 22;
+	\item 7;
+	\item Eleven.
+\end{enumerate}
+
+\section{Вопрос 14}
+
+В листинге \ref{14:q} приведен запрос из вопроса 14, составленный с помощью Prolog/Datalog.
+
+\begin{lstlisting}[label=14:q,caption=Вопрос 14]
+-- select s.company_name from shippers s join orders o on s.shipper_id = o.ship_via where o.order_id = 10253
+
+shippers(ShipperID, Company, _), orders(10253, _, _, _, _, _, ShipperID, _, _, _, _, _, _, _, _).
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{United Package;}
+	\item DHL;
+	\item Federal Shipping;
+	\item UPS;
+	\item SDEK;
+	\item Pochta Rossii;
+	\item LPR;
+	\item LLepr.
+\end{enumerate}
+
+%\section{Вопрос 19}
+%
+%В листинге \ref{19:q} приведен запрос из вопроса 19, составленный с помощью Datalog.
+%
+%\begin{lstlisting}[label=19:q,caption=Вопрос 19]
+%-- select e.last_name from orders o join employees e on o.employee_id = e.employee_id where o.ship_city = 'Caracas' and o.order_date = '1996-07-30'
+%
+%???
+%\end{lstlisting}
+%
+%Варианты ответа:
+%
+%\begin{enumerate}
+%	\item \textbf{Callahan;}
+%	\item Mimi;
+%	\item Davolio;
+%	\item Muller;
+%	\item Buchanan;
+%	\item Peacock;
+%	\item Butcher;
+%	\item King.
+%\end{enumerate}
+
+\section{Вопрос 15}
+
+В листинге \ref{15:q} приведен запрос из вопроса 15, составленный с помощью ORM.
+
+\begin{lstlisting}[label=15:q,caption=Вопрос 15]
+-- select c.category_name from categories c join products p on c.category_id = p.category_id where p.product_name = 'Chai'
+
+type Category struct {
+	CategoryName string `gorm:"category_name"`
+}
+var category Category
+db.Table("categories c").Select("c.category_name").Joins("join products p on c.category_id = p.category_id").Where("p.product_name = ?", "Chai").First(&category)
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Beverages;}
+	\item Grains/Cereals;
+	\item Tea;
+	\item Denver;
+	\item Produce;
+	\item Seafood;
+	\item Dairy Products;
+	\item Delisious.
+\end{enumerate}
+
+\section{Вопрос 16}
+
+В листинге \ref{16:q} приведен запрос из вопроса 16, составленный с помощью SQL.
+
+\begin{lstlisting}[label=16:q,caption=Вопрос 16]
+select unit_price from products where product_name = 'Tofu';
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{23.25;}
+	\item 11;
+	\item 20;
+	\item 678;
+	\item 1000;
+	\item 26.1;
+	\item 13;
+	\item 14.
+\end{enumerate}
+
+\section{Вопрос 17}
+
+В листинге \ref{17:q} приведен запрос из вопроса 17, составленный с помощью Prolog/Datalog.
+
+\begin{lstlisting}[label=17:q,caption=Вопрос 17]
+-- select region_description from region where region_id = 3
+
+region(3, Description).
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Northern;}
+	\item Western;
+	\item Eastern;
+	\item Southern;
+	\item Africa;
+	\item Asia;
+	\item Russia;
+	\item USA.
+\end{enumerate}
+
+\section{Вопрос 18}
+
+В листинге \ref{18:q} приведен запрос из вопроса 18, составленный с помощью ORM.
+
+\begin{lstlisting}[label=18:q,caption=Вопрос 18]
+-- select company_name from shippers where shipper_id = 5
+
+type Shipper struct {
+	CompanyName string `gorm:"company_name"`
+}
+var shipper Shipper
+db.Table("shippers s").Select("s.company_name").Where("s.shipper_id = ?", 5).First(&shipper)
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{UPS;}
+	\item Speedy Express;
+	\item United Package;
+	\item Federal Shipping;
+	\item Africa;
+	\item Asia;
+	\item Alliance Shippers;
+	\item DHL.
+\end{enumerate}
+
+\section{Вопрос 19}
+
+В листинге \ref{19:q} приведен запрос из вопроса 19, составленный с помощью SQL.
+
+\begin{lstlisting}[label=19:q,caption=Вопрос 19]
+select c.category_name from categories c join products p on c.category_id = p.category_id join order_details od on p.product_id = od.product_id join orders o on o.order_id = od.order_id where o.order_date = '1996-07-04' and od.quantity = 5
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Dairy Products;}
+	\item Tea;
+	\item Stas;
+	\item Federal Shipping;
+	\item Condiments;
+	\item Confections;
+	\item Grains/Cereals;
+	\item Produce.
+\end{enumerate}
+
+\section{Вопрос 20}
+
+В листинге \ref{20:q} приведен запрос из вопроса 20, составленный с помощью Prolog/Datalog.
+
+\begin{lstlisting}[label=20:q,caption=Вопрос 20]
+-- select e.last_name from orders o join employees e on e.employee_id = o.employee_id join employee_territories et on e.employee_id = et.employee_id join territories t on t.territory_id = et.territory_id where t.territory_description = 'New York' and o.ship_city = 'Albuquerque'
+
+orders(_, _, EmployeeID, _, _, _, _, _, _, _, "Albuquerque", _, _, _), employees(EmployeeID, LastName, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), employee_territories(EmployeeID, TerritoryID), territories(TerritoryID, "New York", _).
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Buchanan;}
+	\item Fuller;
+	\item Stas;
+	\item Muller;
+	\item Leverling;
+	\item Peacock;
+	\item Suyama;
+	\item King.
+\end{enumerate}
+
+\section{Вопрос 21}
+
+В листинге \ref{21:q} приведен запрос из вопроса 21, составленный с помощью ORM.
+
+\begin{lstlisting}[label=21:q,caption=Вопрос 21]
+-- select c.contact_name from customers c join employees e on c.city = e.city join orders o on e.employee_id = o.employee_id join order_details od on o.order_id = od.order_id where od.quantity = 91
+
+
+type Customer struct {
+	ContactName string `gorm:"contact_name"`
+}
+var customer Customer
+db.Table("customers c").Select("c.contact_name").Joins("join employees e on c.city = e.city").Joins("join orders o on e.employee_id = o.employee_id").Joins("join order_details od on o.order_id = od.order_id").Where("od.quantity = ?", 91).First(&customer)
+\end{lstlisting}
+
+Варианты ответа:
+
+\begin{enumerate}
+	\item \textbf{Helvetius Nagy;}
+	\item Ana Trujillo;
+	\item Thomas Hardy;
+	\item Stas Baluev;
+	\item Hanna Moos;
+	\item Alex Odnodvorcev;
+	\item Frédérique Citeaux;
+	\item Pedro Afonso.
+\end{enumerate}
+
+
+\chapter{Общее описание способов описания запроса}
+
+\section{SQL}
+
+Общий синтаксис языка SQL можно описать так:
+
+\begin{lstlisting}[label=sql-syntax,caption=Синтаксис запроса выборки в SQL]
+select <t>.<field1>, <t>.<field2> from <table> <t> where <condition>
+\end{lstlisting}
+
+\noindent где \texttt{<field1>}, \texttt{<field2>}~---~названия полей, при выборке перечисляются через запятую, \texttt{<t>}~---~псевдоним таблицы, по которому различать поля с одинаковым названием из разных таблиц в одном запроса, \texttt{<table>}~---~название таблицы, \texttt{<condition>}~---~условие выборки.
+
+\subsubsection*{Пример}
+
+\begin{lstlisting}[label=sql-syntax-ex-1,caption=Пример запроса на SQL]
+select c.category_name from categories c where c.category_id = 1
+\end{lstlisting}
+
+В данном запросе производится поиск строк таблицы \texttt{categories} с условием на поле \texttt{c.category\_id = 1}. Из результата считывается только поле \texttt{c.category\_name}. При выполнении такого запроса в базе Northwind, будет получен ответ \texttt{Beverages}.
+
+Таблица может быть задана с помощью объединения нескольких таблиц. Для получения объединенной таблицы используется следующий синтаксис:
+
+\begin{lstlisting}[label=sql-syntax-join,caption=Синтаксис объединения таблиц в SQL]
+<table1> <t1> join <table2> <t2> on <condition>
+\end{lstlisting}
+
+\noindent где \texttt{<table1>}, \texttt{<table2>}~---~названия таблиц,  \texttt{<t1>}, \texttt{<t2>}~---~псевдонимы таблиц, \texttt{<condition>}~---~условие объединения. 
+
+Так как результатом объединения является таблица, то ее тоже можно объединять с другими таблицами. Таким образом, можно объединять более двух таблиц.
+
+\newpage
+
+\subsubsection*{Пример}
+
+\begin{lstlisting}[label=sql-syntax-ex-2,caption=Пример запроса с объединением на SQL]
+select c.category_name, p.product_name from categories c join products p on c.category_id = p.category_id
+\end{lstlisting}
+
+В данном запросе происходит объединение таблиц \texttt{categories} и \texttt{products} по условию \texttt{c.category\_id = p.category\_id}. Таким образом, строки этих двух таблиц с одинаковым значением поля \texttt{category\_id} будут объединены. В результирующей таблице информация о продукте будет <<обогащена>> подробной информации о категории продукта, вместо одного поля \texttt{category\_id} в исходной таблице. Так как производится выбор полей \texttt{c.category\_name} и \texttt{p.product\_name}, то результатом запроса будет список названий продукта и его категории.
+
+\section{Prolog/Datalog}
+
+Prolog является логическим языком программирования. По сути, <<запрос>> в Prolog представляет собой набор утверждений, на которые система может ответить, истинны ли они или ложны. Утверждения могут содержать, кроме конкретных значений, переменные. В этом случае система ищет такие значения переменных, при которых утверждения будут истинными. При этом, существует специальный символ \texttt{\_}, которому может быть сопоставлено любое значение.
+
+\subsubsection*{Пример}
+
+\begin{lstlisting}[label=prolog-syntax-ex-1,caption=Пример запроса на Prolog]
+categories(1, Name, _, _).
+\end{lstlisting}
+
+Данный запрос аналогичен примеру из SQL. Описано утверждение о существовании категории с первым полем (\texttt{category\_id}) равным 1. Вместо имени категории (второе поле) указана переменная, то есть система будет искать такие значения имени, при котором будет существовать категория, с идентификатором, равным 1 и значением имени.
+
+Названия переменных похожи на названия полей, но назвать их можно как угодно, в данном случае значение имеет порядок полей. Здесь и далее порядок полей аналогичен порядку полей в таблице.
+
+Система может принимать как единичные утверждения, так и наборы утверждений, перечисленных через запятую. В этом случае запятая играет роль оператора \texttt{И}. Для выполнения набора нужно, чтобы выполнялись все утверждения этого набора. Таким образом может быть реализовано объединение таблиц.
+
+\begin{lstlisting}[label=prolog-syntax-ex-2,caption=Пример запроса с объединением на Prolot]
+categories(CategoryID, CategoryName, _, _), products(_, ProductName, _, CategoryID, _, _, _, _, _, _).
+\end{lstlisting}
+
+Данный запрос аналогичен примеру из SQL. В перечисленных утверждениях используется 3 переменных: \texttt{CategoryID}, \texttt{CategoryName} и \texttt{ProductName}. Система будет искать такие значения переменных, чтобы оба этих утверждения одновременно были истинными. При этом, переменная \texttt{CategoryID} используется в двух утверждениях, являясь, по сути, условием объединения: будет производиться поиск таких \texttt{CategoryID}, чтобы ей соответствовало значение и продукта, и категории.
+
+\section{ORM}
+
+ORM представляет собой технологию, позволяющую связывать сущности базы данных с элементами объектно-ориентированного программирования. Существует множество реализаций данной технологии. В данном случае, примеры будут приведены для библиотеки GORM.
+
+\subsubsection*{Пример}
+
+\begin{lstlisting}[label=orm-syntax-ex-1,caption=Пример запроса на ORM]
+type Category struct {
+	CategoryName string `gorm:"category_name"`
+}
+var category Category
+db.Model(&Category{}).Select("category_name").Where("category_id = 1").First(&category)
+\end{lstlisting}
+
+В GORM код преобразуется в SQL, с помощью него можно выполнять аналогичные с SQL операции, например, объединения.
+
+\begin{lstlisting}[label=orm-syntax-ex-2,caption=Пример запроса с объединением на ORM]
+type CategoryProduct struct {
+	CategoryName string `gorm:"category_name"`
+	ProductName  string `gorm:"product_name"`
+}
+var categoryProducts []CategoryProduct
+db.Table("categories c").Select("c.category_name, p.product_name").Joins("join products p on c.category_id = p.category_id").Scan(&categoryProducts)
+\end{lstlisting}
+
+\end{appendices}

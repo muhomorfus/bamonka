@@ -1,0 +1,21 @@
+# gnuplot -persist plot_load.gpi
+reset
+
+set terminal pdf # size 1920, 1080 font "Helvetica,24"
+
+set output "plots/graph_load.pdf"
+
+set size ratio 0.5625
+
+set xlabel "Загрузка"
+
+set ylabel "Время ожидания, с"
+
+#set logscale y 10
+
+#set xrange [0:25]
+
+set grid
+
+# set key top left
+plot "data/wait_load_res.txt" with lp title 't_{wait}' lw 2

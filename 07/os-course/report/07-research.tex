@@ -1,0 +1,88 @@
+\chapter{Исследовательский раздел}
+
+С помощью разработанного модуля были протестированы две программы, имеющих схожий функционал. Первая программа использует небуферизованный ввод-вывод, вторая буферизованный. Код программ приведет на листингах~\ref{lst:nobuf}--\ref{lst:buf}.
+
+\begin{lstlisting}[language=C, label=lst:nobuf, caption={Программа, использующая небуферизованный ввод-вывод}]
+#include <fcntl.h>
+#include <unistd.h>
+
+int main()
+{
+  char c;    
+
+  int fd1 = open("alphabet.txt", O_RDONLY);
+  int fd2 = open("alphabet.txt", O_RDONLY);
+
+  while((read(fd1, &c, 1) == 1) && (read(fd2, &c, 1) == 1))
+  {
+    write(1, &c, 1);
+    write(1, &c, 1);
+  }
+
+  return 0;
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=C, label=lst:buf, caption={Программа, использующая буферизованный ввод-вывод}]
+#include <stdio.h>
+#include <fcntl.h>
+
+#define BUF_SIZE 20
+#define FILENAME "alphabet.txt"
+
+int main()
+{
+  int fd = open(FILENAME, O_RDONLY);
+
+  FILE* fs1 = fdopen(fd, "r");
+  char buff1[BUF_SIZE];
+  setvbuf(fs1, buff1, _IOFBF, BUF_SIZE);
+
+  FILE* fs2 = fdopen(fd, "r");
+  char buff2[BUF_SIZE];
+  setvbuf(fs2, buff2, _IOFBF, BUF_SIZE);
+
+  int flag1 = 1, flag2 = 2;
+  while(flag1 == 1 || flag2 == 1)
+  {
+    char c;
+
+    flag1 = fscanf(fs1, "%c", &c);
+    if (flag1 == 1)
+    {
+      fprintf(stdout, "%c", c);     
+    }
+
+    flag2 = fscanf(fs2, "%c", &c);
+    if (flag2 == 1)
+    {
+      fprintf(stdout, "%c", c); 
+    }
+  }
+
+  return 0;
+}
+\end{lstlisting}
+
+\newpage
+
+Результаты тестирования представлены в таблице~4.1. Единицы измерения времени~---~наносекунды.
+
+\begin{table}[h!]
+\label{tbl:res}
+\caption{Замеры количества и время исполнения системных вызовов для программ, использующих буферизованный и небуферизованный ввод-вывод}
+\begin{tabular}{|l|r|r|}
+\hline
+                                & Небуф. & Буф. \\ \hline
+Количество вызовов open         & 5                                           & 4                                         \\ \hline
+Максимальная длительность open  & 72164                                       & 74830                                     \\ \hline
+Средняя длительность open       & 32340                                       & 26207                                     \\ \hline
+Количество вызовов read         & 10003                                       & 254                                       \\ \hline
+Максимальная длительность read  & 249946                                      & 20041                                     \\ \hline
+Средняя длительность read       & 363                                         & 561                                       \\ \hline
+Количество вызовов write        & 10000                                       & 2                                         \\ \hline
+Максимальная длительность write & 54081                                            & 3667                                      \\ \hline
+Средняя длительность write      & 258                                         & 2021                                      \\ \hline
+\end{tabular}
+\end{table}
