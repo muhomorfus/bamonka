@@ -1,0 +1,135 @@
+% Cоздание полей
+\RequirePackage[normalem]{ulem}
+\RequirePackage{stackengine}
+\newcommand{\longunderline}[1]
+{
+	\uline{#1\hfill\mbox{}}
+}
+\newcommand{\fixunderline}[3]
+{
+	$\underset{\text{#3}}{\text{\uline{\stackengine{0pt}{\hspace{#2}}{\text{#1}}{O}{c}{F}{F}{L}}}}$
+}
+
+% Создание горизонтальной линии
+\makeatletter
+\newcommand{\vhrulefill}[1]
+{
+	\leavevmode\leaders\hrule\@height#1\hfill \kern\z@
+}
+\makeatother
+
+% Создание шапки титульной страницы
+\newcommand{\titlepageheader}[2]
+{
+	\begin{wrapfigure}[7]{l}{0.14\linewidth}
+		\vspace{3.4mm}
+		\hspace{-8mm}
+		\includegraphics[width=0.89\linewidth]{img/bmstu-logo}
+	\end{wrapfigure}
+
+	{
+		\singlespacing \small
+		Министерство науки и высшего образования Российской Федерации \\
+		Федеральное государственное автономное образовательное учреждение \\
+		высшего образования \\
+		<<Московский государственный технический университет \\
+		имени Н.~Э.~Баумана \\
+		(национальный исследовательский университет)>> \\
+		(МГТУ им. Н.~Э.~Баумана) \\
+	}
+
+	\vspace{-4.2mm}
+	\vhrulefill{0.9mm} \\
+	\vspace{-7mm}
+	\vhrulefill{0.2mm} \\
+	\vspace{2.8mm}
+
+	{
+		\small
+		ФАКУЛЬТЕТ \longunderline{<<#1>>} \\
+		\vspace{3.3mm}
+		КАФЕДРА \longunderline{<<#2>>} \\
+	}
+}
+
+% Создание поля студента
+\RequirePackage{pgffor}
+
+\newcommand*\titlepagestudentscontent{}
+
+\newcommand{\maketitlepagestudent}[1]
+{
+	\foreach \s/\g in {#1} {
+		\gappto\titlepagestudentscontent{Студент \fixunderline}
+		\xappto\titlepagestudentscontent{{\g}}
+		\gappto\titlepagestudentscontent{{25mm}{(Группа)} &}
+		\gappto\titlepagestudentscontent{\fixunderline{}{40mm}{(Подпись, дата)} \vspace{1.3mm} &}
+		\gappto\titlepagestudentscontent{\fixunderline}
+		\xappto\titlepagestudentscontent{{\s}}
+		\gappto\titlepagestudentscontent{{40mm}{(И.~О.~Фамилия)} \\}
+	}
+}
+
+% Создание прочих полей
+\newcommand*\titlepageotherscontent{}
+
+\newcommand{\maketitlepageothers}[2]
+{
+	\foreach \c in {#2} {
+		\gappto\titlepagestudentscontent{#1 &}
+		\gappto\titlepagestudentscontent{\fixunderline{}{40mm}{(Подпись, дата)} \vspace{1.3mm} &}
+		\gappto\titlepagestudentscontent{\fixunderline}
+		\xappto\titlepagestudentscontent{{\c}}
+		\gappto\titlepagestudentscontent{{40mm}{(И.~О.~Фамилия)} \\}
+	}
+}
+
+% Установка исполнителей работы
+\newcommand{\titlepageauthors}[3]
+{
+	{
+		\renewcommand{\titlepagestudentscontent}{}
+		\maketitlepagestudent{#1}
+		
+		\renewcommand{\titlepageotherscontent}{}
+		\maketitlepageothers{#2}{#3}
+
+
+		\small
+		\begin{tabularx}{\textwidth}{@{}>{\hsize=.5\hsize}X>{\hsize=.25\hsize}X>{\hsize=.25\hsize}X@{}}
+			\titlepagestudentscontent
+
+			\titlepageotherscontent
+		\end{tabularx}
+	}
+}
+
+% Создание титульной страницы ТЗ
+\newcommand{\maketzttitle}[9]
+{
+	\begin{titlepage}
+		\centering
+
+		\titlepageheader{#1}{#2}
+		
+		\vspace{15.8mm}
+		
+		#3
+		
+		\vspace{10mm}
+		
+		\textbf{Техническое задание}
+		
+		\vspace{55mm}
+		\titlepageauthors{#4}{}{}
+		\titlepageauthors{#5}{}{}
+		\titlepageauthors{#6}{}{}
+		\titlepageauthors{#7}{}{}
+		\titlepageauthors{}{Преподаватель}{Т.~Н. Романова}
+		\vspace{10mm}
+
+		\textit{{\the\year} г.}
+	\end{titlepage}
+
+	\setcounter{page}{2}
+}

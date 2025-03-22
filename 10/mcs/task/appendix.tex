@@ -1,0 +1,49 @@
+\renewcommand\appendixname{Приложение}
+
+\titleformat{\section}[block]
+{}
+{\begin{flushright}\textit{\appendixname~\thesection}\end{flushright}}
+{0pt}
+{\centering\bfseries\MakeUppercase}
+
+\renewcommand{\thesection}{\arabic{section}}
+
+\section{ФОРМАТЫ ПРЕДСТАВЛЕНИЯ ДАННЫХ}
+\label{appendix:a}
+
+\begin{lstlisting}[language=go, caption={Список замечаний по оформлению отчета в формате JSON}]
+{
+	...
+	"error1": true,
+	"error2": false,
+	... 
+}
+\end{lstlisting}
+
+\newpage
+
+\section{ПРИМЕР СТАТИСТИКИ ПО ВЫПОЛНЕНИЮ ЗАДАНИЙ}
+\label{appendix:b}
+
+\begin{table}[H]
+\caption{Пример статистики по выполнению заданий для \textbf{Преподавателя}}
+\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		ФИО студента & Задание 1 & ... & Задание N & \% выполнения \\ \hline
+		Иванов И. И. & 100       &   ...  & 10        & 50            \\ \hline
+		...          & ...       & ... & ...       & ...           \\ \hline
+		Петров П. П. & 75        & ... & 30        & 40            \\ \hline
+		Итого        & 70        & ... & 20        & 20            \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{Пример статистики по выполнению заданий для \textbf{Студента}}
+\centering
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		Задание 1 & ... & Задание N & \% выполнения \\ \hline
+		100       & ... & 10        & 50            \\ \hline
+	\end{tabular}
+\end{table}

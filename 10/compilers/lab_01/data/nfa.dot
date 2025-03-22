@@ -1,0 +1,29 @@
+digraph NFA {
+rankdir=LR;
+start [shape=point];
+start -> "7" [label=""];
+"7" [label="7"];
+"8" [label="8"];
+"5" [label="5"];
+"6" [label="6"];
+"1" [label="1"];
+"2" [label="2"];
+"3" [label="3"];
+"4" [label="4"];
+"10" [label="10"];
+"12" [label="12"];
+"14" [label="14" peripheries=2];
+"1" -> "2" [label="a"];
+"3" -> "4" [label="b"];
+"5" -> "1" [label="ε"];
+"5" -> "3" [label="ε"];
+"7" -> "5" [label="ε"];
+"7" -> "8" [label="ε"];
+"6" -> "8" [label="ε"];
+"6" -> "5" [label="ε"];
+"2" -> "6" [label="ε"];
+"4" -> "6" [label="ε"];
+"8" -> "10" [label="a"];
+"10" -> "12" [label="b"];
+"12" -> "14" [label="b"];
+}

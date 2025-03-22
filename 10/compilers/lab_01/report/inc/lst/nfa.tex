@@ -1,0 +1,190 @@
+type State struct {
+	Name int
+
+	Start  bool
+	Finish bool
+}
+
+type NFA struct {
+	States      []*State
+	Transitions map[int]map[string][]*State
+}
+
+func NewNFA(ast Node) *NFA {
+	counter := 0
+	return ast.BuildNFA(func() int {
+		counter++
+		return counter
+	})
+}
+
+type Node interface {
+	BuildNFA(nameGenerator func() int) *NFA
+}
+
+type Star struct {
+	Child Node
+}
+
+func (s *Star) BuildNFA(nameGenerator func() int) *NFA {
+	childNFA := s.Child.BuildNFA(nameGenerator)
+
+	i := &State{
+		Name:  nameGenerator(),
+		Start: true,
+	}
+
+	f := &State{
+		Name:   nameGenerator(),
+		Finish: true,
+	}
+
+	states := []*State{i, f}
+	states = append(states, childNFA.States...)
+
+	transitions := maps.Clone(childNFA.Transitions)
+	transitions[i.Name] = map[string][]*State{
+		"": {
+			childNFA.Start(),
+			f,
+		},
+	}
+
+	if m := transitions[childNFA.Finish().Name]; m != nil {
+		transitions[childNFA.Finish().Name][""] = append(transitions[childNFA.Finish().Name][""], f, childNFA.Start())
+	} else {
+		transitions[childNFA.Finish().Name] = map[string][]*State{
+			"": {f, childNFA.Start()},
+		}
+	}
+
+	childNFA.Start().Start = false
+	childNFA.Finish().Finish = false
+
+	return &NFA{
+		States:      states,
+		Transitions: transitions,
+	}
+}
+
+type Concat struct {
+	Left, Right Node
+}
+
+func (c *Concat) BuildNFA(nameGenerator func() int) *NFA {
+	leftNFA := c.Left.BuildNFA(nameGenerator)
+	rightNFA := c.Right.BuildNFA(nameGenerator)
+
+	var states []*State
+	states = append(states, leftNFA.States...)
+
+	transitions := maps.Clone(leftNFA.Transitions)
+	if m := transitions[leftNFA.Finish().Name]; m != nil {
+		for k, v := range rightNFA.Transitions[rightNFA.Start().Name] {
+			transitions[leftNFA.Finish().Name][k] = append(transitions[leftNFA.Finish().Name][k], v...)
+		}
+	} else {
+		transitions[leftNFA.Finish().Name] = rightNFA.Transitions[rightNFA.Start().Name]
+	}
+	for _, state := range rightNFA.States {
+		if state.Start {
+			continue
+		}
+
+		states = append(states, state)
+		transitions[state.Name] = rightNFA.Transitions[state.Name]
+	}
+
+	leftNFA.Finish().Finish = false
+
+	return &NFA{
+		States:      states,
+		Transitions: transitions,
+	}
+}
+
+type Alternative struct {
+	Left, Right Node
+}
+
+func (a *Alternative) BuildNFA(nameGenerator func() int) *NFA {
+	leftNFA := a.Left.BuildNFA(nameGenerator)
+	rightNFA := a.Right.BuildNFA(nameGenerator)
+
+	i := &State{
+		Name:  nameGenerator(),
+		Start: true,
+	}
+
+	f := &State{
+		Name:   nameGenerator(),
+		Finish: true,
+	}
+
+	states := []*State{i, f}
+	states = append(states, leftNFA.States...)
+	states = append(states, rightNFA.States...)
+
+	transitions := maps.Clone(leftNFA.Transitions)
+	for k, v := range rightNFA.Transitions {
+		transitions[k] = v
+	}
+	transitions[i.Name] = map[string][]*State{
+		"": {
+			leftNFA.Start(),
+			rightNFA.Start(),
+		},
+	}
+
+	if m := transitions[leftNFA.Finish().Name]; m != nil {
+		transitions[leftNFA.Finish().Name][""] = append(transitions[leftNFA.Finish().Name][""], f)
+	} else {
+		transitions[leftNFA.Finish().Name] = map[string][]*State{
+			"": {f},
+		}
+	}
+
+	if m := transitions[rightNFA.Finish().Name]; m != nil {
+		transitions[rightNFA.Finish().Name][""] = append(transitions[rightNFA.Finish().Name][""], f)
+	} else {
+		transitions[rightNFA.Finish().Name] = map[string][]*State{
+			"": {f},
+		}
+	}
+
+	leftNFA.Start().Start = false
+	leftNFA.Finish().Finish = false
+
+	rightNFA.Start().Start = false
+	rightNFA.Finish().Finish = false
+
+	return &NFA{
+		States:      states,
+		Transitions: transitions,
+	}
+}
+
+type Symbol struct {
+	Symbol string
+}
+
+func (s *Symbol) BuildNFA(nameGenerator func() int) *NFA {
+	i := &State{
+		Name:  nameGenerator(),
+		Start: true,
+	}
+
+	f := &State{
+		Name:   nameGenerator(),
+		Finish: true,
+	}
+
+	return &NFA{
+		States: []*State{i, f},
+		Transitions: map[int]map[string][]*State{
+			i.Name: {
+				s.Symbol: []*State{f},
+			},
+		},
+	}
+}

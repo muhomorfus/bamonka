@@ -1,0 +1,87 @@
+\documentclass[14pt]{extarticle}
+
+% настройка шрифтов 
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage[russian]{babel}
+
+% настройка геометрии листа
+\usepackage{geometry}
+\geometry{a4paper,
+left=3cm,right=1.5cm,
+top=2cm,bottom=2cm}
+
+% все что связано с изображениями
+\usepackage{graphicx} % вставка рисунков
+\usepackage{float}
+
+\newcommand{\img}[3] {
+ \begin{figure}[H]
+  \center{\includegraphics[width=#1]{img/#2}}
+  \caption{#3}
+  \label{img:#2}
+ \end{figure}
+}
+
+% подписи к вставкам
+\usepackage{caption} % Подпись картинок и таблиц
+\captionsetup{labelsep=endash} % Разделитель между номером и текстом краткое тире и пробел
+\captionsetup[figure]{name={Рисунок}} % Изменяет имя для всех фигур на "Рисунок"
+%\captionsetup[figure]{justification=centering} % выравнивание подписи по центу для картинок
+%\usepackage[justification=centering]{caption} % Настройка подписей всех float объектов
+\captionsetup[table]{justification=centering, singlelinecheck=false} % центрирование многострочных подписей для таблиц
+\captionsetup[lstlisting]{justification=raggedright, singlelinecheck=false} % выравнивание многострочных подписей по правому краю для листингов
+
+
+\usepackage{tabularx} % расширенные возможности таблиц
+\usepackage{tikz} % рисование графиков через сам латех
+
+\usepackage{indentfirst} % красная строка
+\usepackage{setspace}
+\onehalfspacing % Полуторный интервал
+
+% настройка листингов
+\usepackage{listings}
+\lstdefinestyle{mystyle}{ % Опеределение стиля 
+	% language=C++,
+	backgroundcolor=\color{white},
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries,
+	stringstyle=\itshape,
+	commentstyle=\color{gray}\slshape,
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=1,
+	numbersep=5pt,
+	frame=single,
+	tabsize=4,
+	captionpos=t,
+	breaklines=true,
+	breakatwhitespace=true,
+	xleftmargin=10pt
+}
+\lstset{extendedchars=true, texcl=true}
+\lstset{style=mystyle}
+
+% Настройка оформления списков
+\usepackage{enumitem} 
+\setlist[enumerate,1]{label={\arabic*)}}
+\setlist[itemize]{left=0.49cm}
+\setlist[enumerate]{left=0.49cm}
+\renewcommand{\labelitemi}{---}
+\renewcommand{\labelitemii}{---}
+
+
+% настройка титульника
+\usepackage{wrapfig} % обтекание текста вокруг картинок и таблиц
+\input{bmstu-title}
+
+% настройка приложений
+\usepackage[titletoc, title]{appendix} %добавление приложений в оглавление
+
+% настройка заголовков
+\usepackage{titlesec}
+
+\usepackage[unicode,pdftex]{hyperref} % Ссылки в pdf
+\hypersetup{hidelinks}

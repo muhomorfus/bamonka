@@ -1,0 +1,66 @@
+func (n *NFA) CheckString(s string, debug bool) bool {
+	states := n.epsClosure(n.Start())
+
+	for _, symbol := range s {
+		if debug {
+			log.Printf("Checking %q", string(symbol))
+		}
+
+		var move []*State
+		for _, state := range states {
+			if tr := n.Transitions[state.Name]; tr != nil {
+				canGo := tr[string(symbol)]
+				if debug {
+					for _, cs := range canGo {
+						log.Printf("Can go from %d to %d via %q", state.Name, cs.Name, string(symbol))
+					}
+				}
+
+				move = append(move, canGo...)
+			}
+		}
+
+		if len(move) == 0 {
+			return false
+		}
+
+		states = n.epsClosure(move...)
+	}
+
+	for _, state := range states {
+		if state.Finish {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (n *NFA) epsClosure(states ...*State) []*State {
+	stack := slices.Clone(states)
+	result := slices.Clone(states)
+
+	for len(stack) > 0 {
+		t := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+
+		if tr := n.Transitions[t.Name]; tr != nil {
+			for _, u := range tr[""] {
+				exists := false
+				for _, s := range result {
+					if s.Name == u.Name {
+						exists = true
+					}
+				}
+
+				if !exists {
+					result = append(result, u)
+				}
+
+				stack = append(stack, u)
+			}
+		}
+	}
+
+	return result
+}

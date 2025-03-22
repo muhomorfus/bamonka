@@ -1,0 +1,68 @@
+\chapter{Практическая часть}
+
+\section{Листинг}
+
+\includelistingpretty{system}{go}{Исходный код решения системы уравнений}
+
+\includelistingpretty{nfa}{go}{Исходный построения НКА}
+
+\includelistingpretty{model}{go}{Исходный код моделирования НКА}
+
+%\newpage
+%
+%\section{Результаты работы программы для задачи минимизации}
+%
+%\includelistingpretty{min}{matlab}{Результат работы программы}
+%
+%\newpage
+%
+%\section{Результаты работы программы для задачи максимизации}
+%
+%\includelistingpretty{max}{matlab}{Результат работы программы}
+
+\newpage
+
+\section{Результаты выполнения программы}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[h!]
+\caption{Результаты выполнения программы}
+\label{tab:results}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Грамматика}                                                                                    & \textbf{\begin{tabular}[c]{@{}l@{}}Система \\ уравнений\end{tabular}}                                     & \textbf{\begin{tabular}[c]{@{}l@{}}Регулярное \\ выражение\end{tabular}}                                             & \textbf{\begin{tabular}[c]{@{}l@{}}Входная \\ строка\end{tabular}} & \textbf{Результат} \\ \hline
+\multirow{4}{*}{\begin{tabular}[c]{@{}l@{}}S -> 0A|1S|$\epsilon$\\ A -> 0B|1A\\ B -> 0S|1B\end{tabular}} & \multirow{4}{*}{\begin{tabular}[c]{@{}l@{}}S=$\epsilon$+(1)S+(0)A\\ A=(1)A+(0)B\\ B=(0)S+(1)B\end{tabular}} & \multirow{4}{*}{\begin{tabular}[c]{@{}l@{}}(1)*|(1)*(0)(1)*\\ (0)((0)(1)*(0)\\ (1)*(0)|(1))*(0)\\ (1)*\end{tabular}} & 1                                                                  & true               \\ \cline{4-5} 
+                                                                                                       &                                                                                                           &                                                                                                                      & 2                                                                  & false              \\ \cline{4-5} 
+                                                                                                       &                                                                                                           &                                                                                                                      & 10                                                                 & false              \\ \cline{4-5} 
+                                                                                                       &                                                                                                           &                                                                                                                      & 10001                                                              & true               \\ \hline
+\multirow{4}{*}{\begin{tabular}[c]{@{}l@{}}S->aS|bA\\ A->cA|ε\end{tabular}}                            & \multirow{4}{*}{\begin{tabular}[c]{@{}l@{}}S=(a)S+(b)A\\ A=$\epsilon$+(c)A\end{tabular}}                    & \multirow{4}{*}{(a)*(b)(c)*}                                                                                         & abc                                                                & true               \\ \cline{4-5} 
+                                                                                                       &                                                                                                           &                                                                                                                      & a                                                                  & false              \\ \cline{4-5} 
+                                                                                                       &                                                                                                           &                                                                                                                      & b                                                                  & true               \\ \cline{4-5} 
+                                                                                                       &                                                                                                           &                                                                                                                      & aabccc                                                             & true               \\ \hline
+\end{tabular}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+%\begin{table}[h!]
+%\caption{Результаты выполнения программы}
+%\label{tab:results}
+%\begin{tabular}{|l|l|l|}
+%\hline
+%\textbf{Регулярное выражение} & \textbf{Входная строка} & \textbf{Результат} \\ \hline
+%\multirow{4}{*}{a}            & пустая строка           & FAIL               \\ \cline{2-3} 
+%                              & a                       & OK                 \\ \cline{2-3} 
+%                              & aa                      & FAIL               \\ \cline{2-3} 
+%                              & b                       & FAIL               \\ \hline
+%\multirow{4}{*}{ab(ab|b*)*}   & пустая строка           & FAIL               \\ \cline{2-3} 
+%                              & abbb                    & OK                 \\ \cline{2-3} 
+%                              & ab                      & OK                 \\ \cline{2-3} 
+%                              & bbb                     & FAIL               \\ \hline
+%\multirow{5}{*}{a*|(bb*|c*a)} & b                       & OK                 \\ \cline{2-3} 
+%                              & a                       & OK                 \\ \cline{2-3} 
+%                              & ccccca                  & OK                 \\ \cline{2-3} 
+%                              & cccab                   & FAIL               \\ \cline{2-3} 
+%                              & пустая строка           & OK                 \\ \hline
+%\end{tabular}
+%\end{table}
