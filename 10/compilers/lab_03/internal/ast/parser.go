@@ -1,0 +1,454 @@
+package ast
+
+import (
+	"fmt"
+
+	"lab_03/internal/token"
+)
+
+type parser struct {
+	tokens  []token.Token
+	pos     int
+	current token.Token
+}
+
+func newParser(tokens []token.Token) *parser {
+	return &parser{
+		tokens:  tokens,
+		pos:     0,
+		current: tokens[0],
+	}
+}
+
+func (p *parser) next() {
+	p.pos++
+	if p.pos < len(p.tokens) {
+		p.current = p.tokens[p.pos]
+	} else {
+		p.current = token.Token{Type: token.EOF, Value: ""}
+	}
+}
+
+func (p *parser) parseProgram() (*Program, error) {
+	block, err := p.parseBlock()
+	if err != nil {
+		return nil, fmt.Errorf("parse block: %w", err)
+	}
+
+	return &Program{
+		Block: block,
+	}, nil
+}
+
+func (p *parser) parseBlock() (*Block, error) {
+	if p.current.Type != token.StartBlock {
+		return nil, fmt.Errorf("no start block")
+	}
+
+	p.next()
+
+	operatorList, err := p.parseOperatorList()
+	if err != nil {
+		return nil, fmt.Errorf("parse operator list: %w", err)
+	}
+
+	if p.current.Type != token.EndBlock {
+		return nil, fmt.Errorf("no end block")
+	}
+
+	p.next()
+
+	return &Block{
+		OperatorList: operatorList,
+	}, nil
+}
+
+func (p *parser) parseOperatorList() (*OperatorList, error) {
+	operator, err := p.parseOperator()
+	if err != nil {
+		return nil, fmt.Errorf("parse operator: %w", err)
+	}
+
+	ol := &OperatorList{
+		Operator: operator,
+	}
+
+	if p.current.Type == token.EndBlock {
+		return ol, nil
+	}
+
+	operatorList, err := p.parseOperatorList1()
+	if err != nil {
+		return nil, fmt.Errorf("parse operator list x: %w", err)
+	}
+
+	ol.OperatorList = operatorList
+
+	return ol, nil
+}
+
+func (p *parser) parseOperator() (*Operator, error) {
+	identifier, err := p.parseIdentifier()
+	if err != nil {
+		return nil, fmt.Errorf("parse identifier: %w", err)
+	}
+
+	if p.current.Type != token.Assignment {
+		return nil, fmt.Errorf("no assign")
+	}
+
+	p.next()
+
+	expression, err := p.parseExpression()
+	if err != nil {
+		return nil, fmt.Errorf("parse expression: %w", err)
+	}
+
+	return &Operator{
+		Identifier: identifier,
+		Expression: expression,
+	}, nil
+}
+
+func (p *parser) parseIdentifier() (*Identifier, error) {
+	if p.current.Type != token.Identifier {
+		return nil, fmt.Errorf("parse identifier")
+	}
+
+	value := p.current.Value
+	p.next()
+
+	return &Identifier{
+		Value: value,
+	}, nil
+}
+
+func (p *parser) parseExpression() (*Expression, error) {
+	left, err := p.parseArithmeticalExpression()
+	if err != nil {
+		return nil, fmt.Errorf("parse left arithmetical expression: %w", err)
+	}
+
+	relation, err := p.parseRelationOperation()
+	if err != nil {
+		return nil, fmt.Errorf("parse relation operation: %w", err)
+	}
+
+	right, err := p.parseArithmeticalExpression()
+	if err != nil {
+		return nil, fmt.Errorf("parse right arithmetical expression: %w", err)
+	}
+
+	return &Expression{
+		Left:      left,
+		Operation: relation,
+		Right:     right,
+	}, nil
+}
+
+func (p *parser) parseRelationOperation() (*RelationOperation, error) {
+	switch p.current.Type {
+	case token.Less, token.LessOrEqual, token.Greater, token.GreaterOrEqual, token.Equal, token.NotEqual:
+		value := p.current.Value
+		p.next()
+		return &RelationOperation{
+			Value: value,
+		}, nil
+	default:
+		return nil, fmt.Errorf("invalid relation operation")
+	}
+}
+
+func (p *parser) parseArithmeticalExpression() (*ArithmeticalExpression, error) {
+	var sumOperation *SumOperation
+	if p.current.Type == token.Plus || p.current.Type == token.Minus {
+		var err error
+		sumOperation, err = p.parseSumOperation()
+		if err != nil {
+			return nil, fmt.Errorf("parse sum operation: %w", err)
+		}
+	}
+
+	term, err := p.parseTerm()
+	if err != nil {
+		return nil, fmt.Errorf("parse term: %w", err)
+	}
+
+	ae := &ArithmeticalExpression{
+		SumOperation: sumOperation,
+		Term:         term,
+	}
+
+	if p.current.Type != token.Plus && p.current.Type != token.Minus {
+		return ae, nil
+	}
+
+	aex, err := p.parseArithmeticalExpression1()
+	if err != nil {
+		return nil, fmt.Errorf("parse arithmetical expression: %w", err)
+	}
+
+	ae.ArithmeticalExpression = aex
+
+	return ae, nil
+}
+
+func (p *parser) parseTerm() (*Term, error) {
+	multiplier, err := p.parseMultiplier()
+	if err != nil {
+		return nil, fmt.Errorf("parse multiplier: %w", err)
+	}
+
+	term := &Term{
+		Multiplier: multiplier,
+	}
+
+	if p.current.Type != token.Multiply && p.current.Type != token.Divide && p.current.Type != token.Mod {
+		return term, nil
+	}
+
+	term1, err := p.parseTerm1()
+	if err != nil {
+		return nil, fmt.Errorf("parse term: %w", err)
+	}
+
+	term.Term = term1
+
+	return term, nil
+}
+
+func (p *parser) parseMultiplier() (*Multiplier, error) {
+	pe, err := p.parsePrimaryExpression()
+	if err != nil {
+		return nil, fmt.Errorf("parse primary expression: %w", err)
+	}
+
+	m := &Multiplier{
+		PrimaryExpression: pe,
+	}
+
+	if p.current.Type != token.Pow {
+		return m, nil
+	}
+
+	m1, err := p.parseMultiplier1()
+	if err != nil {
+		return nil, fmt.Errorf("parse multiplier: %w", err)
+	}
+
+	m.Multiplier = m1
+
+	return m, nil
+}
+
+func (p *parser) parsePrimaryExpression() (*PrimaryExpression, error) {
+	e := &PrimaryExpression{}
+
+	switch p.current.Type {
+	case token.Identifier:
+		identifier, err := p.parseIdentifier()
+		if err != nil {
+			return nil, fmt.Errorf("parse identifier: %w", err)
+		}
+
+		e.Identifier = identifier
+	case token.Number:
+		number, err := p.parseNumber()
+		if err != nil {
+			return nil, fmt.Errorf("parse constant: %w", err)
+		}
+
+		e.Number = number
+	case token.LeftParen:
+		p.next()
+
+		ae, err := p.parseArithmeticalExpression()
+		if err != nil {
+			return nil, fmt.Errorf("parse arithmetical expression: %w", err)
+		}
+
+		if p.current.Type != token.RightParen {
+			return nil, fmt.Errorf("no right paren")
+		}
+
+		p.next()
+
+		e.ArithmeticalExpression = ae
+	default:
+		return nil, fmt.Errorf("invalid primary expression format")
+	}
+
+	return e, nil
+}
+
+func (p *parser) parseNumber() (*Number, error) {
+	if p.current.Type != token.Number {
+		return nil, fmt.Errorf("invalid number")
+	}
+
+	value := p.current.Value
+	p.next()
+
+	return &Number{
+		Value: value,
+	}, nil
+}
+
+func (p *parser) parseOperatorList1() (*OperatorList1, error) {
+	if p.current.Type != token.Semicolon {
+		return nil, fmt.Errorf("no semicolon")
+	}
+
+	p.next()
+
+	operator, err := p.parseOperator()
+	if err != nil {
+		return nil, fmt.Errorf("parse operator: %w", err)
+	}
+
+	l := &OperatorList1{
+		Operator: operator,
+	}
+
+	if p.current.Type != token.Semicolon {
+		return l, nil
+	}
+
+	operatorList1, err := p.parseOperatorList1()
+	if err != nil {
+		return nil, fmt.Errorf("parse operator list: %w", err)
+	}
+
+	l.OperatorList = operatorList1
+
+	return l, nil
+}
+
+func (p *parser) parseArithmeticalExpression1() (*ArithmeticalExpression1, error) {
+	ae := &ArithmeticalExpression1{}
+
+	sum, err := p.parseSumOperation()
+	if err != nil {
+		return nil, fmt.Errorf("parse sum operation: %w", err)
+	}
+
+	ae.SumOperation = sum
+
+	term, err := p.parseTerm()
+	if err != nil {
+		return nil, fmt.Errorf("parse term: %w", err)
+	}
+
+	ae.Term = term
+
+	if p.current.Type != token.Plus && p.current.Type != token.Minus {
+		return ae, nil
+	}
+
+	aeIn, err := p.parseArithmeticalExpression1()
+	if err != nil {
+		return nil, fmt.Errorf("parse aex: %w", err)
+	}
+
+	ae.ArithmeticalExpression = aeIn
+
+	return ae, nil
+}
+
+func (p *parser) parseSumOperation() (*SumOperation, error) {
+	so := &SumOperation{}
+
+	switch p.current.Type {
+	case token.Plus:
+	case token.Minus:
+	default:
+		return nil, fmt.Errorf("unknown sum operation")
+	}
+
+	so.Value = p.current.Value
+
+	p.next()
+
+	return so, nil
+}
+
+func (p *parser) parseTerm1() (*Term1, error) {
+	term := &Term1{}
+
+	mul, err := p.parseMulOperation()
+	if err != nil {
+		return nil, fmt.Errorf("parse mul operation: %w", err)
+	}
+
+	term.MulOperation = mul
+
+	m, err := p.parseMultiplier()
+	if err != nil {
+		return nil, fmt.Errorf("parse tefactorrm: %w", err)
+	}
+
+	term.Multiplier = m
+
+	if p.current.Type != token.Multiply && p.current.Type != token.Divide && p.current.Type != token.Mod {
+		return term, nil
+	}
+
+	termIn, err := p.parseTerm1()
+	if err != nil {
+		return nil, fmt.Errorf("parse term x: %w", err)
+	}
+
+	term.Term = termIn
+
+	return term, nil
+}
+
+func (p *parser) parseMultiplier1() (*Multiplier1, error) {
+	if p.current.Type != token.Pow {
+		return nil, fmt.Errorf("invalid multiplier expression, there is no ^")
+	}
+
+	p.next()
+
+	m := &Multiplier1{
+		Pow: &PowerOperation{},
+	}
+
+	pe, err := p.parsePrimaryExpression()
+	if err != nil {
+		return nil, fmt.Errorf("parse primary expression: %w", err)
+	}
+
+	m.PrimaryExpression = pe
+
+	if p.current.Type != token.Pow {
+		return m, nil
+	}
+
+	m1, err := p.parseMultiplier1()
+	if err != nil {
+		return nil, fmt.Errorf("parse multiplier: %w", err)
+	}
+
+	m.Multiplier = m1
+
+	return m, nil
+}
+
+func (p *parser) parseMulOperation() (*MulOperation, error) {
+	mo := &MulOperation{}
+
+	switch p.current.Type {
+	case token.Multiply:
+	case token.Divide:
+	case token.Mod:
+	default:
+		return nil, fmt.Errorf("unknown multiply operation")
+	}
+
+	mo.Value = p.current.Value
+
+	p.next()
+
+	return mo, nil
+}

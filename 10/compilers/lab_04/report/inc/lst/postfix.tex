@@ -1,0 +1,161 @@
+func Postfix(root Node) string {
+	return strings.Join(root.makePostfix(), " ")
+}
+
+func (n *Expression) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = slices.Clone(n.Left.makePostfix())
+	n.Postfix = append(n.Postfix, n.Right.makePostfix()...)
+	n.Postfix = append(n.Postfix, n.Operation.makePostfix()...)
+
+	return n.Postfix
+}
+
+func (n *ArithmeticalExpression) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = slices.Clone(n.Term.makePostfix())
+	n.Postfix = append(n.Postfix, n.ArithmeticalExpression.makePostfix()...)
+	n.Postfix = append(n.Postfix, n.SumOperation.makePostfix()...)
+
+	return n.Postfix
+}
+
+func (n *Term) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = slices.Clone(n.Multiplier.makePostfix())
+	n.Postfix = append(n.Postfix, n.Term.makePostfix()...)
+
+	return n.Postfix
+}
+
+func (n *Multiplier) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = slices.Clone(n.PrimaryExpression.makePostfix())
+	n.Postfix = append(n.Postfix, n.Multiplier.makePostfix()...)
+
+	return n.Postfix
+}
+
+func (n *PrimaryExpression) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = slices.Clone(n.Number.makePostfix())
+	n.Postfix = append(n.Postfix, n.Identifier.makePostfix()...)
+	n.Postfix = append(n.Postfix, n.ArithmeticalExpression.makePostfix()...)
+
+	return n.Postfix
+}
+
+func (n *RelationOperation) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = []string{n.Value}
+
+	return n.Postfix
+}
+
+func (n *SumOperation) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	if n.Unary {
+		n.Postfix = []string{"unary" + n.Value}
+	} else {
+		n.Postfix = []string{n.Value}
+	}
+
+	return n.Postfix
+}
+
+func (n *MulOperation) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = []string{n.Value}
+
+	return n.Postfix
+}
+
+func (n *ArithmeticalExpression1) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = slices.Clone(n.Term.makePostfix())
+	n.Postfix = append(n.Postfix, n.ArithmeticalExpression.makePostfix()...)
+	n.Postfix = append(n.Postfix, n.SumOperation.makePostfix()...)
+
+	return n.Postfix
+}
+
+func (n *Term1) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = slices.Clone(n.Term.makePostfix())
+	n.Postfix = append(n.Postfix, n.Multiplier.makePostfix()...)
+	n.Postfix = append(n.Postfix, n.MulOperation.makePostfix()...)
+
+	return n.Postfix
+}
+
+func (n *PowerOperation) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = []string{"^"}
+
+	return n.Postfix
+}
+
+func (n *Identifier) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = []string{n.Value}
+
+	return n.Postfix
+}
+
+func (n *Number) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = []string{n.Value}
+
+	return n.Postfix
+}
+
+func (n *Multiplier1) makePostfix() []string {
+	if n == nil {
+		return nil
+	}
+
+	n.Postfix = slices.Clone(n.PrimaryExpression.makePostfix())
+	n.Postfix = append(n.Postfix, n.Multiplier.makePostfix()...)
+	n.Postfix = append(n.Postfix, n.Pow.makePostfix()...)
+
+	return n.Postfix
+}

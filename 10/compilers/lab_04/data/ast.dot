@@ -1,0 +1,112 @@
+digraph AST {
+"0x140000a27e0" [label="<expression>
+2 2 ^ 5 4 6 + + 5 % <>"];
+"0x140000a27e0" -> "0x140000a22a0";
+"0x140000a22a0" [label="<arithmetical expression>
+2 2 ^"];
+"0x140000a22a0" -> "0x140000a2270";
+"0x140000a2270" [label="<term>
+2 2 ^"];
+"0x140000a2270" -> "0x140000a21b0";
+"0x140000a21b0" [label="<multiplier>
+2 2 ^"];
+"0x140000a21b0" -> "0x140000a2150";
+"0x140000a2150" [label="<primary expression>
+2"];
+"0x140000a2150" -> "0x140000a2180";
+"0x140000a2180" [label="<number> (2)
+2"];
+"0x140000a21b0" -> "0x140000a21e0";
+"0x140000a21e0" [label="<multiplier>'
+2 ^"];
+"0x140000a21e0" -> "0x140000b8018";
+"0x140000b8018" [label="<power operation> (^)
+^"];
+"0x140000a21e0" -> "0x140000a2210";
+"0x140000a2210" [label="<primary expression>
+2"];
+"0x140000a2210" -> "0x140000a2240";
+"0x140000a2240" [label="<number> (2)
+2"];
+"0x140000a27e0" -> "0x140000a22d0";
+"0x140000a22d0" [label="<relation operation> (<>)
+<>"];
+"0x140000a27e0" -> "0x140000a27b0";
+"0x140000a27b0" [label="<arithmetical expression>
+5 4 6 + + 5 %"];
+"0x140000a27b0" -> "0x140000a2690";
+"0x140000a2690" [label="<term>
+5 4 6 + + 5 %"];
+"0x140000a2690" -> "0x140000a2660";
+"0x140000a2660" [label="<multiplier>
+5 4 6 + +"];
+"0x140000a2660" -> "0x140000a2300";
+"0x140000a2300" [label="<primary expression>
+5 4 6 + +"];
+"0x140000a2300" -> "0x140000a23f0";
+"0x140000a23f0" [label="<arithmetical expression>
+5 4 6 + +"];
+"0x140000a23f0" -> "0x140000a23c0";
+"0x140000a23c0" [label="<term>
+5"];
+"0x140000a23c0" -> "0x140000a2390";
+"0x140000a2390" [label="<multiplier>
+5"];
+"0x140000a2390" -> "0x140000a2330";
+"0x140000a2330" [label="<primary expression>
+5"];
+"0x140000a2330" -> "0x140000a2360";
+"0x140000a2360" [label="<number> (5)
+5"];
+"0x140000a23f0" -> "0x140000a2420";
+"0x140000a2420" [label="<arithmetical expression>'
+4 6 + +"];
+"0x140000a2420" -> "0x140000a2450";
+"0x140000a2450" [label="<sum operation> (+)
++"];
+"0x140000a2420" -> "0x140000a2510";
+"0x140000a2510" [label="<term>
+4"];
+"0x140000a2510" -> "0x140000a24e0";
+"0x140000a24e0" [label="<multiplier>
+4"];
+"0x140000a24e0" -> "0x140000a2480";
+"0x140000a2480" [label="<primary expression>
+4"];
+"0x140000a2480" -> "0x140000a24b0";
+"0x140000a24b0" [label="<number> (4)
+4"];
+"0x140000a2420" -> "0x140000a2540";
+"0x140000a2540" [label="<arithmetical expression>'
+6 +"];
+"0x140000a2540" -> "0x140000a2570";
+"0x140000a2570" [label="<sum operation> (+)
++"];
+"0x140000a2540" -> "0x140000a2630";
+"0x140000a2630" [label="<term>
+6"];
+"0x140000a2630" -> "0x140000a2600";
+"0x140000a2600" [label="<multiplier>
+6"];
+"0x140000a2600" -> "0x140000a25a0";
+"0x140000a25a0" [label="<primary expression>
+6"];
+"0x140000a25a0" -> "0x140000a25d0";
+"0x140000a25d0" [label="<number> (6)
+6"];
+"0x140000a2690" -> "0x140000a26c0";
+"0x140000a26c0" [label="<term>'
+5 %"];
+"0x140000a26c0" -> "0x140000a26f0";
+"0x140000a26f0" [label="<mul operation> (%)
+%"];
+"0x140000a26c0" -> "0x140000a2780";
+"0x140000a2780" [label="<multiplier>
+5"];
+"0x140000a2780" -> "0x140000a2720";
+"0x140000a2720" [label="<primary expression>
+5"];
+"0x140000a2720" -> "0x140000a2750";
+"0x140000a2750" [label="<number> (5)
+5"];
+}

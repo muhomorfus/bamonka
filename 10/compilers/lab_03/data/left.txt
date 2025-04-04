@@ -1,0 +1,33 @@
+12
+P B L O E A T N F S M R
+22
+b e g i n e d i c ^ ( ) + - : * / % < = > ;
+27
+P -> B
+B -> begin L end
+L -> O
+L -> L ; O
+O -> i := E
+E -> A R A
+A -> T
+A -> S T
+A -> A S T
+T -> N
+T -> T M N
+N -> F
+N -> N ^ F
+F -> c
+F -> i
+F -> ( A )
+S -> +
+S -> -
+M -> *
+M -> /
+M -> %
+R -> <
+R -> <=
+R -> =
+R -> >=
+R -> >
+R -> <>
+P
