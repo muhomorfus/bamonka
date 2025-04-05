@@ -104,6 +104,12 @@ func (p *parser) parseOperator() (*Operator, error) {
 		return nil, fmt.Errorf("parse expression: %w", err)
 	}
 
+	if p.current.Type != token.Semicolon {
+		return nil, fmt.Errorf("no semicolon at end of operator")
+	}
+
+	p.next()
+
 	return &Operator{
 		Identifier: identifier,
 		Expression: expression,
@@ -295,12 +301,6 @@ func (p *parser) parseNumber() (*Number, error) {
 }
 
 func (p *parser) parseOperatorList1() (*OperatorList1, error) {
-	if p.current.Type != token.Semicolon {
-		return nil, fmt.Errorf("no semicolon")
-	}
-
-	p.next()
-
 	operator, err := p.parseOperator()
 	if err != nil {
 		return nil, fmt.Errorf("parse operator: %w", err)
@@ -310,7 +310,7 @@ func (p *parser) parseOperatorList1() (*OperatorList1, error) {
 		Operator: operator,
 	}
 
-	if p.current.Type != token.Semicolon {
+	if p.current.Type == token.EndBlock {
 		return l, nil
 	}
 
