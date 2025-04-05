@@ -93,7 +93,7 @@ func (g *Grammar) MakeGreibachForm() *Grammar {
 			Combinations: aSolved[i],
 		})
 
-		g.removeTerminals(newRules[len(newRules)-1].Combinations)
+		newRules = append(newRules, g.removeTerminals(newRules[len(newRules)-1].Combinations)...)
 	}
 
 	for i := range q {
@@ -103,7 +103,7 @@ func (g *Grammar) MakeGreibachForm() *Grammar {
 				Combinations: g.resolveLeadingA(newRules, qSolved[i][j]),
 			})
 
-			g.removeTerminals(newRules[len(newRules)-1].Combinations)
+			newRules = append(newRules, g.removeTerminals(newRules[len(newRules)-1].Combinations)...)
 		}
 	}
 
@@ -112,7 +112,9 @@ func (g *Grammar) MakeGreibachForm() *Grammar {
 	return g
 }
 
-func (g *Grammar) removeTerminals(combinations [][]string) {
+func (g *Grammar) removeTerminals(combinations [][]string) []Rule {
+	var rules []Rule
+
 	for i, combination := range combinations {
 		for j := len(combination) - 1; j > 0; j-- {
 			if slices.Contains(g.NonTerminals, combination[j]) {
@@ -125,13 +127,15 @@ func (g *Grammar) removeTerminals(combinations [][]string) {
 
 			if !slices.Contains(g.NonTerminals, newNonTerminal) {
 				g.NonTerminals = append(g.NonTerminals, newNonTerminal)
-				g.Rules = append(g.Rules, Rule{
+				rules = append(rules, Rule{
 					NonTerminal:  newNonTerminal,
 					Combinations: [][]string{{oldTerminal}},
 				})
 			}
 		}
 	}
+
+	return rules
 }
 
 func (g *Grammar) resolveLeadingA(rules []Rule, combinations [][]string) [][]string {
